@@ -30,7 +30,7 @@ tamm_report <- function(tamm.name, tamm.path = getwd(),  clean = TRUE, overwrite
   if(!is.logical(clean)){
     cli::cli_abort("`clean` must be logical.")
   }
-  if(!file.exists(paste0(tamm.name, "/", tamm.path))){
+  if(!file.exists(paste0(tamm.path, "/", tamm.name))){
     cli::cli_abort("TAMM file was not found. Check that `tamm.path` and `tamm.name` are correct.")
   }
 
