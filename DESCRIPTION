@@ -1,5 +1,5 @@
 Package: TAMMsupport
-Title: What the Package Does (One Line, Title Case)
+Title: Streamline working with Terminal Area Management Modules
 Version: 0.0.0.9000
 Authors@R: 
     person("Collin", "Edwards", , "Collin.Edwards@dfw.wa.gov", role = c("aut", "cre"),
@@ -14,8 +14,6 @@ Imports:
     dplyr,
     framrsquared,
     here,
-    odbc,
-    openxlsx,
+    kableExtra,
     quarto,
     readxl,
-    writexl

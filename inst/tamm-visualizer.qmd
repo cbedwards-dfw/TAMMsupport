@@ -12,21 +12,22 @@ toc: true
 embed-resources: true
 editor: visual
 params:
-  tamm.path: "NOF 2/Chin2024.xlsx"
+  tamm.path: "NOF 2"
+  tamm.name: "Chin2024.xlsx"
 ---
 
 *Report generated programmatically using the `TAMMsupport` package*
 
 ```{r}
 library(tidyverse)
-library(openxlsx)
-library("tidyverse")
-library("readxl"); library("writexl")
-library("odbc")
+library("readxl")
 library(here)
 library(framrsquared)
+library(kableExtra)
 tamm.path = params$tamm.path
-tamm.name = gsub(".*/", "", tamm.path)
+tamm.name = params$tamm.name
+tamm.full = paste0(tamm.path, "/", tamm.name)
+
 ```
 
 
@@ -69,16 +70,16 @@ read_lsc <- function(filename, colnm = lsc_cols_stocks){
 
 ## ID all the stock names
 lsc_cols_stocks <- c("Fishery", "FisheryID",
-                     tamm.path  |>  
+                     tamm.full  |>  
                        read_excel(range = "LimitingStkComplete mod!L3:DL3", col_names = F) |>
                        unlist() |> na.omit() |> unique() |> rep(each = 7) |> 
                        paste(rep(c("t2_aeq", "t3_aeq", "t4_aeq", "t2_er", "t3_er", "t4_er", "yr_er"), 15), sep = "_")
 )
 
-dat = read_lsc(tamm.path, lsc_cols_stocks) |>
+dat = read_lsc(tamm.full, lsc_cols_stocks) |>
   rename(fishery_id = FisheryID)
 ## figure out if this is a coho or chinook, add as attribute so we can used FRAMR^2 filters
-run.num = read_excel(tamm.path, range = "1!B2", col_names = FALSE)
+run.num = read_excel(tamm.full, range = "1!B2", col_names = FALSE)
 if(grepl("Chin", run.num)){attr(dat, "species") <- "CHINOOK"}
 if(grepl("Coho", run.num)){attr(dat, "species") <- "COHO"}
 if(grepl("Coho", run.num) & grepl("Chin", run.num)){attr(dat, "species") <- "UNCLEAR"}
@@ -120,18 +121,81 @@ read_eresc <- function(path){
   s[30,1] <- "SKOKOMISH"
   return(s)
 }
-dat.overview = read_eresc(tamm.path)
 
 ```
 
-# Exploitation rates
+# Summary table
+
+```{r}
+dat.overview = read_eresc(tamm.full)
+
+#Doing some formatting to make pretty / fit on page
+quick_er_format <-  function(x){
+  #we know the following will give warnings. That's the point.
+  suppressWarnings({can.numeric = !is.na(as.numeric(x))})
+  x[can.numeric] = paste0(round(as.numeric(x[can.numeric]), 4)*100, "%")
+  return(x)
+}
+dat.overview <- dat.overview |> 
+  mutate(er_ceiling = quick_er_format(er_ceiling),
+         escapement = round(escapement, 1),
+         total_er = quick_er_format(total_er),
+         sus_er = quick_er_format(sus_er),
+         pt_sus_er = quick_er_format(pt_sus_er)
+  )
+## bold appropriate data
+dat.overview <- dat.overview |> 
+  mutate(col.bold = case_when(
+    er_type == "PT-SUS" ~ "pt_sus_er",
+    grepl("SUS$", er_type) ~ "sus_er",
+    er_type == "Total" ~ "total_er"
+  ))
+
+dat.overview = as.data.frame(lapply(dat.overview, function(x){x[is.na(x)] = "";
+return(x)}))
+
+col.bold = dat.overview$col.bold
+dat.overview <- dat.overview |> 
+  dplyr::select(-col.bold)
+
+## handling stock labels: want indentations
+vec.indent = c("NF NOOKSACK SPRING", "SF NOOKSACK SPRING", "Upper Sauk", "Upper Cascade",
+               "Suiattle", "Upper Skagit", "Sauk", "Lower Skagit", "STILLAGUAMISH UM", "STILLAGUAMISH M",
+               "Skykomish", "Snoqualmie")
+ind.indent = which(dat.overview$stock %in% vec.indent)
+# dat.overview$stock[dat.overview$stock %in% vec.indent] <- 
+#   paste0("____",dat.overview$stock[dat.overview$stock %in% vec.indent])
+```
+
+
+```{r}
+kbl(dat.overview, format = "html",
+    align = c("l", "c", "r", "c", "r", "r", "r", "r"),
+    col.names = c("Stock", "Abund. Tier", "ER Ceiling", "ER Type", "Escape.", "Total ER", "SUS ER", "PT-SUS ER")) |> 
+  kable_classic(full_width = F, html_font = "Cambria") |> 
+  add_indent(ind.indent, level_of_indent = 1) |> # this line needs to be before any extra_css 
+  row_spec(1, extra_css = "border-top: 2px solid;") |> 
+  column_spec(2:4, width = ".9cm") |> 
+  column_spec(6, bold = col.bold == "total_er") |> 
+  column_spec(7, bold = col.bold == "sus_er") |> 
+  column_spec(8, bold = col.bold == "pt_sus_er") |> 
+  column_spec(c(1, 4, 8), extra_css = "border-right: 2px solid;") |> 
+  column_spec(c(1), extra_css = "border-left: 2px solid;") |> 
+  row_spec(c(3, 7, 8, 13, 16, 19, 20:(nrow(dat.overview)-2)), extra_css = "border-bottom: 1px solid") |> 
+  row_spec(c(9, nrow(dat.overview)-1), extra_css = "border-bottom: 2px solid;")
+
+
+```
+
+
+# Stock exploitation rates by fishery
 
 ```{r}
 render_child <- function(cur.stock) {
   res = knitr::knit_child(
-   text = xfun::read_utf8("tamm-visualizer-child.qmd"),
-   envir = rlang::env(cur.stock = cur.stock, dat = dat, dat.overview = dat.overview),
-   quiet = TRUE
+    text = xfun::read_utf8("tamm-visualizer-child.qmd"),
+    envir = rlang::env(cur.stock = cur.stock, dat = dat, dat.overview = dat.overview),
+    quiet = TRUE
   )
   cat(res, sep = '\n')
   cat("\n")
