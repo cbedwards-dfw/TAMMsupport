@@ -189,9 +189,9 @@ kbl(dat.overview, format = "html",
 ```
 
 
-# Stock exploitation rates by fishery
+# Unmarked Natural Stock exploitation rates by fishery
 
-Summarizes the `LimitingStkComplete mod` worksheet in the TAMM, filtering to just Washington fisheries. 
+Summarizes the Unmarked Natural section of the `LimitingStkComplete mod` worksheet in the TAMM, filtering to just Washington fisheries. 
 
 ```{r}
 render_child <- function(cur.stock) {
