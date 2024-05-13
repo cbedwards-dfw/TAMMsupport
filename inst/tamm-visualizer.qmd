@@ -24,6 +24,7 @@ library("readxl")
 library(here)
 library(framrsquared)
 library(kableExtra)
+library(TAMMsupport)
 tamm.path = params$tamm.path
 tamm.name = params$tamm.name
 tamm.full = paste0(tamm.path, "/", tamm.name)
@@ -88,7 +89,7 @@ if(attr(dat, "species") == "UNCLEAR"){cli::cli_alert_warning("Species is not cle
 
 ## filter to washington naturals, ditch AEQs
 dat = dat |>
-  framrsquared::filter_wa() |>
+  TAMMsupport::filter_tamm_wa() |>
   filter(stock_type == "UM_N") |>
   select(1:4, ends_with("_er")) |>
   rename_at(.vars = vars(ends_with("_er")),
@@ -190,6 +191,8 @@ kbl(dat.overview, format = "html",
 
 # Stock exploitation rates by fishery
 
+Summarizes the `LimitingStkComplete mod` worksheet in the TAMM, filtering to just Washington fisheries. 
+
 ```{r}
 render_child <- function(cur.stock) {
   res = knitr::knit_child(
@@ -201,8 +204,6 @@ render_child <- function(cur.stock) {
   cat("\n")
 }
 ```
-
-Dev note: would be nice to include total ER from main tab
 
 ::: panel-tabset
 ```{r}

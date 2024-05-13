@@ -12,8 +12,9 @@ RoxygenNote: 7.3.1
 Imports: 
     cli,
     dplyr,
-    framrsquared,
     here,
     kableExtra,
     quarto,
     readxl,
+    rlang,
+    rmarkdown
