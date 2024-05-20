@@ -34,50 +34,12 @@ tamm.full = paste0(tamm.path, "/", tamm.name)
 
 ## Functions
 
-```{r, message = FALSE, warning = FALSE}
-#read in the LimitingStkComplete rows for UM Hatchery, UM Natural, M Hatchery and M Natural
-#Note: the headings are being relabeled to use time period instead of month range (dropping dashes)
-#And adding "aeq" and "er" to distinguish mortality numbers in AEQ vs exploitation rates
-
-read_lsc <- function(filename, colnm = lsc_cols_stocks){
-  bind_rows(
-    read_excel(filename, range = "LimitingStkComplete mod!J163:DL234", col_names = colnm) |> mutate(stock_type = "UM_H"),
-    read_excel(filename, range = "LimitingStkComplete mod!J242:DL313", col_names = colnm) |> mutate(stock_type = "UM_N"),
-    read_excel(filename, range = "LimitingStkComplete mod!J321:DL392", col_names = colnm) |> mutate(stock_type = "M_H"),
-    read_excel(filename, range = "LimitingStkComplete mod!J400:DL471", col_names = colnm) |> mutate(stock_type = "M_N")
-  ) |> 
-    mutate(
-      fish_type = case_when(
-        FisheryID %in% c(as.character(1:12), "13-15") ~ "Northern",
-        FisheryID %in% as.character(30:35) ~ "Southern",
-        FisheryID %in% as.character(c(16,18:20,22:23,25:29)) ~ "NT Ocean/ColR",
-        FisheryID %in% as.character(c(36,42,45,48,53,54,56,57,60,62,64,67)) ~ "NT PS Spt",
-        FisheryID %in% as.character(c(37,39,43,46,49,51,58,65,68,70)) ~ "NT PS Net",
-        FisheryID %in% as.character(c(17,21,24,38,40,41,44,47,50,52,55,59,61,63,66,69,71)) ~ "TR Mar",
-        FisheryID == "72" ~ "NT FW",
-        FisheryID == "73" ~ "TR FW",
-        FisheryID == "74" ~ "Escapement")
-    ) |> 
-    select(stock_type, fish_type, FisheryID, Fishery, everything())
-}
-
-```
-
 # `r tamm.name`
 
 ## Processing TAMM
 
 ```{r limiting stock tab, message=FALSE}
-
-## ID all the stock names
-lsc_cols_stocks <- c("Fishery", "FisheryID",
-                     tamm.full  |>  
-                       read_excel(range = "LimitingStkComplete mod!L3:DL3", col_names = F) |>
-                       unlist() |> na.omit() |> unique() |> rep(each = 7) |> 
-                       paste(rep(c("t2_aeq", "t3_aeq", "t4_aeq", "t2_er", "t3_er", "t4_er", "yr_er"), 15), sep = "_")
-)
-
-dat = read_lsc(tamm.full, lsc_cols_stocks) |>
+dat = TAMMsupport::read_limiting_stock(tamm.full) |>
   rename(fishery_id = FisheryID)
 ## figure out if this is a coho or chinook, add as attribute so we can used FRAMR^2 filters
 run.num = read_excel(tamm.full, range = "1!B2", col_names = FALSE)
@@ -101,91 +63,15 @@ dat <-  dat |>
                names_sep ="_")
 ```
 
-```{r overview tab}
-read_eresc <- function(path){
-  s <- read_excel(path, range = "ER_ESC_Overview_New!A2:H34",
-                  .name_repair = janitor::make_clean_names) |>
-    filter(!grepl("Spring/Early:|Summer/Fall:", stock)) 
-  s[1,1] <- "NOOKSACK SPRING"
-  s[2,1] <- "NF NOOKSACK SPRING"
-  s[3,1] <- "SF NOOKSACK SPRING"
-  s[4,1] <- "SKAGIT SPRING"
-  s[10,1] <- "SKAGIT S/F"
-  s[14,1] <- "STILLAGUAMISH"
-  s[15,1] <- "STILLAGUAMISH UM"
-  s[16,1] <- "STILLAGUAMISH M"
-  s[17,1] <- "SNOHOMISH"
-  s[20,1] <- "LAKE WASHINGTON"
-  s[22,1] <- "GREEN"
-  s[24,1] <- "PUYALLUP"
-  s[26,1] <- "HOKO"
-  s[30,1] <- "SKOKOMISH"
-  return(s)
-}
-
-```
 
 # Summary table
 
 ```{r}
-dat.overview = read_eresc(tamm.full)
-
-#Doing some formatting to make pretty / fit on page
-quick_er_format <-  function(x){
-  #we know the following will give warnings. That's the point.
-  suppressWarnings({can.numeric = !is.na(as.numeric(x))})
-  x[can.numeric] = paste0(round(as.numeric(x[can.numeric]), 4)*100, "%")
-  return(x)
-}
-dat.overview <- dat.overview |> 
-  mutate(er_ceiling = quick_er_format(er_ceiling),
-         escapement = round(escapement, 1),
-         total_er = quick_er_format(total_er),
-         sus_er = quick_er_format(sus_er),
-         pt_sus_er = quick_er_format(pt_sus_er)
-  )
-## bold appropriate data
-dat.overview <- dat.overview |> 
-  mutate(col.bold = case_when(
-    er_type == "PT-SUS" ~ "pt_sus_er",
-    grepl("SUS$", er_type) ~ "sus_er",
-    er_type == "Total" ~ "total_er"
-  ))
-
-dat.overview = as.data.frame(lapply(dat.overview, function(x){x[is.na(x)] = "";
-return(x)}))
-
-col.bold = dat.overview$col.bold
-dat.overview <- dat.overview |> 
-  dplyr::select(-col.bold)
-
-## handling stock labels: want indentations
-vec.indent = c("NF NOOKSACK SPRING", "SF NOOKSACK SPRING", "Upper Sauk", "Upper Cascade",
-               "Suiattle", "Upper Skagit", "Sauk", "Lower Skagit", "STILLAGUAMISH UM", "STILLAGUAMISH M",
-               "Skykomish", "Snoqualmie")
-ind.indent = which(dat.overview$stock %in% vec.indent)
-# dat.overview$stock[dat.overview$stock %in% vec.indent] <- 
-#   paste0("____",dat.overview$stock[dat.overview$stock %in% vec.indent])
-```
-
-
-```{r}
-kbl(dat.overview, format = "html",
-    align = c("l", "c", "r", "c", "r", "r", "r", "r"),
-    col.names = c("Stock", "Abund. Tier", "ER Ceiling", "ER Type", "Escape.", "Total ER", "SUS ER", "PT-SUS ER")) |> 
-  kable_classic(full_width = F, html_font = "Cambria") |> 
-  add_indent(ind.indent, level_of_indent = 1) |> # this line needs to be before any extra_css 
-  row_spec(1, extra_css = "border-top: 2px solid;") |> 
-  column_spec(2:4, width = ".9cm") |> 
-  column_spec(6, bold = col.bold == "total_er") |> 
-  column_spec(7, bold = col.bold == "sus_er") |> 
-  column_spec(8, bold = col.bold == "pt_sus_er") |> 
-  column_spec(c(1, 4, 8), extra_css = "border-right: 2px solid;") |> 
-  column_spec(c(1), extra_css = "border-left: 2px solid;") |> 
-  row_spec(c(3, 7, 8, 13, 16, 19, 20:(nrow(dat.overview)-2)), extra_css = "border-bottom: 1px solid") |> 
-  row_spec(c(9, nrow(dat.overview)-1), extra_css = "border-bottom: 2px solid;")
-
-
+dat.overview = TAMMsupport::read_overview(tamm.full)
+overview.form = TAMMsupport::format_overview(dat.overview)
+TAMMsupport::kable_overview(dat.overview = overview.form$dat.overview,
+                            ind.indent = overview.form$ind.indent,
+                            col.bold = overview.form$col.bold)
 ```
 
 

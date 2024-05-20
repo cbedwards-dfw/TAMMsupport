@@ -1,0 +1,125 @@
+---
+title: "Comparing Limiting Stock complete mods"
+date: today
+execute: 
+  warning: false
+message: false
+format: 
+  html:
+    fig-width: 10
+code-fold: true
+toc: true
+embed-resources: true
+editor: visual
+params:
+  tamm.path: "C:/Users/edwc1477/OneDrive - Washington State Executive Branch Agencies/Documents/WDFW FRAM team work/NOF material/NOF 2024/FRAM"
+  tamm.name1: "Chin1024.xlsx"
+  tamm.name2: "Chin1124.xlsx"
+  tamm.name3: "Chin1224.xlsx"
+---
+
+*Report generated programmatically using the `TAMMsupport` package*
+
+```{r}
+library(tidyverse)
+library("readxl")
+library(here)
+library(framrsquared)
+library(kableExtra)
+library(TAMMsupport)
+tamm.path = params$tamm.path
+tamm.name1 = params$tamm.name1
+tamm.name2 = params$tamm.name2
+tamm.name3 = params$tamm.name3
+tamm.full1 = paste0(tamm.path, "/", tamm.name1)
+tamm.full2 = paste0(tamm.path, "/", tamm.name2)
+tamm.full3 = paste0(tamm.path, "/", tamm.name3)
+
+```
+
+
+# Comparing `r paste0(tamm.name1, ", ", tamm.name2, ", and ", tamm.name3)`
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+
+```
+
+
+## Processing TAMM
+
+```{r limiting stock tab, message=FALSE}
+
+## ID all the stock names
+dat1 = TAMMsupport::clean_limiting_stock(tamm.full1)
+dat2 = TAMMsupport::clean_limiting_stock(tamm.full2)
+dat3 = TAMMsupport::clean_limiting_stock(tamm.full3)
+
+```
+
+
+# Summary tables
+
+::: {.panel-tabset}
+
+## `r tamm.name1`
+
+```{r}
+path.cur = tamm.full1
+dat.overview = TAMMsupport::read_overview(path.cur)
+overview.form = TAMMsupport::format_overview(dat.overview)
+TAMMsupport::kable_overview(dat.overview = overview.form$dat.overview,
+                            ind.indent = overview.form$ind.indent,
+                            col.bold = overview.form$col.bold)
+```
+
+
+## `r tamm.name2`
+
+```{r}
+path.cur = tamm.full2
+dat.overview = TAMMsupport::read_overview(path.cur)
+overview.form = TAMMsupport::format_overview(dat.overview)
+TAMMsupport::kable_overview(dat.overview = overview.form$dat.overview,
+                            ind.indent = overview.form$ind.indent,
+                            col.bold = overview.form$col.bold)
+```
+
+
+
+## `r tamm.name3`
+
+```{r}
+path.cur = tamm.full3
+dat.overview = TAMMsupport::read_overview(path.cur)
+overview.form = TAMMsupport::format_overview(dat.overview)
+TAMMsupport::kable_overview(dat.overview = overview.form$dat.overview,
+                            ind.indent = overview.form$ind.indent,
+                            col.bold = overview.form$col.bold)
+```
+
+:::
+
+
+# Compare exploitation
+
+```{r}
+render_child <- function(cur.stock) {
+  res = knitr::knit_child(
+    text = xfun::read_utf8("tamm-compare3-child.qmd"),
+    envir = rlang::env(cur.stock = cur.stock, dat1 = dat1, dat2 = dat2, dat3 = dat3),
+    quiet = TRUE
+  )
+  cat(res, sep = '\n')
+  cat("\n")
+}
+```
+
+
+```{r}
+#| results: 'asis'
+#| echo: false
+purrr::walk(unique(dat1$stock), render_child)
+
+```

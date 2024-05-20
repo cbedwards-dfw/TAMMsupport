@@ -13,8 +13,11 @@ Imports:
     cli,
     dplyr,
     here,
+    janitor,
     kableExtra,
     quarto,
     readxl,
     rlang,
-    rmarkdown
+    rmarkdown,
+    stats,
+    tidyr
