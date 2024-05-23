@@ -28,3 +28,12 @@ fun_rounder = function(x, digits){
   x[ind] = round(as.numeric(x[ind]), digits)
   return(x)
 }
+
+
+chunk_formater_percenter = function(){
+  ## take multiple chunks in excel cell address format
+  ## For each, takes the subset, and applies the same procedure as fun_percenter
+}
+chunk_formater_rounder = function(){
+  ## as above, but just rounds numerics
+}

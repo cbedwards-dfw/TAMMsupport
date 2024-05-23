@@ -71,6 +71,21 @@ setwd(cur.wd)
 
 Currently `tamm_diff()` only works when comparing Chinook TAMM files. In the future we could extend this to also work for Coho TAMM files.
 
+## Working with limiting stock sheet
+
+`read_limiting_stock()` reads in the limiting stock sheet of a TAMM file and applies some minimal formatting and filtering (notably, combining into a single table with variable `stock_type` to distingish hatchery and natural, unmarked and natural; giving categorization of fisheries).
+
+`clean_limiting_stock()` does everything read_limiting stock does, but then filters to unmarked naturals, filters out AEQ entries, and provides the results in a long-form table that is ready for plotting or analysis of exploitation rates.
+
+`filter_tamm_wa` filters a limiting stock dataframe (e.g. the output of `read_limiting_stock or` `clean_limiting_stock`) to just Washington fisheries. This function can be included in a pipe, as in 
+
+```r
+clean_limiting_stock("Chin1224.xlsx") |> 
+filter_tamm_wa() |> 
+ggplot(STUFF)
+```
+
+
 ## Tools in development
 
 These tools are still in development/prototyping stages, but are functional. 
