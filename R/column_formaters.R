@@ -30,10 +30,40 @@ fun_rounder = function(x, digits){
 }
 
 
-chunk_formater_percenter = function(){
-  ## take multiple chunks in excel cell address format
-  ## For each, takes the subset, and applies the same procedure as fun_percenter
+#' Format chunks of dataframe to present as %s, round digits
+#'
+#' @param df dataframe of sheet to apply formatting to.
+#' @param block.ranges vector of characters specifying blocks of cells (in excel nomenclature) to format as %s
+#' @param percent.digits Decimal place to round to in percent
+#'
+#' @return Formatted version of `df`
+#'
+chunk_formater_percenter = function(df, block.ranges, percent.digits = 1){
+  df = as.matrix(df)
+  cells.ls = do.call(rbind, lapply(block.ranges, xldiff::cell_range_translate))
+  ind = suppressWarnings(!is.na(as.numeric(df[as.matrix(cells.ls)])))
+  df[as.matrix(cells.ls)[ind,]] =
+    paste0(round(as.numeric(df[as.matrix(cells.ls[ind,])])*100,
+                 percent.digits),"%")
+  df = tibble::as_tibble(df)
+  return(df)
 }
-chunk_formater_rounder = function(){
-  ## as above, but just rounds numerics
+
+#' Format chunks of dataframe to round digits
+#'
+#' @inheritParams chunk_formater_percenter
+#' @param digits Decimal place to round to.
+#' @return Formatted version of `df`
+
+chunk_formater_rounder = function(df, block.ranges, digits = 1){
+  ## as above, but just rounds numbers
+  ## df = as.matrix(df)
+  cells.ls = do.call(rbind, lapply(block.ranges, xldiff::cell_range_translate))
+  ind = suppressWarnings(!is.na(as.numeric(df[as.matrix(cells.ls)])))
+  df[as.matrix(cells.ls)[ind,]] =
+    round(as.numeric(df[as.matrix(cells.ls[ind,])]),
+                 digits)
+  df = tibble::as_tibble(df)
+  return(df)
 }
+

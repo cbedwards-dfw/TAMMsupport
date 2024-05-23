@@ -21,6 +21,7 @@ Imports:
     rlang,
     rmarkdown,
     stats,
+    tibble,
     tidyr,
     xldiff
 Remotes: cbedwards-dfw/xldiff

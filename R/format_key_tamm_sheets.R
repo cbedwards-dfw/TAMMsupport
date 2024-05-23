@@ -25,7 +25,7 @@ format_key_tamm_sheets = function(dat, percent.digits = 1, #decimal digits to tr
   dat$limiting[-(rows.unders), cols.perc] = apply(dat$limiting[-(rows.unders), cols.perc], 2, fun_percenter, percent.digits = percent.digits)
 
   ## inputs tab!!
-
+  dat$input = chunk_formater_percenter(dat$input, block.ranges = c("D14:F16", "B20:B26"))
 
   return(dat)
 }
