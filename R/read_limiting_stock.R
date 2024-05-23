@@ -3,6 +3,7 @@
 #' Reads in the table, adds fishery type information.
 #'
 #' @param filename Tamm name (and path)
+#' @importFrom rlang .data
 #'
 #' @return data frame summarizing the TAMM limiting stock tab.
 #' @export
@@ -43,7 +44,7 @@ read_limiting_stock <- function(filename){
 #' added in. Filters to unmarked naturals, ER values
 #'
 #' @param filename Name (and path) for TAMM files
-#'
+#' @importFrom rlang .data
 #' @return dataframe
 #' @export
 #'
@@ -58,7 +59,7 @@ clean_limiting_stock = function(filename){
 
   dat = dat |>
     dplyr::rename(fishery_id = "FisheryID") |>
-    dplyr::filter(stock_type == "UM_N") |>
+    dplyr::filter(.data$stock_type == "UM_N") |>
     dplyr::select(1:4, dplyr::ends_with("_er")) |>
     dplyr::rename_at(.vars = dplyr::vars(dplyr::ends_with("_er")),
                      .funs = ~ gsub("_er$", "", .x)) |>

@@ -12,12 +12,15 @@ RoxygenNote: 7.3.1
 Imports: 
     cli,
     dplyr,
-    here,
     janitor,
     kableExtra,
+    openxlsx,
+    purrr,
     quarto,
     readxl,
     rlang,
     rmarkdown,
     stats,
-    tidyr
+    tidyr,
+    xldiff
+Remotes: cbedwards-dfw/xldiff

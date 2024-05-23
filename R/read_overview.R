@@ -3,6 +3,7 @@
 #' Read overview sheet from TAMM
 #'
 #' @param path filename (including path) to TAMM
+#' @importFrom rlang .data
 #'
 #' @return dataframe
 #' @export
@@ -10,7 +11,7 @@
 read_overview <- function(path){
   s <- readxl::read_excel(path, range = "ER_ESC_Overview_New!A2:H34",
                   .name_repair = janitor::make_clean_names) |>
-    dplyr::filter(!grepl("Spring/Early:|Summer/Fall:", stock))
+    dplyr::filter(!grepl("Spring/Early:|Summer/Fall:", .data$stock))
   s[1,1] <- "NOOKSACK SPRING"
   s[2,1] <- "NF NOOKSACK SPRING"
   s[3,1] <- "SF NOOKSACK SPRING"

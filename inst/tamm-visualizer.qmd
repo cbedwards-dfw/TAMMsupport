@@ -31,7 +31,6 @@ tamm.full = paste0(tamm.path, "/", tamm.name)
 
 ```
 
-
 ## Functions
 
 # `r tamm.name`
@@ -63,7 +62,6 @@ dat <-  dat |>
                names_sep ="_")
 ```
 
-
 # Summary table
 
 ```{r}
@@ -74,10 +72,9 @@ TAMMsupport::kable_overview(dat.overview = overview.form$dat.overview,
                             col.bold = overview.form$col.bold)
 ```
 
-
 # Unmarked Natural Stock exploitation rates by fishery
 
-Summarizes the Unmarked Natural section of the `LimitingStkComplete mod` worksheet in the TAMM, filtering to just Washington fisheries. 
+Summarizes the Unmarked Natural section of the `LimitingStkComplete mod` worksheet in the TAMM, filtering to just Washington fisheries.
 
 ```{r}
 render_child <- function(cur.stock) {
@@ -99,3 +96,4 @@ purrr::walk(unique(dat$stock), render_child)
 
 ```
 :::
+

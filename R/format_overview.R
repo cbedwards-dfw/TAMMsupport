@@ -4,6 +4,7 @@
 #'
 #' @param dat.overview dataframe of TAMM overview page, as produced by read_overview()
 #'
+#' @importFrom rlang .data
 #' @return list with the formatted data, a vector of indent information, and a vector of bolding information.
 #' @export
 #'

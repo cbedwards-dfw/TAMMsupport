@@ -35,22 +35,64 @@ or
 pak::pkg_install("cbedwards-dfw/TAMMsupport")
 ```
 
-## Quick guide
+`TAMMsupport` depends on the `xldiff` package (which contains tools for comparing excel files using R). 
 
-At present, the only function is `tamm_report()`. When provided a tamm file name and the path to the directory (defaults to using the current working directory), this generates an html report summarizing key aspects of the TAMM. The report is given the same name as the TAMM with the suffix "-Visualization". 
+You can install the development version of `xldiff` like so:
+
+```r
+devtools::install_github("cbedwards-dfw/xldiff)  
+```
+
+
+Or
+
+```r
+pak::pkg_install("cbedwards-dfw/xldiff")
+```
+
+
+## `tamm_diff()`
+
+`tamm_diff()` facilitates comparing the outputs and inputs of two tamm files by identifying changes in cell values in the overview, limiting stock complete, and input sheets. `tamm_diff` then creates a "diff" excel file that contains the contents of those three sheets, highlighting the changed cells. The formatting of the diff file broadly reflects that of the Chinook TAMM, but with simpler border and highlighting choices.
+
+`tamm_diff()` takes three arguments: the names of the first TAMM file, the second tamm file, and the name to give the resulting file (in all cases, the name should include filepath, if relevant). All three filenames should end in ".xlsx". The following is an example use
+
+```r
+cur.wd = getwd()
+setwd("C:/Users/edwc1477/OneDrive - Washington State Executive Branch Agencies/Documents/WDFW FRAM team work/NOF material/NOF 2024")
+
+tamm_diff(filename.1 = "FRAM/Chin1124.xlsx",
+          filename.2 = "NOF 2/Chin2524.xlsx",
+          results.name = "comparison of Chin 1124 vs 2524.xlsx"
+)
+
+setwd(cur.wd)
+```
+
+Currently `tamm_diff()` only works when comparing Chinook TAMM files. In the future we could extend this to also work for Coho TAMM files.
+
+## Tools in development
+
+These tools are still in development/prototyping stages, but are functional. 
+
+### `tamm_report()`
+
+`tamm_report()` summarizes key aspects of a single Chinook TAMM file in an html report, which is generated in the same folder as the summarized TAMM.
 
 Under the hood, tamm_report() uses a template parameterized quarto report and a child quarto file to help automate the creation of tabs for each stock. To see the underlying 
 quarto files used (e.g., to suggest additional edits or features), set argument `clean = FALSE` when calling `tamm_report()`. This will prevent the deletion of `tamm-visualizer.qmd` and `tamm-visualizer-child.qmd`, which will be present in the same folder as the TAMM and report. 
 
+Future goals include
+
+- workshopping and adding additional summary information based on user needs
+- modifying the .qmd and function to include optional additional user-provided child .qmd documents,
+so that individual entities (wdfw, tribes, etc) can systematically include additional visualizations or summaries that may not be relevant to other entities.
 
 
+### `tamm_compare3()`
 
-## Devnotes to self
+`tamm_compare3()` uses the same general approach as `tamm_report()`, but creates a report to compare three TAMM files based off of Yi Xu's Rmarkdown report to compare exploitation rates for three ocean options.
 
+Future goals include
 
-Still in the process of transfering experimental functions from NOF 2024 project.
-Files to look at:
-
-- tamm-compare-functionalized.R
-- excel-compare-sandbox.R
-
+- generalizing to compare N TAMM files (e.g., make sure it works if we only have 2 ocean options, or end up with four).
