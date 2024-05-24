@@ -2,7 +2,7 @@
 % Please edit documentation in R/tamm_diff.R
 \name{tamm_diff}
 \alias{tamm_diff}
-\title{Compare key sheets of Chinook TAMM files}
+\title{Compare key sheets of TAMM files}
 \usage{
 tamm_diff(
   filename.1,
@@ -27,7 +27,24 @@ tamm_diff(
 \item{numeric.digits.small}{Number of decimals to round numbers to before comparing. Applied to cells which expect to be small decimals. Defaults to 4.}
 }
 \description{
-Compare key sheets of Chinook TAMM files
+Compare key sheets of TAMM files
+}
+\details{
+If TAMM formatting is changes (e.g. the addition of rows, etc), make changes in the following areas:
+\itemize{
+\item \code{read_key_tamm_sheets_SPECIES()}: The \code{range} argument in each \code{read_excel} call should change to match the new dimensions of each sheet.
+\item \code{format_key_tamm_sheets_SPECIES()}: These functions designate groups of cells to be
+Depending on the sheets that change, any amount of the content here may need to change. In the case of
+the inputs tab section, the cell ranges can be reported directly. Remember that we are separately designating cells which should be rounded to the nearest
+\code{numeric.digits} (generally measures of fish) and those that should be rounded to the nearest \code{numeric.digits.small} (generall proportions and rates; typically
+values that are less than 1.). Note that the earlier code was written before the more flexible \code{chunk_formater_percenter} and \code{chunk_formater_rounder} had been developed.
+If rewriting, lean into those tools, as they will streamline designating regions of cells for the various rounding criterion.
+\item \code{tamm_format_SHEETNAME()} (for the sheet formatting functions relevant to that species): each individual
+sheet has custom formatting to generally match the corresponding TAMM sheets. If the locations of cells move,
+the changes to font size, addition of borders, etc, will also need to move. Note that \code{tamm_format_limiting} and \code{tamm_format_overview} were written
+before the development of the more flexible \code{add_cell_borders}, or the combined use of \code{purrr::map} and \code{cell_range_translate}. Look to \code{tamm_format_input}
+for relatively inputting of formatting. Consider developing other helper functions as needed (esp for merging).
+}
 }
 \examples{
 \dontrun{

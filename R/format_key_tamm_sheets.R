@@ -1,4 +1,4 @@
-#' Modify list of TAMM spreadsheet dataframes to facilitate comparison.
+#' Modify list of Chinook TAMM spreadsheet dataframes to facilitate comparison.
 #'
 #' @param dat list of dataframes corresponding to the overview, limiting stock, and inputs tabs. Must be named `$overview`, `$limiting`, and `$input`
 #' @param percent.digits Optional, number of decimal places to round percentages to before comparison. Defaults to 1.
@@ -7,7 +7,7 @@
 #'
 #' @return list of dataframes with same structure as `dat`, contents modified.
 #'
-format_key_tamm_sheets = function(dat, percent.digits = 1, #decimal digits to track/display for %s
+format_key_tamm_sheets_chin = function(dat, percent.digits = 1, #decimal digits to track/display for %s
                                   numeric.digits = 1,
                                   numeric.digits.small = 4){#if numeric vector, avoid percantage-ing those rows.
   ## overview tab
@@ -57,6 +57,20 @@ format_key_tamm_sheets = function(dat, percent.digits = 1, #decimal digits to tr
                                                                  "D251:F299", "L278:O278",
                                                                  "R267:R276", "D18", "D101:D117"),
                                      digits = numeric.digits.small)
+
+  return(dat)
+}
+
+
+#' Modify list of Coho TAMM spreadsheet dataframes to facilitate comparison.
+#'
+#' @inheritParams format_key_tamm_sheets_chin
+#'
+#' @return list of dataframes with same structure as `dat`, contents modified.
+#'
+format_key_tamm_sheets_coho = function(dat, percent.digits = 1, #decimal digits to track/display for %s
+                                       numeric.digits = 1,
+                                       numeric.digits.small = 4){#if numeric vector, avoid percantage-ing those rows.
 
   return(dat)
 }
