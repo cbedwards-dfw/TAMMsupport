@@ -18,12 +18,13 @@ I want to…
   `tamm_report()`.
 - compare two Chinook TAMM files to look for changes in inputs or
   results? Use `tamm_diff()`.
-- compare three Chinook TAMM files (e.g. 3 ocean options) to see how ER
-  varies by stock and fishery between the models? Use `tamm_compare3()`.
+- compare three Chinook TAMM files (e.g. three ocean options) to see how
+  ER varies by stock and fishery between the models? Use
+  `tamm_compare3()`.
 - extract the overview sheet info from a Chinook TAMM? Use
   `read_overview()` or `read_overview_complete()`.
 - extract the limiting stock complete sheet from a Chinook TAMM? Use
-  `read_limiting_stock()` or `clean_limiting_stock()`. Use
+  `read_limiting_stock()` or `clean_limiting_stock()`. If desired, use
   `filter_tamm_wa()` to then filter the results to just Washington
   fisheries.
 
@@ -82,6 +83,27 @@ tamm_diff(filename.1 = "FRAM/Chin1124.xlsx",
 
 setwd(cur.wd)
 ```
+
+By default, `tamm_diff()` rounds percents and numbers of fish to the
+nearest 0.1 (1 decimal place) before comparing, and rounds numbers that
+are expected to be longer decimanls (e.g. rates, proportions) to the
+nearest 0.0001 (4 decimal places). In some cases, we may want to solely
+focus on larger changes (e.g. changes in whole fish). The optional
+arguments `percent.digits`, `numeric.digits` and `numeric.digits.small`
+control the decimal place rounding for percents, numbers of fish, and
+numbers that are expected to be rates or proportions, respectively. To
+highlight only larger changes, we might use
+
+``` r
+tamm_diff(filename.1 = "FRAM/Chin1124.xlsx",
+          filename.2 = "NOF 2/Chin2524.xlsx",
+          results.name = "comparison of Chin 1124 vs 2524.xlsx",
+          percent.digits = 1, numeric.digits = 0, numeric.digits.small = 3
+)
+```
+
+Note that since we typically manage ER to the nearest 0.1%, it is
+unlikely that a percent.digits value of 0 would be useful.
 
 Currently `tamm_diff()` only works when comparing Chinook TAMM files. In
 the future we could extend this to also work for Coho TAMM files.

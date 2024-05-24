@@ -57,7 +57,7 @@ chunk_formater_percenter = function(df, block.ranges, percent.digits = 1){
 
 chunk_formater_rounder = function(df, block.ranges, digits = 1){
   ## as above, but just rounds numbers
-  ## df = as.matrix(df)
+  df = as.matrix(df)
   cells.ls = do.call(rbind, lapply(block.ranges, xldiff::cell_range_translate))
   ind = suppressWarnings(!is.na(as.numeric(df[as.matrix(cells.ls)])))
   df[as.matrix(cells.ls)[ind,]] =

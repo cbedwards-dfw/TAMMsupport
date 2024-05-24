@@ -3,6 +3,9 @@
 #' @param filename.1 name of first TAMM file to compare. Include file path if file is not in working directory.
 #' @param filename.2 name of second TAMM file to compare. Include file path if file is not in working directory.
 #' @param results.name name of output sheets. Include file path if save location is not in working directory.
+#' @param percent.digits Number of decimals to round percentages to before comparing. Defaults to 1.
+#' @param numeric.digits Number of decimals to round numbers to before comparing. Applied to cells which expect to be whole numbers (e.g. #s of fish). Defaults to 1.
+#' @param numeric.digits.small Number of decimals to round numbers to before comparing. Applied to cells which expect to be small decimals. Defaults to 4.
 #'
 #' @export
 #'
@@ -13,20 +16,23 @@
 #' results.name = here("Chin 1124 vs Chin 2524.xlsx")
 #' )
 #' }
-tamm_diff = function(filename.1, filename.2, results.name){
+tamm_diff = function(filename.1, filename.2, results.name, percent.digits = 1, numeric.digits = 1,
+                     numeric.digits.small = 4){
   if(!all(grepl(".xlsx$", c(filename.1, filename.2, results.name)))){
     cli::cli_abort("`filename.1`, `filename.2`, and `results.name` must end in \".xlsx\".")
   }
   ## Note: working with all the sheets was really time consuming. Working with just the 3
   ## key sheets seems to take more like a couple minutes.
   f1 = read_key_tamm_sheets(filename.1)
-  f1 = format_key_tamm_sheets(f1)
+  f1 = format_key_tamm_sheets(f1, percent.digits = percent.digits, numeric.digits = numeric.digits,
+                              numeric.digits.small = numeric.digits.small)
   f2 = read_key_tamm_sheets(filename.2)
-  f2 = format_key_tamm_sheets(f2)
+  f2 = format_key_tamm_sheets(f2, percent.digits = percent.digits, numeric.digits = numeric.digits,
+                              numeric.digits.small = numeric.digits.small)
 
   out = list()
   for(i in 1:length(f1)){
-    out[[i]] = xldiff::sheet_comp(f1[[i]], f2[[i]])
+    out[[i]] = xldiff::sheet_comp(f1[[i]], f2[[i]], digits.signif = 10)
   }
   names(out) = names(f1)
 

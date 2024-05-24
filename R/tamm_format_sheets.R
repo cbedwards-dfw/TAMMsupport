@@ -393,5 +393,15 @@ tamm_format_input = function(wb, tabname = "input"){
                   border.thickness = "medium",
                   every.cell = FALSE
   )
-
+  ## add black to some cells
+  cells.blackout = do.call(rbind,
+                           purrr::map(c("D102", "B159:B160", "B226", "G226:H226",
+                                        "B238", "G238:H238", "B255", "G255:H255",
+                                        "B262", "G262:H262"
+                           ),
+                           .f = xldiff::cell_range_translate))
+  openxlsx::addStyle(wb, sheet = tabname, style = openxlsx::createStyle(fgFill = "black"),
+                     rows = cells.blackout$row,
+                     cols = cells.blackout$col,
+                     stack = TRUE, gridExpand = FALSE)
 }
