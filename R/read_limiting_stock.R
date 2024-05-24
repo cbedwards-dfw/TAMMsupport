@@ -35,6 +35,7 @@ read_limiting_stock <- function(filename){
         FisheryID == "74" ~ "Escapement")
     ) |>
     dplyr::select(.data$stock_type, .data$fish_type, .data$FisheryID, .data$Fishery, dplyr::everything())
+  res
 }
 
 
