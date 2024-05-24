@@ -2,16 +2,16 @@
 % Please edit documentation in R/read_overview.R
 \name{read_overview}
 \alias{read_overview}
-\title{Read overview sheet from TAMM}
+\title{Read overview sheet from TAMM and return key stock}
 \usage{
 read_overview(path)
 }
 \arguments{
-\item{path}{filename (including path) to TAMM}
+\item{path}{filename (including path) to Chinook TAMM}
 }
 \value{
 dataframe
 }
 \description{
-Read overview sheet from TAMM
+Read overview sheet from TAMM and return key stock
 }

@@ -42,7 +42,7 @@ read_limiting_stock <- function(filename){
 #' Generates clean read of TAMM limiting stock sheet
 #'
 #' Effectively a wrapper function for read_limiting_stock with some formatting
-#' added in. Filters to unmarked naturals, ER values
+#' added in. Filters to unmarked naturals, just present ER values.
 #'
 #' @param filename Name (and path) for TAMM files
 #' @importFrom rlang .data

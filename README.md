@@ -10,6 +10,23 @@ The goal of TAMMsupport is to provide R-based tools for working with and
 interpreting Terminal Area Management Module files
 (<https://framverse.github.io/fram_doc/calcs_glossary.html#Terminal_Area_Management_Module_(TAMM)>).
 
+## Cheatsheet
+
+I want to…
+
+- Summarize and visualize key aspects of a Chinook TAMM? Use
+  `tamm_report()`.
+- compare two Chinook TAMM files to look for changes in inputs or
+  results? Use `tamm_diff()`.
+- compare three Chinook TAMM files (e.g. 3 ocean options) to see how ER
+  varies by stock and fishery between the models? Use `tamm_compare3()`.
+- extract the overview sheet info from a Chinook TAMM? Use
+  `read_overview()` or `read_overview_complete()`.
+- extract the limiting stock complete sheet from a Chinook TAMM? Use
+  `read_limiting_stock()` or `clean_limiting_stock()`. Use
+  `filter_tamm_wa()` to then filter the results to just Washington
+  fisheries.
+
 ## Installation
 
 You can install the development version of TAMMsupport like so:

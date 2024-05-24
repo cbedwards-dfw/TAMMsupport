@@ -14,5 +14,5 @@ dataframe
 }
 \description{
 Effectively a wrapper function for read_limiting_stock with some formatting
-added in. Filters to unmarked naturals, ER values
+added in. Filters to unmarked naturals, just present ER values.
 }
