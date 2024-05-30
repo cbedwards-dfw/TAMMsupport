@@ -33,7 +33,7 @@ I want to…
 You can install the development version of TAMMsupport like so:
 
 ``` r
-devtools::install_github("cbedwards-dfw/TAMMsupport)    
+devtools::install_github("cbedwards-dfw/TAMMsupport")    
 ```
 
 or
@@ -48,7 +48,7 @@ comparing excel files using R).
 You can install the development version of `xldiff` like so:
 
 ``` r
-devtools::install_github("cbedwards-dfw/xldiff)  
+devtools::install_github("cbedwards-dfw/xldiff")  
 ```
 
 Or

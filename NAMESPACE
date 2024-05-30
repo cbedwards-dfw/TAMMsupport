@@ -2,6 +2,7 @@
 
 export(clean_limiting_stock)
 export(filter_tamm_wa)
+export(fishery_renamer)
 export(format_overview)
 export(kable_overview)
 export(read_key_tamm_sheets_chin)

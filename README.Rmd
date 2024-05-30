@@ -36,7 +36,7 @@ I want to...
 You can install the development version of TAMMsupport like so:
 
 ``` r
-devtools::install_github("cbedwards-dfw/TAMMsupport)    
+devtools::install_github("cbedwards-dfw/TAMMsupport")    
 
 ```
 
@@ -51,7 +51,7 @@ pak::pkg_install("cbedwards-dfw/TAMMsupport")
 You can install the development version of `xldiff` like so:
 
 ```r
-devtools::install_github("cbedwards-dfw/xldiff)  
+devtools::install_github("cbedwards-dfw/xldiff")  
 ```
 
 

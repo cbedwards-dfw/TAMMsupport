@@ -35,13 +35,14 @@ read_limiting_stock <- function(filename, longform = FALSE){
         FisheryID == "73" ~ "TR FW",
         FisheryID == "74" ~ "Escapement")
     ) |>
-    dplyr::select(.data$stock_type, .data$fish_type, .data$FisheryID, .data$Fishery, dplyr::everything())
+    dplyr::select(.data$stock_type, .data$fish_type, .data$FisheryID, .data$Fishery, dplyr::everything()) |>
+    dplyr::mutate(fishery.cleaned = fishery_renamer(.data$Fishery), .after ="Fishery")
 
   if(longform){
     names(res) = gsub(" ", ".",names(res))
     names(res) = gsub("-", ".",names(res))
     res <- res  |>
-      tidyr::pivot_longer(cols = -(1:4), names_to = c("stock", "timestep", "metric"),
+      tidyr::pivot_longer(cols = -(1:5), names_to = c("stock", "timestep", "metric"),
                    names_sep = "_")
   }
   res
@@ -70,10 +71,10 @@ clean_limiting_stock = function(filename){
   dat = dat |>
     dplyr::rename(fishery_id = "FisheryID") |>
     dplyr::filter(.data$stock_type == "UM_N") |>
-    dplyr::select(1:4, dplyr::ends_with("_er")) |>
+    dplyr::select(1:5, dplyr::ends_with("_er")) |>
     dplyr::rename_at(.vars = dplyr::vars(dplyr::ends_with("_er")),
                      .funs = ~ gsub("_er$", "", .x)) |>
-    tidyr::pivot_longer(cols = -(1:4), names_to = c("stock", "timestep"),
+    tidyr::pivot_longer(cols = -(1:5), names_to = c("stock", "timestep"),
                         names_sep ="_")
   dat
 }
