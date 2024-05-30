@@ -4,10 +4,12 @@
 \alias{read_limiting_stock}
 \title{Read TAMM limiting stock complete tab}
 \usage{
-read_limiting_stock(filename)
+read_limiting_stock(filename, longform = FALSE)
 }
 \arguments{
 \item{filename}{Tamm name (and path)}
+
+\item{longform}{Should results be in long form (good for R stuff) (\code{TRUE}) or replicate the structure of the TAMM sheet (\code{FALSE}). Logical, defaults to \code{FALSE}.}
 }
 \value{
 data frame summarizing the TAMM limiting stock tab.

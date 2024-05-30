@@ -23,5 +23,6 @@ Imports:
     stats,
     tibble,
     tidyr,
+    utils,
     xldiff
 Remotes: cbedwards-dfw/xldiff

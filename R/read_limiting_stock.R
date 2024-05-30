@@ -3,12 +3,13 @@
 #' Reads in the table, adds fishery type information.
 #'
 #' @param filename Tamm name (and path)
+#' @param longform Should results be in long form (good for R stuff) (`TRUE`) or replicate the structure of the TAMM sheet (`FALSE`). Logical, defaults to `FALSE`.
 #' @importFrom rlang .data
 #'
 #' @return data frame summarizing the TAMM limiting stock tab.
 #' @export
 #'
-read_limiting_stock <- function(filename){
+read_limiting_stock <- function(filename, longform = FALSE){
   column.names <- c("Fishery", "FisheryID",
                     filename  |>
                       readxl::read_excel(range = "LimitingStkComplete mod!L3:DL3", col_names = F) |>
@@ -35,6 +36,14 @@ read_limiting_stock <- function(filename){
         FisheryID == "74" ~ "Escapement")
     ) |>
     dplyr::select(.data$stock_type, .data$fish_type, .data$FisheryID, .data$Fishery, dplyr::everything())
+
+  if(longform){
+    names(res) = gsub(" ", ".",names(res))
+    names(res) = gsub("-", ".",names(res))
+    res <- res  |>
+      tidyr::pivot_longer(cols = -(1:4), names_to = c("stock", "timestep", "metric"),
+                   names_sep = "_")
+  }
   res
 }
 

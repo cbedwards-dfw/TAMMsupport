@@ -28,7 +28,7 @@ library(TAMMsupport)
 tamm.path = params$tamm.path
 tamm.name = params$tamm.name
 tamm.full = paste0(tamm.path, "/", tamm.name)
-
+source("tamm-report-parameters-intermediate.R")
 ```
 
 ## Functions
@@ -37,7 +37,8 @@ tamm.full = paste0(tamm.path, "/", tamm.name)
 
 ## Processing TAMM
 
-```{r limiting stock tab, message=FALSE}
+```{r, message=FALSE}
+#| label: limiting stock tab
 dat = TAMMsupport::read_limiting_stock(tamm.full) |>
   rename(fishery_id = FisheryID)
 ## figure out if this is a coho or chinook, add as attribute so we can used FRAMR^2 filters
@@ -60,6 +61,9 @@ dat = dat |>
 dat <-  dat |>
   pivot_longer(cols = -(1:4), names_to = c("stock", "timestep"),
                names_sep ="_")
+
+## also store ALL data in case that's important for optional child .qmds
+dat.all = TAMMsupport::read_limiting_stock(tamm.full, longform = TRUE)
 ```
 
 # Summary table
@@ -96,4 +100,26 @@ purrr::walk(unique(dat$stock), render_child)
 
 ```
 :::
+
+
+```{r}
+render_additional_children <- function(cur.file) {
+  res = knitr::knit_child(
+    text = xfun::read_utf8(cur.file),
+    envir = rlang::env(dat = dat, dat.overview = dat.overview, dat.all = dat.all),
+    quiet = TRUE
+  )
+  cat(res, sep = '\n')
+  cat("\n")
+}
+```
+
+```{r, eval = !is.null(additional.children)}
+#| label: simple-addition
+#| results: 'asis'
+#| echo: false
+cat("# Additional content \n\n")
+purrr::walk(additional.children, render_additional_children)
+```
+
 
