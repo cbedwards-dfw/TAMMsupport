@@ -1,7 +1,8 @@
 #' Filters a dataframe to Washington State fisheries.
 #'
 #' Adapted from framrsquared::filter_wa(), but (a) only for Chinook (at present), and (b) uses TAMM fishery ids, so includes
-#' ids 72 and 73. Includes code for COHO based on FRAM ids.
+#' ids 72 and 73. Includes code for COHO based on FRAM ids. `filter_tamm_wa()` uses attributes to specify chinook or coho. To
+#' directly filter for chinook or coho, use `filter_tamm_wa_chin()` or `filter_tamm_wa_coho()`.
 #'
 #' a `fishery_id` column name.
 #' @param .data Dataframe generated within this package
@@ -18,18 +19,31 @@ filter_tamm_wa <- function(.data){
   }
 
   if(attr(.data, 'species') == 'CHINOOK'){
-    .data |>
-      dplyr::filter(
-        .data$fishery_id %in% c(16:73)
-      )
+    filter_tamm_wa_chin(.data)
   } else if(attr(.data, 'species') == 'COHO') {
     cli::cli_alert("COHO dataframe. Using *FRAM* fishery ids.")
-    .data |>
-      dplyr::filter(
-        .data$fishery_id %in% c(23:166)
-      )
+    filter_tamm_wa_coho(.data)
   } else {
     cli::cli_abort('Table metadata missing... Table not generated from this package?')
   }
+
+}
+
+#' @rdname filter_tamm_wa
+#' @export
+filter_tamm_wa_chin <- function(.data){
+  .data |>
+    dplyr::filter(
+      .data$fishery_id %in% c(16:73)
+    )
+}
+
+#' @rdname filter_tamm_wa
+#' @export
+filter_tamm_wa_coho <- function(.data){
+  .data |>
+    dplyr::filter(
+      .data$fishery_id %in% c(23:166)
+    )
 
 }

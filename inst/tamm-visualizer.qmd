@@ -22,7 +22,6 @@ params:
 library(tidyverse)
 library("readxl")
 library(here)
-library(framrsquared)
 library(kableExtra)
 library(TAMMsupport)
 tamm.path = params$tamm.path

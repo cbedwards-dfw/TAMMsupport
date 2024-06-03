@@ -5,13 +5,16 @@
 \alias{tamm_format_overview}
 \alias{tamm_format_limiting}
 \alias{tamm_format_input}
+\alias{tamm_format_wacoast}
 \title{Apply final formatting to diff'd TAMM sheets}
 \usage{
 tamm_format_overview(wb, diff.sheet, tabname = "overview")
 
 tamm_format_limiting(wb, tabname = "limiting")
 
-tamm_format_input(wb, tabname = "input")
+tamm_format_input(wb, tabname = "input", wrap.text = FALSE)
+
+tamm_format_wacoast(wb, tabname = "wacoast")
 }
 \arguments{
 \item{wb}{\code{openxlsx} workbook object containing \verb{$overview}, \code{limiting} and  \verb{$input} sheets with the contents of diffing two TAMM files.}
@@ -20,6 +23,8 @@ tamm_format_input(wb, tabname = "input")
 programmatically bold the appropriate ERs based on the management objective.}
 
 \item{tabname}{Name of sheet in the wb to be modified. Defaults to correct value.}
+
+\item{wrap.text}{Should specific cells with long content use text wrapping? Defaults to FALSE.}
 }
 \description{
 Functions that add formatting to broadly replicate the formatting of the TAMM sheets.

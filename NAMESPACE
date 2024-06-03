@@ -2,6 +2,8 @@
 
 export(clean_limiting_stock)
 export(filter_tamm_wa)
+export(filter_tamm_wa_chin)
+export(filter_tamm_wa_coho)
 export(fishery_renamer)
 export(format_overview)
 export(kable_overview)

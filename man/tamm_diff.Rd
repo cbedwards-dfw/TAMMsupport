@@ -10,7 +10,9 @@ tamm_diff(
   results.name,
   percent.digits = 1,
   numeric.digits = 1,
-  numeric.digits.small = 4
+  numeric.digits.small = 4,
+  dim.override = FALSE,
+  wrap.text = FALSE
 )
 }
 \arguments{
@@ -25,6 +27,10 @@ tamm_diff(
 \item{numeric.digits}{Number of decimals to round numbers to before comparing. Applied to cells which expect to be whole numbers (e.g. #s of fish). Defaults to 1.}
 
 \item{numeric.digits.small}{Number of decimals to round numbers to before comparing. Applied to cells which expect to be small decimals. Defaults to 4.}
+
+\item{dim.override}{Should we force comparisons even if one or more of the sheets don't have matching dimensions between the two files? Defaults to FALSE.}
+
+\item{wrap.text}{Should specific cells with long contents (e.g., input "Fishery Description" cells) use text wrapping? Defaults to FALSE}
 }
 \description{
 Compare key sheets of TAMM files

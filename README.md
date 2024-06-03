@@ -57,6 +57,13 @@ Or
 pak::pkg_install("cbedwards-dfw/xldiff")
 ```
 
+With `TAMMsupport` installed, we can use functions from it by including
+the library in our script, like so:
+
+``` r
+library(TAMMsupport)
+```
+
 ## `tamm_diff()`
 
 `tamm_diff()` facilitates comparing the outputs and inputs of two tamm
@@ -122,12 +129,21 @@ of exploitation rates.
 
 `filter_tamm_wa` filters a limiting stock dataframe (e.g. the output of
 `read_limiting_stock or` `clean_limiting_stock`) to just Washington
-fisheries. This function can be included in a pipe, as in
+fisheries. `filter_tamm_wa` looks for a `species` attribute in the
+dataframe (in line with This function can be included in a pipe,
+consistent with the filtering approaches in the `framrsquared package`.
+Unless you add that attribute to your data frame, it makes more sense to
+call `filter_tamm_wa_chin()` (for chinook TAMMs) or
+`filter_tamm_wa_coho()` (for Coho tamms)
 
 ``` r
+library(ggplot2)
+library(dplyr)
 clean_limiting_stock("Chin1224.xlsx") |> 
-filter_tamm_wa() |> 
-ggplot(STUFF)
+  filter_tamm_wa_chin() |> 
+  filter(timestep == "yr")
+  ggplot(aes(x = stock, y = er, fill = Fishery))+
+    geom_bar(position="stack", stat="identity")
 ```
 
 ## Tools in development

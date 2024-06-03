@@ -154,5 +154,5 @@ tamm_report <- function(tamm.name, tamm.path = getwd(),  clean = TRUE, overwrite
   }
   file.remove(paste0(tamm.path,"/tamm-report-parameters-intermediate.R"))
 
-  cli::cli_alert("Finished!")
+  cli::cli_alert(paste0("Finished!\nTAMM report is in ", tamm.path, ", with filename ", report.name,"."))
 }
