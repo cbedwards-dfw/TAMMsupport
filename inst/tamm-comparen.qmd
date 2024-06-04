@@ -1,0 +1,120 @@
+---
+title: "Comparing Limiting Stock complete mods"
+date: today
+execute: 
+  warning: false
+message: false
+format: 
+  html:
+    fig-width: 10
+code-fold: true
+toc: true
+embed-resources: true
+editor: visual
+params:
+  tamm.path: "C:/Users/edwc1477/OneDrive - Washington State Executive Branch Agencies/Documents/WDFW FRAM team work/NOF material/NOF 2024/FRAM"
+knitr:
+  opts_chunk: 
+    R.options: 
+      knitr.table.html.attr: "quarto-disable-processing=true"
+---
+
+*Report generated programmatically using the `TAMMsupport` package*
+
+```{r}
+library(tidyverse)
+library("readxl")
+library(here)
+library(framrsquared)
+library(kableExtra)
+library(TAMMsupport)
+tamm.path = params$tamm.path
+
+## read in `tamm.names`  and `fisheries` by sourcing our external parameter files
+source(paste0(tamm.path,"/tamm-compare-parameters-intermediate.R"))
+
+tamms.full = paste0(tamm.path, "/", tamm.names)
+
+## deal with fisheries -- the TAMM files read in includes fisheries "13-15", so all are characters
+fisheries.char = NULL
+if(!is.null(fisheries)){
+  fisheries.char = as.character(fisheries)
+  if(any(13:15 %in% fisheries)){
+    fisheries.char = c(fisheries.char, "13-15")
+  }
+}
+
+```
+
+# Comparing `r paste0(tamm.names, collapse = ", ")`
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+
+```
+
+## Processing TAMM
+
+```{r limiting stock tab, message=FALSE}
+
+## ID all the stock names
+dat.ls = list()
+for(i in 1:length(tamms.full)){
+  dat.ls[[i]] = TAMMsupport::clean_limiting_stock(tamms.full[i]) |> 
+    dplyr::mutate(tamm = tamm.names[i])
+  if(!is.null(fisheries)){
+    dat.ls[[i]] = dat.ls[[i]] |> 
+      dplyr::filter(fishery_id %in% fisheries.char)
+  }
+      
+}
+
+```
+
+# Summary tables
+
+::: panel-tabset
+```{r}
+render_child <- function(cur.tamm) {
+  res = knitr::knit_child(
+    text = xfun::read_utf8("tamm-comparen-child1.qmd"),
+    envir = rlang::env(cur.tamm = cur.tamm, tamm.path = tamm.path),
+    quiet = TRUE
+  )
+  cat(res, sep = '\n')
+  cat("\n")
+}
+```
+
+```{r}
+#| results: 'asis'
+#| echo: false
+purrr::walk(tamm.names, render_child)
+
+```
+:::
+
+# Compare exploitation
+
+::: panel-tabset
+
+```{r}
+render_child <- function(cur.stock) {
+  res = knitr::knit_child(
+    text = xfun::read_utf8("tamm-comparen-child2.qmd"),
+    envir = rlang::env(cur.stock = cur.stock, dat.ls = dat.ls),
+    quiet = TRUE
+  )
+  cat(res, sep = '\n')
+  cat("\n")
+}
+```
+
+```{r}
+#| results: 'asis'
+#| echo: false
+purrr::walk(unique(dat.ls[[1]]$stock), render_child)
+
+```
+
+:::

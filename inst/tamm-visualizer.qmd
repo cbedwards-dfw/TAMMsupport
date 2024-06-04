@@ -14,6 +14,10 @@ editor: visual
 params:
   tamm.path: "NOF 2"
   tamm.name: "Chin2024.xlsx"
+knitr: 
+  opts_chunk: 
+    R.options: 
+      knitr.table.html.attr: "quarto-disable-processing=true"
 ---
 
 *Report generated programmatically using the `TAMMsupport` package*
@@ -30,7 +34,6 @@ tamm.full = paste0(tamm.path, "/", tamm.name)
 source("tamm-report-parameters-intermediate.R")
 ```
 
-## Functions
 
 # `r tamm.name`
 
@@ -67,12 +70,13 @@ dat.all = TAMMsupport::read_limiting_stock(tamm.full, longform = TRUE)
 
 # Summary table
 
-```{r}
+```{r results='asis'}
 dat.overview = TAMMsupport::read_overview(tamm.full)
 overview.form = TAMMsupport::format_overview(dat.overview)
 TAMMsupport::kable_overview(dat.overview = overview.form$dat.overview,
                             ind.indent = overview.form$ind.indent,
                             col.bold = overview.form$col.bold)
+
 ```
 
 # Unmarked Natural Stock exploitation rates by fishery

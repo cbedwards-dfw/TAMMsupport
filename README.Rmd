@@ -137,9 +137,9 @@ Future goals include
 so that individual entities (wdfw, tribes, etc) can systematically include additional visualizations or summaries that may not be relevant to other entities.
 
 
-### `tamm_compare3()`
+### `tamm_compare()`
 
-`tamm_compare3()` uses the same general approach as `tamm_report()`, but creates a report to compare three TAMM files based off of Yi Xu's Rmarkdown report to compare exploitation rates for three ocean options.
+`tamm_compare()` uses the same general approach as `tamm_report()`, but creates a report to compare any number TAMM files based off of Yi Xu's Rmarkdown report to compare exploitation rates for three ocean options. The optional argument `fisheries` takes a numeric vector of fishery IDs; visualization of stock ERs will only plot those ERs. If `fisheries` is not provided, for each stock `tamm_compare()` will create a figure of impacts from all fisheries, and a separate plot of impacts from all SUS fisheries.
 
 Future goals include
 

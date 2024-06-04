@@ -1,0 +1,11 @@
+## `r cur.tamm`
+
+```{r, results = 'asis'}
+path.cur = paste0(tamm.path, "/", cur.tamm)
+dat.overview = TAMMsupport::read_overview(path.cur)
+overview.form = TAMMsupport::format_overview(dat.overview)
+TAMMsupport::kable_overview(dat.overview = overview.form$dat.overview,
+                            ind.indent = overview.form$ind.indent,
+                            col.bold = overview.form$col.bold)
+```
+
