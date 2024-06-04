@@ -413,7 +413,7 @@ tamm_format_input = function(wb, tabname = "input", wrap.text = FALSE){
 #' @rdname tamm_format_sheets
 tamm_format_wacoast = function(wb, tabname = "wacoast"){
   ## Minor headers
-  xldiff::cells_stylize(b, sheet = tabname, style = openxlsx::createStyle(fontSize = 12, textDecoration = "bold"),
+  xldiff::cells_stylize(wb, sheet = tabname, style = openxlsx::createStyle(fontSize = 12, textDecoration = "bold"),
                         block.ranges = c(
                           ## left part
                           "C11:C12", "A22:D22", "A24:D24",

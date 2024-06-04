@@ -55,7 +55,7 @@ tamm_compare <- function(tamm.names, tamm.path = getwd(), fisheries = NULL, clea
 
   report.name = paste0(paste0(gsub("[.].*", "",  tamm.names), collapse = "-vs-"),"-compare.html")
   if(length(tamm.names) > 4){
-    tamm.names.abrev = c(tamm.names[1:2], paste0(length(tamm.names)-3, " more"), tail(tamm.names, 1))
+    tamm.names.abrev = c(tamm.names[1:2], paste0(length(tamm.names)-3, " more"), utils::tail(tamm.names, 1))
     report.name = paste0(paste0(gsub("[.].*", "",  tamm.names.abrev), collapse = "-vs-"),"-compare.html")
   }
 
