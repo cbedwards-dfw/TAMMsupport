@@ -43,12 +43,11 @@ or
 pak::pkg_install("cbedwards-dfw/TAMMsupport")
 ```
 
-`TAMMsupport` depends on the `xldiff` package (which contains tools for
-comparing excel files using R).
-
-`xldiff` should automatically be installed when `TAMMsupport` is;
-`xldiff` and it’s documentation can be found here
-(<https://github.com/cbedwards-dfw/xldiff>).
+`TAMMsupport` depends on the `xldiff` package, which contains our
+general tools for comparing excel files using R. `xldiff` should
+automatically be installed when `TAMMsupport` is. `xldiff` and it’s
+documentation can be found here:
+<https://github.com/cbedwards-dfw/xldiff>.
 
 With `TAMMsupport` installed, we can use functions from it by including
 the library in our script, like so:
