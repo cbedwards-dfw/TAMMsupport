@@ -17,10 +17,11 @@ I want to…
 - Summarize and visualize key aspects of a Chinook TAMM? Use
   `tamm_report()`.
 - compare two Chinook TAMM files to look for changes in inputs or
-  results? Use `tamm_diff()`.
-- compare three Chinook TAMM files (e.g. three ocean options) to see how
-  ER varies by stock and fishery between the models? Use
-  `tamm_compare3()`.
+  results? Use `tamm_diff()`. (Comparing Coho TAMM files is currently
+  supported, but does not replicate Coho TAMM formatting)
+- compare two or more Chinook TAMM files (e.g. look across three ocean
+  options) to see how ER varies by stock and fishery between the models?
+  Use `tamm_compare()`.
 - extract the overview sheet info from a Chinook TAMM? Use
   `read_overview()` or `read_overview_complete()`.
 - extract the limiting stock complete sheet from a Chinook TAMM? Use
@@ -45,17 +46,9 @@ pak::pkg_install("cbedwards-dfw/TAMMsupport")
 `TAMMsupport` depends on the `xldiff` package (which contains tools for
 comparing excel files using R).
 
-You can install the development version of `xldiff` like so:
-
-``` r
-devtools::install_github("cbedwards-dfw/xldiff")  
-```
-
-Or
-
-``` r
-pak::pkg_install("cbedwards-dfw/xldiff")
-```
+`xldiff` should automatically be installed when `TAMMsupport` is;
+`xldiff` and it’s documentation can be found here
+(<https://github.com/cbedwards-dfw/xldiff>).
 
 With `TAMMsupport` installed, we can use functions from it by including
 the library in our script, like so:
@@ -77,7 +70,7 @@ highlighting choices.
 `tamm_diff()` takes three arguments: the names of the first TAMM file,
 the second tamm file, and the name to give the resulting file (in all
 cases, the name should include filepath, if relevant). All three
-filenames should end in “.xlsx”. The following is an example use
+filenames should end in “.xlsx”. The following is an example use:
 
 ``` r
 cur.wd = getwd()

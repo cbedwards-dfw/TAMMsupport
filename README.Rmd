@@ -25,8 +25,8 @@ The goal of TAMMsupport is to provide R-based tools for working with and interpr
 I want to...
  
  - Summarize and visualize key aspects of a Chinook TAMM? Use `tamm_report()`.
- - compare two Chinook TAMM files to look for changes in inputs or results? Use `tamm_diff()`.
- - compare three Chinook TAMM files (e.g. three ocean options) to see how ER varies by stock and fishery between the models? Use `tamm_compare3()`.
+ - compare two Chinook TAMM files to look for changes in inputs or results? Use `tamm_diff()`. (Comparing Coho TAMM files is currently supported, but does not replicate Coho TAMM formatting)
+ - compare two or more Chinook TAMM files (e.g. look across three ocean options) to see how ER varies by stock and fishery between the models? Use `tamm_compare()`.
   - extract the overview sheet info from a Chinook TAMM? Use `read_overview()` or `read_overview_complete()`.
  - extract the limiting stock complete sheet from a Chinook TAMM? Use `read_limiting_stock()` or `clean_limiting_stock()`. If desired, use `filter_tamm_wa()` to then filter the results to just Washington fisheries.
 
@@ -48,17 +48,8 @@ pak::pkg_install("cbedwards-dfw/TAMMsupport")
 
 `TAMMsupport` depends on the `xldiff` package (which contains tools for comparing excel files using R). 
 
-You can install the development version of `xldiff` like so:
+`xldiff` should automatically be installed when `TAMMsupport` is; `xldiff` and it's documentation can be found here (https://github.com/cbedwards-dfw/xldiff). 
 
-```r
-devtools::install_github("cbedwards-dfw/xldiff")  
-```
-
-Or
-
-```r
-pak::pkg_install("cbedwards-dfw/xldiff")
-```
 
 With `TAMMsupport` installed, we can use functions from it by including the library in our script, like so:
 
@@ -71,7 +62,7 @@ library(TAMMsupport)
 
 `tamm_diff()` facilitates comparing the outputs and inputs of two tamm files by identifying changes in cell values in the overview, limiting stock complete, and input sheets. `tamm_diff` then creates a "diff" excel file that contains the contents of those three sheets, highlighting the changed cells. The formatting of the diff file broadly reflects that of the Chinook TAMM, but with simpler border and highlighting choices.
 
-`tamm_diff()` takes three arguments: the names of the first TAMM file, the second tamm file, and the name to give the resulting file (in all cases, the name should include filepath, if relevant). All three filenames should end in ".xlsx". The following is an example use
+`tamm_diff()` takes three arguments: the names of the first TAMM file, the second tamm file, and the name to give the resulting file (in all cases, the name should include filepath, if relevant). All three filenames should end in ".xlsx". The following is an example use:
 
 ```r
 cur.wd = getwd()
