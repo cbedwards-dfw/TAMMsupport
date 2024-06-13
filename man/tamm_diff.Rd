@@ -54,9 +54,10 @@ for relatively inputting of formatting. Consider developing other helper functio
 }
 \examples{
 \dontrun{
-tamm_diff(filename.1 = here("FRAM/Chin1124.xlsx"),
-filename.2 = here("NOF 2/Chin2524.xlsx"),
-results.name = here("Chin 1124 vs Chin 2524.xlsx")
+tamm_diff(
+  filename.1 = here("FRAM/Chin1124.xlsx"),
+  filename.2 = here("NOF 2/Chin2524.xlsx"),
+  results.name = here("Chin 1124 vs Chin 2524.xlsx")
 )
 }
 }

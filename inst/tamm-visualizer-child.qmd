@@ -1,16 +1,18 @@
 ## `r cur.stock`
 
 ```{r, fig.height= 8}
-dat.cur = dat |> 
-  filter(stock == cur.stock) |> 
+dat.cur <- dat |>
+  filter(stock == cur.stock) |>
   filter(timestep != "yr")
 
-ggplot(dat.cur |> filter(value>1/10000), aes(x = reorder(Fishery, value), y = value, fill = timestep))+
-  geom_col()+
-  coord_flip()+
-  ggtitle(cur.stock)+
-  scale_y_continuous(label = function(x){paste0(x*100, "%")})+
-  ylab('exploitation rate')+
-  xlab('Fishery')+
+ggplot(dat.cur |> filter(value > 1 / 10000), aes(x = reorder(Fishery, value), y = value, fill = timestep)) +
+  geom_col() +
+  coord_flip() +
+  ggtitle(cur.stock) +
+  scale_y_continuous(label = function(x) {
+    paste0(x * 100, "%")
+  }) +
+  ylab("exploitation rate") +
+  xlab("Fishery") +
   theme_bw(base_size = 18)
 ```

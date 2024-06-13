@@ -1,51 +1,54 @@
 ## `r cur.stock`
 
 ```{r, fig.height= 8}
-thresh = 0.001
+thresh <- 0.001
 
-allER <- do.call(rbind, dat.ls) |> 
-  rename(er = value) |> 
-  dplyr::filter(er>=0.001) |> 
-  dplyr::filter(stock == cur.stock) |> 
-  dplyr::mutate(timestep.pretty = dplyr::case_match(timestep, 
-                                                    "t2" ~ "May-June",
-                                                    "t3" ~ "Jul-Sep",
-                                                    "t4" ~ "Oct-Apr",
-                                                    "yr" ~ "Total"
-                                                    
+allER <- do.call(rbind, dat.ls) |>
+  rename(er = value) |>
+  dplyr::filter(er >= 0.001) |>
+  dplyr::filter(stock == cur.stock) |>
+  dplyr::mutate(timestep.pretty = dplyr::case_match(
+    timestep,
+    "t2" ~ "May-June",
+    "t3" ~ "Jul-Sep",
+    "t4" ~ "Oct-Apr",
+    "yr" ~ "Total"
   ))
 
 ## With fishery filtering, potential for some stock to be removed entirely??
-if(nrow(allER)>0){
-  if(is.null(fisheries)){
-  print(ggplot(allER, aes(x = tamm, y = er, fill = Fishery, label = Fishery)) + 
-    geom_bar(position="stack", stat="identity") +
-    geom_text(aes(label = ifelse(er>0.01, Fishery, "")), size = 2.5, position = position_stack(vjust = 0.5), angle = 45) +
-    facet_grid(.~ factor(timestep.pretty, levels = c("May-June", "Jul-Sep", "Oct-Apr", "Total")), 
-               scales = "free_y") +
-    labs(fill = paste0(cur.stock,"\nER (>0.1%)")) +
-    ylab("Total ER")+
-    ggtitle("Key impactors, all fisheries")+
-    theme_classic(base_size = 18)+
-    xlab("")+
-    theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)))
+if (nrow(allER) > 0) {
+  if (is.null(fisheries)) {
+    print(ggplot(allER, aes(x = tamm, y = er, fill = Fishery, label = Fishery)) +
+      geom_bar(position = "stack", stat = "identity") +
+      geom_text(aes(label = ifelse(er > 0.01, Fishery, "")), size = 2.5, position = position_stack(vjust = 0.5), angle = 45) +
+      facet_grid(. ~ factor(timestep.pretty, levels = c("May-June", "Jul-Sep", "Oct-Apr", "Total")),
+        scales = "free_y"
+      ) +
+      labs(fill = paste0(cur.stock, "\nER (>0.1%)")) +
+      ylab("Total ER") +
+      ggtitle("Key impactors, all fisheries") +
+      theme_classic(base_size = 18) +
+      xlab("") +
+      theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)))
   }
-  
-  
-  print(ggplot(allER |>  dplyr::filter(fishery_id>12), 
-         aes(x = tamm, y = er, fill = Fishery, label = Fishery)) +
-    geom_bar(position="stack", stat="identity") +
-    geom_text(aes(label = ifelse(er>0.01, Fishery, "")),size = 2.5, position = position_stack(vjust = 0.5), angle = 45) +
-    facet_grid(.~ factor(timestep.pretty, levels = c("May-June", "Jul-Sep", "Oct-Apr", "Total")),
-               scales = "free_y") +
-    labs(fill = paste0(cur.stock,"\nER (>0.1%)")) +
-    ylab("SUS ER")+
-    xlab("")+
-    ggtitle(ifelse(is.null(fisheries),"Key impactors, SUS fisheries", "Key impactors, user specified fisheries"))+
-    theme_classic(base_size = 18)+
-    theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)))
-  
-}else{
+
+
+  print(ggplot(
+    allER |> dplyr::filter(fishery_id > 12),
+    aes(x = tamm, y = er, fill = Fishery, label = Fishery)
+  ) +
+    geom_bar(position = "stack", stat = "identity") +
+    geom_text(aes(label = ifelse(er > 0.01, Fishery, "")), size = 2.5, position = position_stack(vjust = 0.5), angle = 45) +
+    facet_grid(. ~ factor(timestep.pretty, levels = c("May-June", "Jul-Sep", "Oct-Apr", "Total")),
+      scales = "free_y"
+    ) +
+    labs(fill = paste0(cur.stock, "\nER (>0.1%)")) +
+    ylab("SUS ER") +
+    xlab("") +
+    ggtitle(ifelse(is.null(fisheries), "Key impactors, SUS fisheries", "Key impactors, user specified fisheries")) +
+    theme_classic(base_size = 18) +
+    theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)))
+} else {
   print("No data for this stock with the current fishery filtering.")
 }
 ```

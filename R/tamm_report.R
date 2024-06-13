@@ -1,5 +1,6 @@
 
 
+
 #' Generate report of figures from TAMM file
 #'
 #' @param tamm.name Name of tamm file (including .xlsx suffix). Character atomic
@@ -77,82 +78,120 @@
 #' tamm_report(tamm.name = "Chin2124.xlsx", tamm.path = tamm.path,
 #'   additional.children = "C:/Users/JohnDoe/Documents/extra-tamm-child.qmd")
 #' }
-tamm_report <- function(tamm.name, tamm.path = getwd(),  clean = TRUE, overwrite = TRUE,
-                        additional.children = NULL, additional.support.files = NULL){
-  if(!is.character(tamm.name)){
-    cli::cli_abort("`tamm.name` must be character string of tamm file name (including .xlsx suffix).")
-  }
-  if(gsub(".*[.]", "", tamm.name) != "xlsx"){
-    cli::cli_abort("`tamm.name` must describe .xlsx file.")
-  }
-  if(!is.character(tamm.path)){
-    cli::cli_abort("`tamm.path` must character string of absolute path to directory containing TAMM. Try using `here` package to help.")
-  }
-  if(!is.logical(clean)){
-    cli::cli_abort("`clean` must be logical.")
-  }
-  if(!file.exists(paste0(tamm.path, "/", tamm.name))){
-    cli::cli_abort("TAMM file was not found. Check that `tamm.path` and `tamm.name` are correct.")
-  }
-  if(!is.null(additional.children) & !is.character(additional.children)){
-    cli::cli_abort("`additional.children` must be NULL or character vector of additional child qmd files.")
-  }
-  if(!is.null(additional.children)){
-    if(!all(file.exists(additional.children))){
-      cli::cli_abort("`additional.children` file(s) not found. Check paths and spelling.")
+tamm_report <-
+  function(tamm.name,
+           tamm.path = getwd(),
+           clean = TRUE,
+           overwrite = TRUE,
+           additional.children = NULL,
+           additional.support.files = NULL) {
+    if (!is.character(tamm.name)) {
+      cli::cli_abort("`tamm.name` must be character string of tamm file name (including .xlsx suffix).")
     }
-  }
-  if(!is.null(additional.support.files) & !is.character(additional.support.files)){
-    cli::cli_abort("`additional.support.files` must be NULL or character vector of additional file names (including file paths).")
-  }
-  if(!is.null(additional.support.files)){
-    if(!all(file.exists(additional.support.files))){
-      cli::cli_abort("`additional.support.files` file(s) not found. Check paths and spelling.")
+    if (gsub(".*[.]", "", tamm.name) != "xlsx") {
+      cli::cli_abort("`tamm.name` must describe .xlsx file.")
     }
-  }
-
-
-  ##identify path to children
-  qmd.path = system.file("tamm-visualizer.qmd", package = "TAMMsupport")
-  qmd.child.path = system.file("tamm-visualizer-child.qmd", package = "TAMMsupport")
-  ## generate report name
-  report.name = gsub("[.].*", "-Visualization.html", tamm.name)
-
-  ## copy qmd files
-  cli::cli_alert(paste0("Copying parameterized report .qmd files to `", tamm.path, "`."))
-  file.copy (c(qmd.path, qmd.child.path, additional.children, additional.support.files), tamm.path, overwrite = overwrite)
-
-  ## create additional parameter file. Parameterized reports don't like vectors as parameters.
-  cat.file = paste0(tamm.path,"/tamm-report-parameters-intermediate.R")
-  ## start populating parameter file
-  if(!is.null(additional.children)){
-    cat("additional.children = ", file = cat.file)
-    utils::capture.output(dput(additional.children),  file = cat.file, append = TRUE)
-  }else{
-    cat("additional.children = NULL\n", file = cat.file)
-
-  }
-
-  ## generate report
-  cli::cli_alert(paste0("Generating report."))
-  quarto::quarto_render(paste0(tamm.path,"/tamm-visualizer.qmd"),
-                        execute_params = list(tamm.path = tamm.path, tamm.name = tamm.name))
-  file.rename(paste0(tamm.path,"/tamm-visualizer.html"),
-              paste0(tamm.path, "/", report.name))
-
-  if(clean){
-    cli::cli_alert("Deleting intermediate .qmd files.")
-    file.remove(paste0(tamm.path,"/", c("tamm-visualizer.qmd", "tamm-visualizer-child.qmd")))
-    if(!is.null(additional.children)){
-      additional.names = gsub(".*/", "", additional.children)
-      file.remove(paste0(tamm.path,"/", additional.names))
+    if (!is.character(tamm.path)) {
+      cli::cli_abort(
+        "`tamm.path` must character string of absolute path to directory containing TAMM. Try using `here` package to help."
+      )
     }
-    if(!is.null(additional.support.files)){
-      additional.names = gsub(".*/", "", additional.support.files)
-      file.remove(paste0(tamm.path,"/", additional.names))
+    if (!is.logical(clean)) {
+      cli::cli_abort("`clean` must be logical.")
     }
-  }
-  file.remove(paste0(tamm.path,"/tamm-report-parameters-intermediate.R"))
+    if (!file.exists(paste0(tamm.path, "/", tamm.name))) {
+      cli::cli_abort("TAMM file was not found. Check that `tamm.path` and `tamm.name` are correct.")
+    }
+    if (!is.null(additional.children) &
+        !is.character(additional.children)) {
+      cli::cli_abort(
+        "`additional.children` must be NULL or character vector of additional child qmd files."
+      )
+    }
+    if (!is.null(additional.children)) {
+      if (!all(file.exists(additional.children))) {
+        cli::cli_abort("`additional.children` file(s) not found. Check paths and spelling.")
+      }
+    }
+    if (!is.null(additional.support.files) &
+        !is.character(additional.support.files)) {
+      cli::cli_abort(
+        "`additional.support.files` must be NULL or character vector of additional file names (including file paths)."
+      )
+    }
+    if (!is.null(additional.support.files)) {
+      if (!all(file.exists(additional.support.files))) {
+        cli::cli_abort("`additional.support.files` file(s) not found. Check paths and spelling.")
+      }
+    }
 
-  cli::cli_alert(paste0("Finished!\nTAMM report is in ", tamm.path, ", with filename ", report.name,"."))
-}
+
+    ##identify path to children
+    qmd.path = system.file("tamm-visualizer.qmd", package = "TAMMsupport")
+    qmd.child.path = system.file("tamm-visualizer-child.qmd", package = "TAMMsupport")
+    ## generate report name
+    report.name = gsub("[.].*", "-Visualization.html", tamm.name)
+
+    ## copy qmd files
+    cli::cli_alert(paste0("Copying parameterized report .qmd files to `", tamm.path, "`."))
+    file.copy (
+      c(
+        qmd.path,
+        qmd.child.path,
+        additional.children,
+        additional.support.files
+      ),
+      tamm.path,
+      overwrite = overwrite
+    )
+
+    ## create additional parameter file. Parameterized reports don't like vectors as parameters.
+    cat.file = paste0(tamm.path, "/tamm-report-parameters-intermediate.R")
+    ## start populating parameter file
+    if (!is.null(additional.children)) {
+      cat("additional.children = ", file = cat.file)
+      utils::capture.output(dput(additional.children),
+                            file = cat.file,
+                            append = TRUE)
+    } else{
+      cat("additional.children = NULL\n", file = cat.file)
+
+    }
+
+    ## generate report
+    cli::cli_alert(paste0("Generating report."))
+    quarto::quarto_render(
+      paste0(tamm.path, "/tamm-visualizer.qmd"),
+      execute_params = list(tamm.path = tamm.path, tamm.name = tamm.name)
+    )
+    file.rename(paste0(tamm.path, "/tamm-visualizer.html"),
+                paste0(tamm.path, "/", report.name))
+
+    if (clean) {
+      cli::cli_alert("Deleting intermediate .qmd files.")
+      file.remove(paste0(
+        tamm.path,
+        "/",
+        c("tamm-visualizer.qmd", "tamm-visualizer-child.qmd")
+      ))
+      if (!is.null(additional.children)) {
+        additional.names = gsub(".*/", "", additional.children)
+        file.remove(paste0(tamm.path, "/", additional.names))
+      }
+      if (!is.null(additional.support.files)) {
+        additional.names = gsub(".*/", "", additional.support.files)
+        file.remove(paste0(tamm.path, "/", additional.names))
+      }
+    }
+    file.remove(paste0(tamm.path, "/tamm-report-parameters-intermediate.R"))
+
+    cli::cli_alert(
+      paste0(
+        "Finished!\nTAMM report is in ",
+        tamm.path,
+        ", with filename ",
+        report.name,
+        "."
+      )
+    )
+  }

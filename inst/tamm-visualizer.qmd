@@ -28,9 +28,9 @@ library("readxl")
 library(here)
 library(kableExtra)
 library(TAMMsupport)
-tamm.path = params$tamm.path
-tamm.name = params$tamm.name
-tamm.full = paste0(tamm.path, "/", tamm.name)
+tamm.path <- params$tamm.path
+tamm.name <- params$tamm.name
+tamm.full <- paste0(tamm.path, "/", tamm.name)
 source("tamm-report-parameters-intermediate.R")
 ```
 
@@ -41,42 +41,57 @@ source("tamm-report-parameters-intermediate.R")
 
 ```{r, message=FALSE}
 #| label: limiting stock tab
-dat = TAMMsupport::read_limiting_stock(tamm.full) |>
+dat <- TAMMsupport::read_limiting_stock(tamm.full) |>
   rename(fishery_id = FisheryID)
 ## figure out if this is a coho or chinook, add as attribute so we can used FRAMR^2 filters
-run.num = read_excel(tamm.full, range = "1!B2", col_names = FALSE)
-if(grepl("Chin", run.num)){attr(dat, "species") <- "CHINOOK"}
-if(grepl("Coho", run.num)){attr(dat, "species") <- "COHO"}
-if(grepl("Coho", run.num) & grepl("Chin", run.num)){attr(dat, "species") <- "UNCLEAR"}
-if(!grepl("Coho", run.num) & !grepl("Chin", run.num)){attr(dat, "species") <- "UNCLEAR"}
-if(attr(dat, "species") == "UNCLEAR"){cli::cli_alert_warning("Species is not clear from TAMM")}
+run.num <- read_excel(tamm.full, range = "1!B2", col_names = FALSE)
+if (grepl("Chin", run.num)) {
+  attr(dat, "species") <- "CHINOOK"
+}
+if (grepl("Coho", run.num)) {
+  attr(dat, "species") <- "COHO"
+}
+if (grepl("Coho", run.num) & grepl("Chin", run.num)) {
+  attr(dat, "species") <- "UNCLEAR"
+}
+if (!grepl("Coho", run.num) & !grepl("Chin", run.num)) {
+  attr(dat, "species") <- "UNCLEAR"
+}
+if (attr(dat, "species") == "UNCLEAR") {
+  cli::cli_alert_warning("Species is not clear from TAMM")
+}
 
 ## filter to washington naturals, ditch AEQs
-dat = dat |>
+dat <- dat |>
   TAMMsupport::filter_tamm_wa() |>
   filter(stock_type == "UM_N") |>
   select(1:4, ends_with("_er")) |>
-  rename_at(.vars = vars(ends_with("_er")),
-            .funs = ~ gsub("_er$", "", .x))
+  rename_at(
+    .vars = vars(ends_with("_er")),
+    .funs = ~ gsub("_er$", "", .x)
+  )
 
 ## pivot long
-dat <-  dat |>
-  pivot_longer(cols = -(1:4), names_to = c("stock", "timestep"),
-               names_sep ="_")
+dat <- dat |>
+  pivot_longer(
+    cols = -(1:4), names_to = c("stock", "timestep"),
+    names_sep = "_"
+  )
 
 ## also store ALL data in case that's important for optional child .qmds
-dat.all = TAMMsupport::read_limiting_stock(tamm.full, longform = TRUE)
+dat.all <- TAMMsupport::read_limiting_stock(tamm.full, longform = TRUE)
 ```
 
 # Summary table
 
 ```{r results='asis'}
-dat.overview = TAMMsupport::read_overview(tamm.full)
-overview.form = TAMMsupport::format_overview(dat.overview)
-TAMMsupport::kable_overview(dat.overview = overview.form$dat.overview,
-                            ind.indent = overview.form$ind.indent,
-                            col.bold = overview.form$col.bold)
-
+dat.overview <- TAMMsupport::read_overview(tamm.full)
+overview.form <- TAMMsupport::format_overview(dat.overview)
+TAMMsupport::kable_overview(
+  dat.overview = overview.form$dat.overview,
+  ind.indent = overview.form$ind.indent,
+  col.bold = overview.form$col.bold
+)
 ```
 
 # Unmarked Natural Stock exploitation rates by fishery
@@ -85,12 +100,12 @@ Summarizes the Unmarked Natural section of the `LimitingStkComplete mod` workshe
 
 ```{r}
 render_child <- function(cur.stock) {
-  res = knitr::knit_child(
+  res <- knitr::knit_child(
     text = xfun::read_utf8("tamm-visualizer-child.qmd"),
     envir = rlang::env(cur.stock = cur.stock, dat = dat, dat.overview = dat.overview),
     quiet = TRUE
   )
-  cat(res, sep = '\n')
+  cat(res, sep = "\n")
   cat("\n")
 }
 ```
@@ -100,19 +115,18 @@ render_child <- function(cur.stock) {
 #| results: 'asis'
 #| echo: false
 purrr::walk(unique(dat$stock), render_child)
-
 ```
 :::
 
 
 ```{r}
 render_additional_children <- function(cur.file) {
-  res = knitr::knit_child(
+  res <- knitr::knit_child(
     text = xfun::read_utf8(cur.file),
     envir = rlang::env(dat = dat, dat.overview = dat.overview, dat.all = dat.all),
     quiet = TRUE
   )
-  cat(res, sep = '\n')
+  cat(res, sep = "\n")
   cat("\n")
 }
 ```

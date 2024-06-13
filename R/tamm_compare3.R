@@ -13,51 +13,56 @@
 #'
 #' @examples
 #' \dontrun{
-#' tamm.path = "C:/Users/edwc1477/Documents/WDFW FRAM team work/NOF material/NOF 2024/FRAM"
-#' tamm.names =c("Chin1024.xlsx", "Chin1124.xlsx", "Chin1224.xlsx")
+#' tamm.path <- "C:/Users/edwc1477/Documents/WDFW FRAM team work/NOF material/NOF 2024/FRAM"
+#' tamm.names <- c("Chin1024.xlsx", "Chin1124.xlsx", "Chin1224.xlsx")
 #' tamm_compare3(tamm.names = tamm.names, tamm.path = tamm.path)
 #' }
-tamm_compare3 <- function(tamm.names, tamm.path = getwd(),  clean = TRUE, overwrite = TRUE){
-  if(!is.character(tamm.names)){
+tamm_compare3 <- function(tamm.names, tamm.path = getwd(), clean = TRUE, overwrite = TRUE) {
+  if (!is.character(tamm.names)) {
     cli::cli_abort("`tamm.name` must be character string of tamm file name (including .xlsx suffix).")
   }
-  if(length(tamm.names) != 3){
+  if (length(tamm.names) != 3) {
     cli::cli_abort("`tamm.names` must have three file names.")
   }
-  if(!all(gsub(".*[.]", "", tamm.names) == "xlsx")){
+  if (!all(gsub(".*[.]", "", tamm.names) == "xlsx")) {
     cli::cli_abort("`tamm.name` must describe .xlsx files.")
   }
-  if(!is.character(tamm.path)){
+  if (!is.character(tamm.path)) {
     cli::cli_abort("`tamm.path` must character string of absolute path to directory containing TAMM. Try using `here` package to help.")
   }
-  if(!is.logical(clean)){
+  if (!is.logical(clean)) {
     cli::cli_abort("`clean` must be logical.")
   }
-  if(!all(file.exists(paste0(tamm.path, "/", tamm.names)))){
+  if (!all(file.exists(paste0(tamm.path, "/", tamm.names)))) {
     cli::cli_abort("One or more TAMM files was not found. Check that `tamm.path` and `tamm.names` are correct.")
   }
-#### MAYBE UPDATED TO HERE
-  ##identify path to children
-  qmd.path = system.file("tamm-compare3.qmd", package = "TAMMsupport")
-  qmd.child.path = system.file("tamm-compare3-child.qmd", package = "TAMMsupport")
+  #### MAYBE UPDATED TO HERE
+  ## identify path to children
+  qmd.path <- system.file("tamm-compare3.qmd", package = "TAMMsupport")
+  qmd.child.path <- system.file("tamm-compare3-child.qmd", package = "TAMMsupport")
   ## generate report name
-  report.name = paste0(paste0(gsub("[.].*", "",  tamm.names), collapse = "-vs-"),"-compare.html")
+  report.name <- paste0(paste0(gsub("[.].*", "", tamm.names), collapse = "-vs-"), "-compare.html")
 
   ## copy qmd files
   cli::cli_alert(paste0("Copying parameterized report .qmd files to `", tamm.path, "`."))
-  file.copy (c(qmd.path, qmd.child.path), tamm.path, overwrite = overwrite)
+  file.copy(c(qmd.path, qmd.child.path), tamm.path, overwrite = overwrite)
 
   ## generate report
   cli::cli_alert(paste0("Generating report."))
-  quarto::quarto_render(paste0(tamm.path,"/tamm-compare3.qmd"),
-                        execute_params = list(tamm.path = tamm.path, tamm.name1 = tamm.names[1],
-                                              tamm.name2 = tamm.names[2], tamm.name3 = tamm.names[3]))
-  file.rename(paste0(tamm.path,"/tamm-compare3.html"),
-              paste0(tamm.path, "/", report.name))
+  quarto::quarto_render(paste0(tamm.path, "/tamm-compare3.qmd"),
+    execute_params = list(
+      tamm.path = tamm.path, tamm.name1 = tamm.names[1],
+      tamm.name2 = tamm.names[2], tamm.name3 = tamm.names[3]
+    )
+  )
+  file.rename(
+    paste0(tamm.path, "/tamm-compare3.html"),
+    paste0(tamm.path, "/", report.name)
+  )
 
-  if(clean){
+  if (clean) {
     cli::cli_alert("Deleting intermediate .qmd files.")
-    file.remove(paste0(tamm.path,"/", c("tamm-compare3.qmd", "tamm-compare3-child.qmd")))
+    file.remove(paste0(tamm.path, "/", c("tamm-compare3.qmd", "tamm-compare3-child.qmd")))
   }
 
   cli::cli_alert("Finished!")

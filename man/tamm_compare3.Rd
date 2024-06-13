@@ -24,8 +24,8 @@ Intended use case is to compare low, mid, and high ocean option.
 }
 \examples{
 \dontrun{
-tamm.path = "C:/Users/edwc1477/Documents/WDFW FRAM team work/NOF material/NOF 2024/FRAM"
-tamm.names =c("Chin1024.xlsx", "Chin1124.xlsx", "Chin1224.xlsx")
+tamm.path <- "C:/Users/edwc1477/Documents/WDFW FRAM team work/NOF material/NOF 2024/FRAM"
+tamm.names <- c("Chin1024.xlsx", "Chin1124.xlsx", "Chin1224.xlsx")
 tamm_compare3(tamm.names = tamm.names, tamm.path = tamm.path)
 }
 }

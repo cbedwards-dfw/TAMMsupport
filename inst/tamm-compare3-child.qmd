@@ -1,48 +1,52 @@
 ## `r cur.stock`
 
 ```{r, fig.height= 8}
-thresh = 0.001
+thresh <- 0.001
 
-allER <- rbind(data.frame(tamm = tamm.name1, dat1),
-               data.frame(tamm = tamm.name2, dat2),
-               data.frame(tamm = tamm.name3, dat3)
-) |> 
-  rename(er = value) |> 
-  dplyr::filter(er>=0.001) |> 
-  dplyr::filter(stock == cur.stock) |> 
-  dplyr::mutate(timestep.pretty = dplyr::case_match(timestep, 
-                                                   "t2" ~ "May-June",
-                                                   "t3" ~ "Jul-Sep",
-                                                   "t4" ~ "Oct-Apr",
-                                                   "yr" ~ "Total"
-     
+allER <- rbind(
+  data.frame(tamm = tamm.name1, dat1),
+  data.frame(tamm = tamm.name2, dat2),
+  data.frame(tamm = tamm.name3, dat3)
+) |>
+  rename(er = value) |>
+  dplyr::filter(er >= 0.001) |>
+  dplyr::filter(stock == cur.stock) |>
+  dplyr::mutate(timestep.pretty = dplyr::case_match(
+    timestep,
+    "t2" ~ "May-June",
+    "t3" ~ "Jul-Sep",
+    "t4" ~ "Oct-Apr",
+    "yr" ~ "Total"
   ))
 
 
-ggplot(allER, aes(x = tamm, y = er, fill = Fishery, label = Fishery)) + 
-  geom_bar(position="stack", stat="identity") +
-  geom_text(aes(label = ifelse(er>0.01, Fishery, "")), size = 2.5, position = position_stack(vjust = 0.5)) +
-  facet_grid(.~ factor(timestep.pretty, levels = c("May-June", "Jul-Sep", "Oct-Apr", "Total")), 
-             scales = "free_y") +
-  labs(fill = paste0(cur.stock,"\nER (>0.1%)")) +
-  ylab("Total ER")+
-  ggtitle("Key impactors, all fisheries")+
-  theme_classic(base_size = 18)+
-  xlab("")+
-  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))
+ggplot(allER, aes(x = tamm, y = er, fill = Fishery, label = Fishery)) +
+  geom_bar(position = "stack", stat = "identity") +
+  geom_text(aes(label = ifelse(er > 0.01, Fishery, "")), size = 2.5, position = position_stack(vjust = 0.5)) +
+  facet_grid(. ~ factor(timestep.pretty, levels = c("May-June", "Jul-Sep", "Oct-Apr", "Total")),
+    scales = "free_y"
+  ) +
+  labs(fill = paste0(cur.stock, "\nER (>0.1%)")) +
+  ylab("Total ER") +
+  ggtitle("Key impactors, all fisheries") +
+  theme_classic(base_size = 18) +
+  xlab("") +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
 
 
-ggplot(allER |>  dplyr::filter(fishery_id>12), 
-       aes(x = tamm, y = er, fill = Fishery, label = Fishery)) +
-  geom_bar(position="stack", stat="identity") +
-  geom_text(aes(label = ifelse(er>0.01, Fishery, "")),size = 2.5, position = position_stack(vjust = 0.5)) +
-  facet_grid(.~ factor(timestep.pretty, levels = c("May-June", "Jul-Sep", "Oct-Apr", "Total")),
-             scales = "free_y") +
-  labs(fill = paste0(cur.stock,"\nER (>0.1%)")) +
-  ylab("SUS ER")+
-  xlab("")+
-  ggtitle("Key impactors, SUS fisheries")+
-  theme_classic(base_size = 18)+
-  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))
-
+ggplot(
+  allER |> dplyr::filter(fishery_id > 12),
+  aes(x = tamm, y = er, fill = Fishery, label = Fishery)
+) +
+  geom_bar(position = "stack", stat = "identity") +
+  geom_text(aes(label = ifelse(er > 0.01, Fishery, "")), size = 2.5, position = position_stack(vjust = 0.5)) +
+  facet_grid(. ~ factor(timestep.pretty, levels = c("May-June", "Jul-Sep", "Oct-Apr", "Total")),
+    scales = "free_y"
+  ) +
+  labs(fill = paste0(cur.stock, "\nER (>0.1%)")) +
+  ylab("SUS ER") +
+  xlab("") +
+  ggtitle("Key impactors, SUS fisheries") +
+  theme_classic(base_size = 18) +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
 ```

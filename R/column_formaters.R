@@ -1,4 +1,3 @@
-
 #' Format vector of mixed characters to present numbers as percents
 #'
 #' Intended for internal use within formatting functions. Note that percents in excel are read in
@@ -9,11 +8,11 @@
 #'
 #' @return character vector with individual entries converted to percentages and rounded as appropriate.
 #'
-fun_percenter = function(x, percent.digits){
+fun_percenter <- function(x, percent.digits) {
   stopifnot(is.character(x))
   stopifnot(is.numeric(percent.digits))
-  ind = suppressWarnings(!is.na(as.numeric(x)))
-  x[ind] = paste0(round(as.numeric(x[ind])*100, percent.digits),"%")
+  ind <- suppressWarnings(!is.na(as.numeric(x)))
+  x[ind] <- paste0(round(as.numeric(x[ind]) * 100, percent.digits), "%")
   return(x)
 }
 
@@ -23,9 +22,9 @@ fun_percenter = function(x, percent.digits){
 #'
 #' @inheritParams fun_percenter
 #' @param digits Number of digits to round numeric items to
-fun_rounder = function(x, digits){
-  ind = suppressWarnings(!is.na(as.numeric(x)))
-  x[ind] = round(as.numeric(x[ind]), digits)
+fun_rounder <- function(x, digits) {
+  ind <- suppressWarnings(!is.na(as.numeric(x)))
+  x[ind] <- round(as.numeric(x[ind]), digits)
   return(x)
 }
 
@@ -38,14 +37,16 @@ fun_rounder = function(x, digits){
 #'
 #' @return Formatted version of `df`
 #'
-chunk_formater_percenter = function(df, block.ranges, percent.digits = 1){
-  df = as.matrix(df)
-  cells.ls = do.call(rbind, lapply(block.ranges, xldiff::cell_range_translate))
-  ind = suppressWarnings(!is.na(as.numeric(df[as.matrix(cells.ls)])))
-  df[as.matrix(cells.ls)[ind,]] =
-    paste0(round(as.numeric(df[as.matrix(cells.ls[ind,])])*100,
-                 percent.digits),"%")
-  df = tibble::as_tibble(df)
+chunk_formater_percenter <- function(df, block.ranges, percent.digits = 1) {
+  df <- as.matrix(df)
+  cells.ls <- do.call(rbind, lapply(block.ranges, xldiff::cell_range_translate))
+  ind <- suppressWarnings(!is.na(as.numeric(df[as.matrix(cells.ls)])))
+  df[as.matrix(cells.ls)[ind, ]] <-
+    paste0(round(
+      as.numeric(df[as.matrix(cells.ls[ind, ])]) * 100,
+      percent.digits
+    ), "%")
+  df <- tibble::as_tibble(df)
   return(df)
 }
 
@@ -55,15 +56,16 @@ chunk_formater_percenter = function(df, block.ranges, percent.digits = 1){
 #' @param digits Decimal place to round to.
 #' @return Formatted version of `df`
 
-chunk_formater_rounder = function(df, block.ranges, digits = 1){
+chunk_formater_rounder <- function(df, block.ranges, digits = 1) {
   ## as above, but just rounds numbers
-  df = as.matrix(df)
-  cells.ls = do.call(rbind, lapply(block.ranges, xldiff::cell_range_translate))
-  ind = suppressWarnings(!is.na(as.numeric(df[as.matrix(cells.ls)])))
-  df[as.matrix(cells.ls)[ind,]] =
-    round(as.numeric(df[as.matrix(cells.ls[ind,])]),
-                 digits)
-  df = tibble::as_tibble(df)
+  df <- as.matrix(df)
+  cells.ls <- do.call(rbind, lapply(block.ranges, xldiff::cell_range_translate))
+  ind <- suppressWarnings(!is.na(as.numeric(df[as.matrix(cells.ls)])))
+  df[as.matrix(cells.ls)[ind, ]] <-
+    round(
+      as.numeric(df[as.matrix(cells.ls[ind, ])]),
+      digits
+    )
+  df <- tibble::as_tibble(df)
   return(df)
 }
-

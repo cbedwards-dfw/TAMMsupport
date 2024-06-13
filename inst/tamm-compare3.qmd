@@ -27,14 +27,13 @@ library(here)
 library(framrsquared)
 library(kableExtra)
 library(TAMMsupport)
-tamm.path = params$tamm.path
-tamm.name1 = params$tamm.name1
-tamm.name2 = params$tamm.name2
-tamm.name3 = params$tamm.name3
-tamm.full1 = paste0(tamm.path, "/", tamm.name1)
-tamm.full2 = paste0(tamm.path, "/", tamm.name2)
-tamm.full3 = paste0(tamm.path, "/", tamm.name3)
-
+tamm.path <- params$tamm.path
+tamm.name1 <- params$tamm.name1
+tamm.name2 <- params$tamm.name2
+tamm.name3 <- params$tamm.name3
+tamm.full1 <- paste0(tamm.path, "/", tamm.name1)
+tamm.full2 <- paste0(tamm.path, "/", tamm.name2)
+tamm.full3 <- paste0(tamm.path, "/", tamm.name3)
 ```
 
 
@@ -43,19 +42,16 @@ tamm.full3 = paste0(tamm.path, "/", tamm.name3)
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
-
 ```
 
 
 ## Processing TAMM
 
 ```{r limiting stock tab, message=FALSE}
-
 ## ID all the stock names
-dat1 = TAMMsupport::clean_limiting_stock(tamm.full1)
-dat2 = TAMMsupport::clean_limiting_stock(tamm.full2)
-dat3 = TAMMsupport::clean_limiting_stock(tamm.full3)
-
+dat1 <- TAMMsupport::clean_limiting_stock(tamm.full1)
+dat2 <- TAMMsupport::clean_limiting_stock(tamm.full2)
+dat3 <- TAMMsupport::clean_limiting_stock(tamm.full3)
 ```
 
 
@@ -66,24 +62,28 @@ dat3 = TAMMsupport::clean_limiting_stock(tamm.full3)
 ## `r tamm.name1`
 
 ```{r}
-path.cur = tamm.full1
-dat.overview = TAMMsupport::read_overview(path.cur)
-overview.form = TAMMsupport::format_overview(dat.overview)
-TAMMsupport::kable_overview(dat.overview = overview.form$dat.overview,
-                            ind.indent = overview.form$ind.indent,
-                            col.bold = overview.form$col.bold)
+path.cur <- tamm.full1
+dat.overview <- TAMMsupport::read_overview(path.cur)
+overview.form <- TAMMsupport::format_overview(dat.overview)
+TAMMsupport::kable_overview(
+  dat.overview = overview.form$dat.overview,
+  ind.indent = overview.form$ind.indent,
+  col.bold = overview.form$col.bold
+)
 ```
 
 
 ## `r tamm.name2`
 
 ```{r}
-path.cur = tamm.full2
-dat.overview = TAMMsupport::read_overview(path.cur)
-overview.form = TAMMsupport::format_overview(dat.overview)
-TAMMsupport::kable_overview(dat.overview = overview.form$dat.overview,
-                            ind.indent = overview.form$ind.indent,
-                            col.bold = overview.form$col.bold)
+path.cur <- tamm.full2
+dat.overview <- TAMMsupport::read_overview(path.cur)
+overview.form <- TAMMsupport::format_overview(dat.overview)
+TAMMsupport::kable_overview(
+  dat.overview = overview.form$dat.overview,
+  ind.indent = overview.form$ind.indent,
+  col.bold = overview.form$col.bold
+)
 ```
 
 
@@ -91,12 +91,14 @@ TAMMsupport::kable_overview(dat.overview = overview.form$dat.overview,
 ## `r tamm.name3`
 
 ```{r}
-path.cur = tamm.full3
-dat.overview = TAMMsupport::read_overview(path.cur)
-overview.form = TAMMsupport::format_overview(dat.overview)
-TAMMsupport::kable_overview(dat.overview = overview.form$dat.overview,
-                            ind.indent = overview.form$ind.indent,
-                            col.bold = overview.form$col.bold)
+path.cur <- tamm.full3
+dat.overview <- TAMMsupport::read_overview(path.cur)
+overview.form <- TAMMsupport::format_overview(dat.overview)
+TAMMsupport::kable_overview(
+  dat.overview = overview.form$dat.overview,
+  ind.indent = overview.form$ind.indent,
+  col.bold = overview.form$col.bold
+)
 ```
 
 :::
@@ -106,12 +108,12 @@ TAMMsupport::kable_overview(dat.overview = overview.form$dat.overview,
 
 ```{r}
 render_child <- function(cur.stock) {
-  res = knitr::knit_child(
+  res <- knitr::knit_child(
     text = xfun::read_utf8("tamm-compare3-child.qmd"),
     envir = rlang::env(cur.stock = cur.stock, dat1 = dat1, dat2 = dat2, dat3 = dat3),
     quiet = TRUE
   )
-  cat(res, sep = '\n')
+  cat(res, sep = "\n")
   cat("\n")
 }
 ```
@@ -121,5 +123,4 @@ render_child <- function(cur.stock) {
 #| results: 'asis'
 #| echo: false
 purrr::walk(unique(dat1$stock), render_child)
-
 ```
