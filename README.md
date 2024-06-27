@@ -138,6 +138,102 @@ clean_limiting_stock("Chin1224.xlsx") |>
     geom_bar(position="stack", stat="identity")
 ```
 
+## Stock, Fishery, and Timestep tables
+
+FRAM and TAMM often use stock id number, fishery id number, and timestep
+number to represent stock, fishery, and timestep respectively.
+TAMMsupport includes dataframe versions of the `Stock`, `Fishery`, and
+`TimeStep` tables of the Coho and Chinook FRAM databases for easy
+reference and to streamline merging human-readable names to dataframes
+that have only id numbers. These dataframes are named
+`fishery_chinook_fram`, `fishery_coho_fram`, `stock_chinook_fram`,
+`stock_coho_fram`, `timestep_chinook_fram`, and `timestep_coho_fram`,
+and have associated help files accessible with `?fishery_chinook_fram`
+etc. The initial rows of these dataframes are shown below.
+
+### `stock_chinook_fram`
+
+``` r
+knitr::kable(head(TAMMsupport::stock_chinook_fram, 5))
+```
+
+| species | stock_version | stock_id | production_region_number | management_unit_number | stock_name  | stock_long_name                |
+|:--------|--------------:|---------:|-------------------------:|-----------------------:|:------------|:-------------------------------|
+| CHINOOK |             5 |        4 |                        1 |                      6 | M-NK Sp Hat | Marked Nooksack Spr Hatchery   |
+| CHINOOK |             5 |        6 |                        1 |                     10 | M-NK Sp Nat | Marked Nooksack Spr Natural    |
+| CHINOOK |             5 |        8 |                        2 |                      2 | M-Skag FF   | Marked Skagit Summer/Fall Fing |
+| CHINOOK |             5 |       10 |                        2 |                      6 | M-SkagFYr   | Marked Skagit Summer/Fall Year |
+| CHINOOK |             5 |       12 |                        2 |                     10 | M-SkagSpY   | Marked Skagit Spring Year      |
+
+### `stock_coho_fram`
+
+``` r
+knitr::kable(head(TAMMsupport::stock_coho_fram, 5))
+```
+
+| species | stock_version | stock_id | production_region_number | management_unit_number | stock_name | stock_long_name                 |
+|:--------|--------------:|---------:|-------------------------:|-----------------------:|:-----------|:--------------------------------|
+| COHO    |             1 |        1 |                        1 |                      1 | U-nkskrw   | Nooksack River Wild UnMarked    |
+| COHO    |             1 |        2 |                        1 |                      2 | M-nkskrw   | Nooksack River Wild Marked      |
+| COHO    |             1 |        3 |                        1 |                      3 | U-kendlh   | Kendall Creek Hatchery UnMarked |
+| COHO    |             1 |        4 |                        1 |                      4 | M-kendlh   | Kendall Creek Hatchery Marked   |
+| COHO    |             1 |        5 |                        1 |                      5 | U-skokmh   | Skookum Creek Hatchery UnMarked |
+
+### `fishery_chinook_fram`
+
+``` r
+knitr::kable(head(TAMMsupport::fishery_chinook_fram, 5))
+```
+
+| species | version_number | fishery_id | fishery_name | fishery_title     |
+|:--------|---------------:|-----------:|:-------------|:------------------|
+| CHINOOK |              1 |         55 | Tr 6B:9Net   | Tr Area 6B:9 Net  |
+| CHINOOK |              1 |         56 | A 10 Sport   | NT Area 10 Sport  |
+| CHINOOK |              1 |         57 | A 11 Sport   | NT Area 11 Sport  |
+| CHINOOK |              1 |         58 | NT10:11Net   | NT Area 10:11 Net |
+| CHINOOK |              1 |         59 | Tr10:11Net   | Tr Area 10:11 Net |
+
+### `fishery_coho_fram`
+
+``` r
+knitr::kable(head(TAMMsupport::fishery_coho_fram, 5))
+```
+
+| species | version_number | fishery_id | fishery_name | fishery_title               |
+|:--------|---------------:|-----------:|:-------------|:----------------------------|
+| COHO    |              1 |          1 | No Cal Trm   | No Calif Cst Terminal Catch |
+| COHO    |              1 |          2 | Cn Cal Trm   | Cntrl Cal Cst Term Catch    |
+| COHO    |              1 |          3 | Ft Brg Spt   | Fort Bragg Sport            |
+| COHO    |              1 |          4 | Ft Brg Trl   | Fort Bragg Troll            |
+| COHO    |              1 |          5 | Ca KMZ Spt   | KMZ Sport                   |
+
+### `timestep_chinook_fram`
+
+``` r
+knitr::kable(head(TAMMsupport::timestep_chinook_fram, 5))
+```
+
+| species | version_number | time_step_id | time_step_name | time_step_title  |
+|:--------|---------------:|-------------:|:---------------|:-----------------|
+| CHINOOK |              1 |            1 | Oct-Apr        | October-April    |
+| CHINOOK |              1 |            2 | May-June       | May - June       |
+| CHINOOK |              1 |            3 | July-Sept      | July - September |
+| CHINOOK |              1 |            4 | Oct-Apr-2      | October-April-2  |
+
+### `timestep_coho_fram`
+
+``` r
+knitr::kable(head(TAMMsupport::timestep_coho_fram, 5))
+```
+
+| species | version_number | time_step_id | time_step_name | time_step_title    |
+|:--------|---------------:|-------------:|:---------------|:-------------------|
+| COHO    |              1 |            1 | Jan-Jun        | January - June     |
+| COHO    |              1 |            2 | July           | July               |
+| COHO    |              1 |            3 | August         | August             |
+| COHO    |              1 |            4 | Septmbr        | September          |
+| COHO    |              1 |            5 | Oct-Dec        | October - December |
+
 ## Tools in development
 
 These tools are still in development/prototyping stages, but are
@@ -161,10 +257,6 @@ Future goals include
 
 - workshopping and adding additional summary information based on user
   needs
-- modifying the .qmd and function to include optional additional
-  user-provided child .qmd documents, so that individual entities (wdfw,
-  tribes, etc) can systematically include additional visualizations or
-  summaries that may not be relevant to other entities.
 
 ### `tamm_compare()`
 
@@ -176,8 +268,3 @@ visualization of stock ERs will only plot those ERs. If `fisheries` is
 not provided, for each stock `tamm_compare()` will create a figure of
 impacts from all fisheries, and a separate plot of impacts from all SUS
 fisheries.
-
-Future goals include
-
-- generalizing to compare N TAMM files (e.g., make sure it works if we
-  only have 2 ocean options, or end up with four).

@@ -107,6 +107,48 @@ clean_limiting_stock("Chin1224.xlsx") |>
     geom_bar(position="stack", stat="identity")
 ```
 
+## Stock, Fishery, and Timestep tables
+
+FRAM and TAMM often use stock id number, fishery id number, and timestep number to represent stock, fishery, and timestep respectively. TAMMsupport includes dataframe versions of the `Stock`, `Fishery`, and `TimeStep` tables of the Coho and Chinook FRAM databases for easy reference and to streamline merging human-readable names to dataframes that have only id numbers. These dataframes are named `fishery_chinook_fram`, `fishery_coho_fram`, `stock_chinook_fram`, `stock_coho_fram`, `timestep_chinook_fram`, and `timestep_coho_fram`, and have associated help files accessible with `?fishery_chinook_fram` etc. The initial rows of these dataframes are shown below.
+
+### `stock_chinook_fram`
+
+```{r, results = 'asis'}
+knitr::kable(head(TAMMsupport::stock_chinook_fram, 5))
+```
+
+### `stock_coho_fram`
+
+```{r, results = 'asis'}
+knitr::kable(head(TAMMsupport::stock_coho_fram, 5))
+```
+
+### `fishery_chinook_fram`
+
+```{r, results = 'asis'}
+knitr::kable(head(TAMMsupport::fishery_chinook_fram, 5))
+```
+
+### `fishery_coho_fram`
+
+```{r, results = 'asis'}
+knitr::kable(head(TAMMsupport::fishery_coho_fram, 5))
+```
+
+### `timestep_chinook_fram`
+
+```{r, results = 'asis'}
+knitr::kable(head(TAMMsupport::timestep_chinook_fram, 5))
+```
+
+
+### `timestep_coho_fram`
+
+```{r, results = 'asis'}
+knitr::kable(head(TAMMsupport::timestep_coho_fram, 5))
+```
+
+
 
 ## Tools in development
 
@@ -122,14 +164,8 @@ quarto files used (e.g., to suggest additional edits or features), set argument 
 Future goals include
 
 - workshopping and adding additional summary information based on user needs
-- modifying the .qmd and function to include optional additional user-provided child .qmd documents,
-so that individual entities (wdfw, tribes, etc) can systematically include additional visualizations or summaries that may not be relevant to other entities.
-
 
 ### `tamm_compare()`
 
 `tamm_compare()` uses the same general approach as `tamm_report()`, but creates a report to compare any number TAMM files based off of Yi Xu's Rmarkdown report to compare exploitation rates for three ocean options. The optional argument `fisheries` takes a numeric vector of fishery IDs; visualization of stock ERs will only plot those ERs. If `fisheries` is not provided, for each stock `tamm_compare()` will create a figure of impacts from all fisheries, and a separate plot of impacts from all SUS fisheries.
 
-Future goals include
-
-- generalizing to compare N TAMM files (e.g., make sure it works if we only have 2 ocean options, or end up with four).
