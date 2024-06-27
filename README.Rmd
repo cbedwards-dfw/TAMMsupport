@@ -87,7 +87,7 @@ tamm_diff(filename.1 = "FRAM/Chin1124.xlsx",
 
 Note that since we typically manage ER to the nearest 0.1%, it is unlikely that a percent.digits value of 0 would be useful.
 
-Currently `tamm_diff()` only works when comparing Chinook TAMM files. In the future we could extend this to also work for Coho TAMM files.
+Currently `tamm_diff()` only works well when comparing Chinook TAMM files. Comparison of Coho TAMM files is in development -- the comparison itself works, but the output file does not replicate the formatting of the Coho TAMM, which makes reading the file unpleasant.
 
 ## Working with limiting stock sheet
 
@@ -107,9 +107,30 @@ clean_limiting_stock("Chin1224.xlsx") |>
     geom_bar(position="stack", stat="identity")
 ```
 
+## Tools in development
+
+These tools are functional, but still being developed.
+
+### `tamm_report()`
+
+`tamm_report()` summarizes key aspects of a single Chinook TAMM file in an html report, which is generated in the same folder as the summarized TAMM.
+
+Under the hood, tamm_report() uses a template parameterized quarto report and a child quarto file to help automate the creation of tabs for each stock. To see the underlying 
+quarto files used (e.g., to suggest additional edits or features), set argument `clean = FALSE` when calling `tamm_report()`. This will prevent the deletion of `tamm-visualizer.qmd` and `tamm-visualizer-child.qmd`, which will be present in the same folder as the TAMM and report. 
+
+Future goals include
+
+- workshopping and adding additional summary information based on user needs
+
+### `tamm_compare()`
+
+`tamm_compare()` uses the same general approach as `tamm_report()`, but creates a report to compare any number TAMM files based off of Yi Xu's Rmarkdown report to compare exploitation rates for three ocean options. The optional argument `fisheries` takes a numeric vector of fishery IDs; visualization of stock ERs will only plot those ERs. If `fisheries` is not provided, for each stock `tamm_compare()` will create a figure of impacts from all fisheries, and a separate plot of impacts from all SUS fisheries.
+
+
+
 ## Stock, Fishery, and Timestep tables
 
-FRAM and TAMM often use stock id number, fishery id number, and timestep number to represent stock, fishery, and timestep respectively. TAMMsupport includes dataframe versions of the `Stock`, `Fishery`, and `TimeStep` tables of the Coho and Chinook FRAM databases for easy reference and to streamline merging human-readable names to dataframes that have only id numbers. These dataframes are named `fishery_chinook_fram`, `fishery_coho_fram`, `stock_chinook_fram`, `stock_coho_fram`, `timestep_chinook_fram`, and `timestep_coho_fram`, and have associated help files accessible with `?fishery_chinook_fram` etc. The initial rows of these dataframes are shown below.
+FRAM and TAMM often use stock ID number, fishery ID number, and time step number to represent stock, fishery, and timestep respectively. TAMMsupport includes dataframe versions of the `Stock`, `Fishery`, and `TimeStep` tables of the Coho and Chinook FRAM databases for easy reference and to streamline merging human-readable names to dataframes that have only id numbers. These dataframes are named `fishery_chinook_fram`, `fishery_coho_fram`, `stock_chinook_fram`, `stock_coho_fram`, `timestep_chinook_fram`, and `timestep_coho_fram`, and have associated help files accessible with `?fishery_chinook_fram` etc. The initial rows of these dataframes are shown below.
 
 ### `stock_chinook_fram`
 
@@ -149,23 +170,4 @@ knitr::kable(head(TAMMsupport::timestep_coho_fram, 5))
 ```
 
 
-
-## Tools in development
-
-These tools are still in development/prototyping stages, but are functional. 
-
-### `tamm_report()`
-
-`tamm_report()` summarizes key aspects of a single Chinook TAMM file in an html report, which is generated in the same folder as the summarized TAMM.
-
-Under the hood, tamm_report() uses a template parameterized quarto report and a child quarto file to help automate the creation of tabs for each stock. To see the underlying 
-quarto files used (e.g., to suggest additional edits or features), set argument `clean = FALSE` when calling `tamm_report()`. This will prevent the deletion of `tamm-visualizer.qmd` and `tamm-visualizer-child.qmd`, which will be present in the same folder as the TAMM and report. 
-
-Future goals include
-
-- workshopping and adding additional summary information based on user needs
-
-### `tamm_compare()`
-
-`tamm_compare()` uses the same general approach as `tamm_report()`, but creates a report to compare any number TAMM files based off of Yi Xu's Rmarkdown report to compare exploitation rates for three ocean options. The optional argument `fisheries` takes a numeric vector of fishery IDs; visualization of stock ERs will only plot those ERs. If `fisheries` is not provided, for each stock `tamm_compare()` will create a figure of impacts from all fisheries, and a separate plot of impacts from all SUS fisheries.
 
