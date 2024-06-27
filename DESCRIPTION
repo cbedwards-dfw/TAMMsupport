@@ -26,3 +26,6 @@ Imports:
     utils,
     xldiff
 Remotes: cbedwards-dfw/xldiff
+Depends: 
+    R (>= 2.10)
+LazyData: true
