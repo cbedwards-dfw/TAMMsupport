@@ -9,10 +9,10 @@ A data frame with 78 rows and 7 columns:
 \describe{
 \item{species}{Species name}
 \item{stock_version}{}
-\item{stock_id}{stock id number in FRAM}
+\item{stock_id}{Chinook stock id number in FRAM}
 \item{production_region_number}{}
 \item{management_unit_number}{}
-\item{stock_name}{stock name in FRAM}
+\item{stock_name}{Chinook stock name in FRAM}
 \item{stock_long_name}{\code{stock_name} but more human readable}
 }
 }

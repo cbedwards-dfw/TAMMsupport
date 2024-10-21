@@ -37,7 +37,7 @@ read_key_tamm_sheets_coho <- function(xlsxFile) {
   sheets.list <- list()
   sheets.list$two <- readxl::read_excel(xlsxFile,
     sheet = "2",
-    range = "A1:BB80",
+    range = "A1:BY108",
     col_names = FALSE, .name_repair = "unique_quiet"
   )
   sheets.list$tami <- readxl::read_excel(xlsxFile,

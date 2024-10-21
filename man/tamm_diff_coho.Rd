@@ -8,7 +8,7 @@ tamm_diff_coho(
   filename.1,
   filename.2,
   results.name,
-  percent.digits = 1,
+  percent.digits = 2,
   numeric.digits = 1,
   numeric.digits.small = 4,
   dim.override = FALSE,

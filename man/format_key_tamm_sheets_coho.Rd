@@ -6,7 +6,7 @@
 \usage{
 format_key_tamm_sheets_coho(
   dat,
-  percent.digits = 1,
+  percent.digits = 2,
   numeric.digits = 1,
   numeric.digits.small = 4
 )

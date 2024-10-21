@@ -1,10 +1,15 @@
 Package: TAMMsupport
 Title: Streamline working with Terminal Area Management Modules
-Version: 0.0.0.9000
-Authors@R: 
+Version: 0.1.0
+Authors@R: c(
     person("Collin", "Edwards", , "Collin.Edwards@dfw.wa.gov", role = c("aut", "cre"),
-           comment = c(ORCID = "0000-0002-4937-5159"))
-Description: What the package does (one paragraph).
+           comment = c(ORCID = "0000-0002-4937-5159")),
+    person("Ty", "Garber",
+           email = "tyler.garber@dfw.wa.gov", 
+           role = c("aut"))
+           )
+Description: A convenient tool for interfacing with Terminal Area Manamagement Modules (TAMMs) in 
+    R environments.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
@@ -19,7 +24,6 @@ Imports:
     quarto,
     readxl,
     rlang,
-    rmarkdown,
     stats,
     tibble,
     tidyr,

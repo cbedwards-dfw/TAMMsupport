@@ -7,8 +7,8 @@
 #' \describe{
 #'   \item{species}{Species name}
 #'   \item{version_number}{}
-#'   \item{fishery_id}{fishery id number in FRAM}
-#'   \item{fishery_name}{fishery name in FRAM}
+#'   \item{fishery_id}{Chinook fishery id number in FRAM}
+#'   \item{fishery_name}{Chinook fishery name in FRAM}
 #'   \item{fishery_title}{consistent and more human readable version of `fishery_name`}
 #' }
 #' @source 2024 Pre-Season Chinook DB.mdb
@@ -23,8 +23,8 @@
 #' \describe{
 #'   \item{species}{Species name}
 #'   \item{version_number}{}
-#'   \item{fishery_id}{fishery id number in FRAM}
-#'   \item{fishery_name}{fishery name in FRAM}
+#'   \item{fishery_id}{Coho fishery id number in FRAM}
+#'   \item{fishery_name}{Coho fishery name in FRAM}
 #'   \item{fishery_title}{consistent and more human readable version of `fishery_name`}
 #' }
 #' @source 2024NOF_CohoFRAMdatabase_distribution.mdb
@@ -39,10 +39,10 @@
 #' \describe{
 #'   \item{species}{Species name}
 #'   \item{stock_version}{}
-#'   \item{stock_id}{stock id number in FRAM}
+#'   \item{stock_id}{Chinook stock id number in FRAM}
 #'   \item{production_region_number}{}
 #'   \item{management_unit_number}{}
-#'   \item{stock_name}{stock name in FRAM}
+#'   \item{stock_name}{Chinook stock name in FRAM}
 #'   \item{stock_long_name}{`stock_name` but more human readable}
 #' }
 #' @source 2024 Pre-Season Chinook DB.mdb
@@ -57,10 +57,10 @@
 #' \describe{
 #'   \item{species}{Species name}
 #'   \item{stock_version}{}
-#'   \item{stock_id}{stock id number in FRAM}
+#'   \item{stock_id}{Coho stock id number in FRAM}
 #'   \item{production_region_number}{}
 #'   \item{management_unit_number}{}
-#'   \item{stock_name}{stock name in FRAM}
+#'   \item{stock_name}{Coho stock name in FRAM}
 #'   \item{stock_long_name}{`stock_name` but more human readable}
 #' }
 #' @source 2024NOF_CohoFRAMdatabase_distribution.mdb

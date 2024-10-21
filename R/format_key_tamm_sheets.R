@@ -44,7 +44,7 @@ format_key_tamm_sheets_chin <- function(dat, percent.digits = 1, # decimal digit
     ),
     percent.digits = percent.digits
   )
-  ## cells to round to 2 digits (e.g. fish counts)
+  ## cells to round to minimal digits (e.g. fish counts)
   dat$input <- chunk_formater_rounder(dat$input,
     block.ranges = c(
       "K14:N91", "O53:R72",
@@ -65,7 +65,8 @@ format_key_tamm_sheets_chin <- function(dat, percent.digits = 1, # decimal digit
       "B101:B299", "L183:O191",
       "P77:P80", "AB198:AC199",
       "D251:F299", "L278:O278",
-      "R267:R276", "D18", "D101:D117"
+      "R267:R276", "D18", "D101:D117",
+      "H109"
     ),
     digits = numeric.digits.small
   )
@@ -80,9 +81,65 @@ format_key_tamm_sheets_chin <- function(dat, percent.digits = 1, # decimal digit
 #'
 #' @return list of dataframes with same structure as `dat`, contents modified.
 #'
-format_key_tamm_sheets_coho <- function(dat, percent.digits = 1, # decimal digits to track/display for %s
+format_key_tamm_sheets_coho <- function(dat, percent.digits = 2, # decimal digits to track/display for %s
                                         numeric.digits = 1,
                                         numeric.digits.small = 4) { # if numeric vector, avoid percantage-ing those rows.
+  #"two" sheet modifications
+  dat$two <- chunk_formater_percenter(dat$two,
+                                          block.ranges = c(
+                                            "E11:T13",
+                                            "Z11:AK13",
+                                            "AE51",
+                                            "BC11:BP13"
 
+                                          ),
+                                          percent.digits = percent.digits
+  )
+  dat$two <- chunk_formater_rounder(dat$two,
+                                        block.ranges = c(
+                                          "E9:BP65",
+                                          "AT67:AX73"
+
+                                        ),
+                                        digits = numeric.digits
+  )
+
+  ## wacoast modifications
+  ## cells to format as percentages
+  dat$wacoast <- chunk_formater_percenter(dat$wacoast,
+                                        block.ranges = c(
+                                          "L19",
+                                          "L35:L36",
+                                          "L51:M51",
+                                          "L65",
+                                          "L82",
+                                          "L109",
+                                          "L134",
+                                          "L140",
+                                          "W24:AB31",
+                                          "W41:AC47"
+                                        ),
+                                        percent.digits = percent.digits
+  )
+  ## cells to round to minimal digits (e.g., fish counts)
+  dat$wacoast <- chunk_formater_rounder(dat$wacoast,
+                                      block.ranges = c(
+                                      "H14:H104", "H112:H144",
+                                      "J14:K144","P14:R144",
+                                     "Q151:S187",
+                                     "W58:AE93"
+
+                                      ),
+                                      digits = numeric.digits
+  )
+
+  ## cells to round to many digits (e.g., harvest rates)
+  dat$wacoast <- chunk_formater_rounder(dat$wacoast,
+                                        block.ranges = c(
+                                          "I14:I144"),
+                                        digits = numeric.digits.small
+  )
+
+  ## Final step: cut the hidden columns off wacoast
   return(dat)
 }

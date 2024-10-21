@@ -9,8 +9,8 @@ A data frame with 74 rows and 5 columns:
 \describe{
 \item{species}{Species name}
 \item{version_number}{}
-\item{fishery_id}{fishery id number in FRAM}
-\item{fishery_name}{fishery name in FRAM}
+\item{fishery_id}{Chinook fishery id number in FRAM}
+\item{fishery_name}{Chinook fishery name in FRAM}
 \item{fishery_title}{consistent and more human readable version of \code{fishery_name}}
 }
 }

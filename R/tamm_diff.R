@@ -193,7 +193,7 @@ tamm_diff_chin <- function(filename.1, filename.2, results.name, percent.digits 
 #'
 #' @inheritParams tamm_diff
 #'
-tamm_diff_coho <- function(filename.1, filename.2, results.name, percent.digits = 1, numeric.digits = 1,
+tamm_diff_coho <- function(filename.1, filename.2, results.name, percent.digits = 2, numeric.digits = 1,
                            numeric.digits.small = 4, dim.override = FALSE,
                            wrap.text = FALSE) {
   f1 <- read_key_tamm_sheets_coho(filename.1)
@@ -257,6 +257,7 @@ tamm_diff_coho <- function(filename.1, filename.2, results.name, percent.digits 
 
 
   tamm_format_wacoast(wb)
+  tamm_format_two(wb)
 
   for (i in 1:length(out)) {
     i
