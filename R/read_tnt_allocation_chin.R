@@ -7,7 +7,8 @@
 #' Try to create same naming conventions as in `read_overview_complete()`.
 #'
 #' @param xlsxFile Character vector. Filename (including path) for chinook TAMM
-
+#' @return dataframe with the treaty and nontreaty mortalities at each fishery.
+#' @export
 
 read_tnt_allocation_chin = function(xlsxFile){
   raw = readxl::read_excel(xlsxFile, sheet = "2A_CU&M_H+N",

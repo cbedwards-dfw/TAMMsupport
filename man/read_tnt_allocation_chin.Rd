@@ -9,6 +9,9 @@ read_tnt_allocation_chin(xlsxFile)
 \arguments{
 \item{xlsxFile}{Character vector. Filename (including path) for chinook TAMM}
 }
+\value{
+dataframe with the treaty and nontreaty mortalities at each fishery.
+}
 \description{
 Extract Treaty and Nontreaty numbers from "2A_CU&M_H+N" TAMM sheet
 }
