@@ -4,12 +4,21 @@
 \alias{reformat_management}
 \title{Convenience function for formatting TAMM management criterion chunks}
 \usage{
-reformat_management(df, cols.percent, rows.header = 2, notes = "")
+reformat_management(
+  df,
+  cols.percent,
+  rows.percent = NULL,
+  rows.header = 2,
+  notes = NULL
+)
 }
 \arguments{
 \item{df}{dataframe trimmed from TAMM management page to just the relevant stock's criterion.}
 
 \item{cols.percent}{Column numbers for columns that should be converted to percents.}
+
+\item{rows.percent}{Character vector of row sub-stock names identifying rows (if any) that should be translated to percents. Defaults to NULL.
+Developed to accomodate "CERC (SUS)" in Snohomish.}
 
 \item{rows.header}{How many rows are used to make up the header? Defaults to 2, but sometimes header block
 in TAMM is 1 row.}
@@ -19,7 +28,7 @@ associated with this stock. Generally based on comments in excel doc, can also f
 contain caveats.}
 }
 \value{
-Stock managament criterion list, containing dataframe extracted from TAMM and notes hard-coded in based on TAMM cell comments.
+Stock management criterion list, containing dataframe extracted from TAMM and notes hard-coded in based on TAMM cell comments.
 }
 \description{
 Internal tool to simplify converting TAMM sheet to stock management criterion lists. See

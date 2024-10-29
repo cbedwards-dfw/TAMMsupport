@@ -10,7 +10,9 @@ read_management_chin(file)
 \item{file}{filename, including filepath if appropriate}
 }
 \value{
-List of stock lists
+Tibble, with \verb{$management_name} giving the name of the management criteria as specified in
+the TAMM, \verb{$management_criteria} giving a list of dataframes with the associated management criteria, formatted appropriately, and
+\verb{$notes} giving a list of character vectors with notes (if any) to help interpret the criteria.
 }
 \description{
 Extract and format management criterion from Chinook TAMM

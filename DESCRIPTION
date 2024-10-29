@@ -25,6 +25,7 @@ Imports:
     readxl,
     rlang,
     stats,
+    stringr,
     tibble,
     tidyr,
     utils,
