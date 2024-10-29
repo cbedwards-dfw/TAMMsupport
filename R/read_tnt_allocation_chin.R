@@ -18,8 +18,11 @@ read_tnt_allocation_chin = function(xlsxFile){
     t() |>
     data.frame(row.names = NULL)
   names(df) = c("name.1", "name.2", "nontreaty", "treaty")
+
   df = df |>
     dplyr::mutate(fishery.original = paste0(.data$name.1, " ", .data$name.2), .before = "nontreaty") |>
-    dplyr::select(-"name.1", -"name.2")
+    dplyr::select(-"name.1", -"name.2") |>
+    dplyr::mutate(nontreaty = as.numeric(.data$nontreaty),
+           treaty = as.numeric(.data$treaty))
   return(df)
 }
