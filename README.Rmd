@@ -18,7 +18,9 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of TAMMsupport is to provide R-based tools for working with and interpreting Terminal Area Management Module files (https://framverse.github.io/fram_doc/calcs_glossary.html#Terminal_Area_Management_Module_(TAMM)).
+The goal of `{TAMMsupport}` is to provide R-based tools for working with and interpreting Terminal Area Management Module files (https://framverse.github.io/fram_doc/calcs_glossary.html#Terminal_Area_Management_Module_(TAMM)).
+
+`{TAMMsupport}` is part of the ["framverse" R universe of packages](https://framverse.r-universe.dev/packages).
 
 ## Cheatsheet
 
@@ -33,14 +35,21 @@ I want to...
 
 ## Installation
 
-You can install the development version of TAMMsupport like so:
+You can install the compiled version of `{TAMMsupport}` through the R-universe package repository:
 
-``` r
+```r
+install.packages("TAMMsupport", repos = "https://framverse.r-universe.dev")
+
+```
+
+If you have RTools installed, you can also install the development version of TAMMsupport with `{devtools}` like so:
+
+```r
 devtools::install_github("cbedwards-dfw/TAMMsupport")    
 
 ```
 
-or
+or with `{pak}` like so:
 
 ```r
 pak::pkg_install("cbedwards-dfw/TAMMsupport")

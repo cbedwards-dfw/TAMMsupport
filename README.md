@@ -6,9 +6,12 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of TAMMsupport is to provide R-based tools for working with and
-interpreting Terminal Area Management Module files
+The goal of `{TAMMsupport}` is to provide R-based tools for working with
+and interpreting Terminal Area Management Module files
 (<https://framverse.github.io/fram_doc/calcs_glossary.html#Terminal_Area_Management_Module_(TAMM)>).
+
+`{TAMMsupport}` is part of the [“framverse” R universe of
+packages](https://framverse.r-universe.dev/packages).
 
 ## Cheatsheet
 
@@ -31,13 +34,21 @@ I want to…
 
 ## Installation
 
-You can install the development version of TAMMsupport like so:
+You can install the compiled version of `{TAMMsupport}` through the
+R-universe package repository:
+
+``` r
+install.packages("TAMMsupport", repos = "https://framverse.r-universe.dev")
+```
+
+If you have RTools installed, you can also install the development
+version of TAMMsupport with `{devtools}` like so:
 
 ``` r
 devtools::install_github("cbedwards-dfw/TAMMsupport")    
 ```
 
-or
+or with `{pak}` like so:
 
 ``` r
 pak::pkg_install("cbedwards-dfw/TAMMsupport")
@@ -193,13 +204,13 @@ etc. The initial rows of these dataframes are shown below.
 knitr::kable(head(TAMMsupport::stock_chinook_fram, 5))
 ```
 
-| species | stock_version | stock_id | production_region_number | management_unit_number | stock_name  | stock_long_name                |
-|:--------|--------------:|---------:|-------------------------:|-----------------------:|:------------|:-------------------------------|
-| CHINOOK |             5 |        4 |                        1 |                      6 | M-NK Sp Hat | Marked Nooksack Spr Hatchery   |
-| CHINOOK |             5 |        6 |                        1 |                     10 | M-NK Sp Nat | Marked Nooksack Spr Natural    |
-| CHINOOK |             5 |        8 |                        2 |                      2 | M-Skag FF   | Marked Skagit Summer/Fall Fing |
-| CHINOOK |             5 |       10 |                        2 |                      6 | M-SkagFYr   | Marked Skagit Summer/Fall Year |
-| CHINOOK |             5 |       12 |                        2 |                     10 | M-SkagSpY   | Marked Skagit Spring Year      |
+| species | stock_version | stock_id | production_region_number | management_unit_number | stock_name | stock_long_name |
+|:---|---:|---:|---:|---:|:---|:---|
+| CHINOOK | 5 | 4 | 1 | 6 | M-NK Sp Hat | Marked Nooksack Spr Hatchery |
+| CHINOOK | 5 | 6 | 1 | 10 | M-NK Sp Nat | Marked Nooksack Spr Natural |
+| CHINOOK | 5 | 8 | 2 | 2 | M-Skag FF | Marked Skagit Summer/Fall Fing |
+| CHINOOK | 5 | 10 | 2 | 6 | M-SkagFYr | Marked Skagit Summer/Fall Year |
+| CHINOOK | 5 | 12 | 2 | 10 | M-SkagSpY | Marked Skagit Spring Year |
 
 ### `stock_coho_fram`
 
@@ -207,13 +218,13 @@ knitr::kable(head(TAMMsupport::stock_chinook_fram, 5))
 knitr::kable(head(TAMMsupport::stock_coho_fram, 5))
 ```
 
-| species | stock_version | stock_id | production_region_number | management_unit_number | stock_name | stock_long_name                 |
-|:--------|--------------:|---------:|-------------------------:|-----------------------:|:-----------|:--------------------------------|
-| COHO    |             1 |        1 |                        1 |                      1 | U-nkskrw   | Nooksack River Wild UnMarked    |
-| COHO    |             1 |        2 |                        1 |                      2 | M-nkskrw   | Nooksack River Wild Marked      |
-| COHO    |             1 |        3 |                        1 |                      3 | U-kendlh   | Kendall Creek Hatchery UnMarked |
-| COHO    |             1 |        4 |                        1 |                      4 | M-kendlh   | Kendall Creek Hatchery Marked   |
-| COHO    |             1 |        5 |                        1 |                      5 | U-skokmh   | Skookum Creek Hatchery UnMarked |
+| species | stock_version | stock_id | production_region_number | management_unit_number | stock_name | stock_long_name |
+|:---|---:|---:|---:|---:|:---|:---|
+| COHO | 1 | 1 | 1 | 1 | U-nkskrw | Nooksack River Wild UnMarked |
+| COHO | 1 | 2 | 1 | 2 | M-nkskrw | Nooksack River Wild Marked |
+| COHO | 1 | 3 | 1 | 3 | U-kendlh | Kendall Creek Hatchery UnMarked |
+| COHO | 1 | 4 | 1 | 4 | M-kendlh | Kendall Creek Hatchery Marked |
+| COHO | 1 | 5 | 1 | 5 | U-skokmh | Skookum Creek Hatchery UnMarked |
 
 ### `fishery_chinook_fram`
 
