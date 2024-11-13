@@ -18,6 +18,8 @@ tibble summarizing entries with the color of interest, including sheet, row and 
 }
 \description{
 Designed for tracking the status of TAMM inputs, which are typically color coded.
+Searches through specified sheet or sheets, looking for cells whose colors match the
+\code{target_cell} argument. Returns a condensed list of those entries.
 }
 \examples{
 \dontrun{

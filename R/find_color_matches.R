@@ -1,6 +1,8 @@
 #' Identify all cells in Excel sheet or sheets with matching cell colors
 #'
 #' Designed for tracking the status of TAMM inputs, which are typically color coded.
+#' Searches through specified sheet or sheets, looking for cells whose colors match the
+#' `target_cell` argument. Returns a condensed list of those entries.
 #'
 #' @param file Character string of excel file name, including path if relevant
 #' @param target_cell Character string of excel address of cell with the cell shading of interest (e.g., "B4")
