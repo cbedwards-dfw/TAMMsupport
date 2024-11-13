@@ -28,6 +28,7 @@ Imports:
     stringr,
     tibble,
     tidyr,
+    tidyxl,
     utils,
     xldiff
 Remotes: cbedwards-dfw/xldiff
