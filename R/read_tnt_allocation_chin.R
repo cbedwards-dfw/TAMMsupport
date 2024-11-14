@@ -3,12 +3,12 @@
 #' Extract Treaty and Nontreaty numbers from "2A_CU&M_H+N" TAMM sheet. For Elwha and Dungeoness,
 #' separate allocations are calculated using column O of the JDF tab
 #'
-#' Currently provides dataframe with `fishery.original` column identifying the fishery.
-#' With advice from Derek, will add a `fishery` column that is human-readable version of above. Might
-#' Try to create same naming conventions as in `read_overview_complete()`.
+#' Currently provides dataframe with `stock.original` column identifying the stock based on their names
+#' in the TAMM, and `stock.clean` with more human-readable names (which are generally consistent
+#' with other stock names, like those used to label the management criterion).
 #'
 #' @param xlsxFile Character vector. Filename (including path) for chinook TAMM
-#' @return dataframe with the treaty and nontreaty mortalities at each fishery.
+#' @return dataframe with the treaty and nontreaty mortalities at each stock.
 #' @export
 
 read_tnt_allocation_chin = function(xlsxFile){

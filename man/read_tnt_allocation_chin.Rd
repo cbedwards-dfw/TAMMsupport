@@ -10,14 +10,14 @@ read_tnt_allocation_chin(xlsxFile)
 \item{xlsxFile}{Character vector. Filename (including path) for chinook TAMM}
 }
 \value{
-dataframe with the treaty and nontreaty mortalities at each fishery.
+dataframe with the treaty and nontreaty mortalities at each stock.
 }
 \description{
 Extract Treaty and Nontreaty numbers from "2A_CU&M_H+N" TAMM sheet. For Elwha and Dungeoness,
 separate allocations are calculated using column O of the JDF tab
 }
 \details{
-Currently provides dataframe with \code{fishery.original} column identifying the fishery.
-With advice from Derek, will add a \code{fishery} column that is human-readable version of above. Might
-Try to create same naming conventions as in \code{read_overview_complete()}.
+Currently provides dataframe with \code{stock.original} column identifying the stock based on their names
+in the TAMM, and \code{stock.clean} with more human-readable names (which are generally consistent
+with other stock names, like those used to label the management criterion).
 }
