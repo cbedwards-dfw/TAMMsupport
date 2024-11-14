@@ -13,7 +13,8 @@ read_tnt_allocation_chin(xlsxFile)
 dataframe with the treaty and nontreaty mortalities at each fishery.
 }
 \description{
-Extract Treaty and Nontreaty numbers from "2A_CU&M_H+N" TAMM sheet
+Extract Treaty and Nontreaty numbers from "2A_CU&M_H+N" TAMM sheet. For Elwha and Dungeoness,
+separate allocations are calculated using column O of the JDF tab
 }
 \details{
 Currently provides dataframe with \code{fishery.original} column identifying the fishery.
