@@ -56,7 +56,7 @@ read_overview_complete <- function(path) {
     dplyr::mutate(season = c(rep("spring/early", 10), rep("summer/fall", 20), "misc", "misc")) |>
     dplyr::mutate(primary_stock = c(
       NA, rep("Nooksack", 3), rep("Skagit", 4), "White", "Dungeness",
-      NA, rep("Skagit", 4), rep("Stillaguramish", 3), rep("snohomish", 3),
+      NA, rep("Skagit", 4), rep("Stillaguamish", 3), rep("Snohomish", 3),
       "Lake WA (Cedar R.)", rep("Green", 2), rep("Puyallup", 2),
       "Nisqually", "Western Strait-Hoko", "Elwha", "Mid-Hood Canal",
       rep("Skokomish", 2)
