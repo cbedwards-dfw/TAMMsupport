@@ -35,7 +35,7 @@ read_tnt_allocation_chin = function(xlsxFile){
                    "Nisq. River" = "Nisqually",
                    "McAll. Creek" = "McAllister Hatchery",
                    "Deschutes & 13D-K" = "Deschutes Hatchery",
-                   "Elwha" = "Elhwa",
+                   "Elwha" = "Elwha",
                    "Dungeness" = "Dungeness"
   )
 
