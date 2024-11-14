@@ -50,7 +50,7 @@ read_tnt_allocation_chin = function(xlsxFile){
   names(df) = c("name.1", "name.2", "nontreaty", "treaty")
 
   df = df |>
-    dplyr::mutate(fishery.original = paste0(.data$name.1, " ", .data$name.2), .before = "nontreaty") |>
+    dplyr::mutate(stock.original = paste0(.data$name.1, " ", .data$name.2), .before = "nontreaty") |>
     dplyr::select(-"name.1", -"name.2") |>
     dplyr::mutate(nontreaty = as.numeric(.data$nontreaty),
                   treaty = as.numeric(.data$treaty))
@@ -82,10 +82,10 @@ read_tnt_allocation_chin = function(xlsxFile){
                      Elwha = sum(.data$Elwha)) |>
     tidyr::pivot_longer(cols = c("Dungeness", "Elwha")) |>
     tidyr::pivot_wider(names_from = .data$treaty.status, values_from = .data$value) |>
-    dplyr::rename("fishery.original" = "name")
+    dplyr::rename("stock.original" = "name")
   df = rbind(df, dat.jdf)
   df = df |>
-    dplyr::mutate(fishery.clean = stringr::str_replace_all(.data$fishery.original, pattern = name.mapping))
+    dplyr::mutate(stock.clean = stringr::str_replace_all(.data$stock.original, pattern = name.mapping))
 
   return(df)
 }
