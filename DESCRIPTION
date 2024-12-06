@@ -17,9 +17,11 @@ RoxygenNote: 7.3.2
 Imports: 
     cli,
     dplyr,
+    glue,
     janitor,
     kableExtra,
     openxlsx,
+    openxlsx2,
     purrr,
     quarto,
     readxl,
@@ -30,6 +32,7 @@ Imports:
     tidyr,
     tidyxl,
     utils,
+    visNetwork,
     xldiff
 Remotes: cbedwards-dfw/xldiff
 Depends: 
