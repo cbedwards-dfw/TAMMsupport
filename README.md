@@ -31,6 +31,9 @@ I want to…
   `read_limiting_stock()` or `clean_limiting_stock()`. If desired, use
   `filter_tamm_wa()` to then filter the results to just Washington
   fisheries.
+- Trace the network of cells used by a formula in a TAMM (or other excel
+  file)? Use `trace_formula()` to generate a dependency network, and
+  `make_tracer_network()` to visualize it.
 
 ## Installation
 
