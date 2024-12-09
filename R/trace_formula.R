@@ -84,7 +84,7 @@ trace_formula = function(path,
       new.addresses.temp = new.addresses  ## storing for later comparisons
       new.addresses[!grepl("!", new.addresses)] = paste0(address.parsed$sheet, "!", new.addresses[!grepl("!", new.addresses)])
     }else{
-      new.addresses = NULL
+      new.addresses = new.addresses.temp = NULL
     }
 
 
