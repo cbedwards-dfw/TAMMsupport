@@ -32,7 +32,8 @@ trace_formula = function(path,
                          max.it = 5000, ##failsafe -- using a while loop, and it will stop after this many cell checks
                          verbose = TRUE, ##print each cell when checked?
                          split.ranges = FALSE){
-
+  ## regular expression for pulling out addresses from excel formulas, used below.
+  address.splitter.regex = "['][ &A-Za-z0-9_-]*?['][!]([$]?[A-Z]{1,3}[$]?[0-9]{1,7}(:[$]?[A-Z]{1,3}[$]?[0-9]{1,7})?)|[A-Za-z0-9]*?[!]([$]?[A-Z]{1,3}[$]?[0-9]{1,7}(:[$]?[A-Z]{1,3}[$]?[0-9]{1,7})?)|([$]?[A-Z]{1,3}[$]?[0-9]{1,7}(:[$]?[A-Z]{1,3}[$]?[0-9]{1,7})?)"
   cells.sample = cell.start
   ## storing results
   res = list()
@@ -75,7 +76,8 @@ trace_formula = function(path,
     contents = safe_convert_numeric(contents)
 
     if(!is.na(formula)){
-      new.addresses = unlist(stringr::str_extract_all(formula, "[']?[ A-Za-z0-9_-]*?[']?[!]([$]?[A-Z]{1,3}[$]?[0-9]{1,7}(:[$]?[A-Z]{1,3}[$]?[0-9]{1,7})?)|([$]?[A-Z]{1,3}[$]?[0-9]{1,7}(:[$]?[A-Z]{1,3}[$]?[0-9]{1,7})?)"))
+      new.addresses = unlist(stringr::str_extract_all(formula,
+                                                      address.splitter.regex))
       if(split.ranges & any(grepl(":", new.addresses))){## if "split.ranges" flag is true, generate all the cells from a range. Otherwise, using only initial cell of range.
         addresses.clean = new.addresses[!grepl(":", new.addresses)]
         addresses.range = new.addresses[grepl(":", new.addresses)]
