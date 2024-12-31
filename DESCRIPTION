@@ -38,4 +38,4 @@ Remotes: cbedwards-dfw/xldiff
 Depends: 
     R (>= 2.10)
 LazyData: true
-URL: https://framverse.r-universe.dev/TAMMsupport, https://github.com/cbedwards-dfw/TAMMsupport
+URL: https://framverse.r-universe.dev/TAMMsupport, https://github.com/cbedwards-dfw/TAMMsupport, https://cbedwards-dfw.github.io/TAMMsupport/
