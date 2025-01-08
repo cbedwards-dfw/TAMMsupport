@@ -2,6 +2,7 @@
 
 export(address_parser)
 export(clean_limiting_stock)
+export(compare_chinook_inputs)
 export(filter_tamm_wa)
 export(filter_tamm_wa_chin)
 export(filter_tamm_wa_coho)

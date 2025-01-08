@@ -33,7 +33,7 @@ Imports:
     tidyxl,
     utils,
     visNetwork,
-    xldiff
+    xldiff (>= 0.1.0)
 Remotes: cbedwards-dfw/xldiff
 Depends: 
     R (>= 2.10)
