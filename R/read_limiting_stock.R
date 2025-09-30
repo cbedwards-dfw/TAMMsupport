@@ -6,7 +6,7 @@
 #' @param longform Should results be in long form (good for R stuff) (`TRUE`) or replicate the structure of the TAMM sheet (`FALSE`). Logical, defaults to `FALSE`.
 #' @importFrom rlang .data
 #'
-#' @return data frame summarizing the TAMM limiting stock tab.
+#' @return data frame summarizing the TAMM limiting stock tab. The "block" of the limiting tab is identified with column "stock_type", where "ALL_N" is all natural fish (in TAMM, the first block), "ALL_H" is all hatchery fish (in TAMM, block starts on row 81), "UM_H" is unmarked hatchery (in TAMM, starts on row 160), "UM_N" is unmarked naturals (in TAMM, starts row 239), "AD_H" is marked hatchery (in TAMM, starts row 318), and "AD_N" is marked naturals (should be all zeros unless something strange changes in the future; in TAMM starts row 397).
 #' @export
 #'
 read_limiting_stock <- function(filename, longform = FALSE) {
@@ -19,6 +19,10 @@ read_limiting_stock <- function(filename, longform = FALSE) {
   )
 
   res <- dplyr::bind_rows(
+    readxl::read_excel(filename, range = "LimitingStkComplete mod!J5:DL76", col_names = column.names, .name_repair = "unique_quiet") |>
+      dplyr::mutate(stock_type = "ALL_N"),
+    readxl::read_excel(filename, range = "LimitingStkComplete mod!J84:DL155", col_names = column.names, .name_repair = "unique_quiet") |>
+      dplyr::mutate(stock_type = "ALL_H"),
     readxl::read_excel(filename, range = "LimitingStkComplete mod!J163:DL234", col_names = column.names, .name_repair = "unique_quiet") |>
       dplyr::mutate(stock_type = "UM_H"),
     readxl::read_excel(filename, range = "LimitingStkComplete mod!J242:DL313", col_names = column.names, .name_repair = "unique_quiet") |>
