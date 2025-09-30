@@ -44,7 +44,7 @@ source("tamm-report-parameters-intermediate.R")
 dat <- TAMMsupport::read_limiting_stock(tamm.full) |>
   rename(fishery_id = FisheryID)
 ## figure out if this is a coho or chinook, add as attribute so we can used FRAMR^2 filters
-run.num <- read_excel(tamm.full, range = "1!B2", col_names = FALSE)
+run.num <- read_excel(tamm.full, range = "1!B2", col_names = FALSE, .name_repair = "unique_quiet")
 if (grepl("Chin", run.num)) {
   attr(dat, "species") <- "CHINOOK"
 }

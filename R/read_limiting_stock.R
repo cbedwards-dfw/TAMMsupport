@@ -13,16 +13,20 @@ read_limiting_stock <- function(filename, longform = FALSE) {
   column.names <- c(
     "Fishery", "FisheryID",
     filename |>
-      readxl::read_excel(range = "LimitingStkComplete mod!L3:DL3", col_names = F) |>
+      readxl::read_excel(range = "LimitingStkComplete mod!L3:DL3", col_names = F, .name_repair = "unique_quiet") |>
       unlist() |> stats::na.omit() |> unique() |> rep(each = 7) |>
       paste(rep(c("t2_aeq", "t3_aeq", "t4_aeq", "t2_er", "t3_er", "t4_er", "yr_er"), 15), sep = "_")
   )
 
   res <- dplyr::bind_rows(
-    readxl::read_excel(filename, range = "LimitingStkComplete mod!J163:DL234", col_names = column.names) |> dplyr::mutate(stock_type = "UM_H"),
-    readxl::read_excel(filename, range = "LimitingStkComplete mod!J242:DL313", col_names = column.names) |> dplyr::mutate(stock_type = "UM_N"),
-    readxl::read_excel(filename, range = "LimitingStkComplete mod!J321:DL392", col_names = column.names) |> dplyr::mutate(stock_type = "M_H"),
-    readxl::read_excel(filename, range = "LimitingStkComplete mod!J400:DL471", col_names = column.names) |> dplyr::mutate(stock_type = "M_N")
+    readxl::read_excel(filename, range = "LimitingStkComplete mod!J163:DL234", col_names = column.names, .name_repair = "unique_quiet") |>
+      dplyr::mutate(stock_type = "UM_H"),
+    readxl::read_excel(filename, range = "LimitingStkComplete mod!J242:DL313", col_names = column.names, .name_repair = "unique_quiet") |>
+      dplyr::mutate(stock_type = "UM_N"),
+    readxl::read_excel(filename, range = "LimitingStkComplete mod!J321:DL392", col_names = column.names, .name_repair = "unique_quiet") |>
+      dplyr::mutate(stock_type = "AD_H"),
+    readxl::read_excel(filename, range = "LimitingStkComplete mod!J400:DL471", col_names = column.names, .name_repair = "unique_quiet") |>
+      dplyr::mutate(stock_type = "AD_N")
   ) |>
     dplyr::mutate(
       fish_type = dplyr::case_when(
@@ -65,7 +69,7 @@ read_limiting_stock <- function(filename, longform = FALSE) {
 #'
 clean_limiting_stock <- function(filename) {
   dat <- read_limiting_stock(filename)
-  run.num <- readxl::read_excel(filename, range = "1!B2", col_names = FALSE)
+  run.num <- readxl::read_excel(filename, range = "1!B2", col_names = FALSE, .name_repair = "unique_quiet")
   if (grepl("Chin", run.num)) {
     attr(dat, "species") <- "CHINOOK"
   }

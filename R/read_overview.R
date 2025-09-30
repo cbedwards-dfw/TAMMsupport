@@ -47,7 +47,8 @@ read_overview <- function(path) {
 read_overview_complete <- function(path) {
   raw <- readxl::read_excel(path,
     sheet = "ER_ESC_Overview_New",
-    range = "A2:H34"
+    range = "A2:H34",
+    .name_repair = "unique_quiet"
   ) |> janitor::clean_names()
 
   ## some annoyances: manually construct season and primary stock labels to provide clarity. Based on
