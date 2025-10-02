@@ -17,7 +17,8 @@ read_management_chin = function(file){
   man.page <- suppressMessages(readxl::read_excel(file,
                                                   sheet = "RMP_Mgmt_Criteria",
                                                   range = "A1:M85",
-                                                  col_names = FALSE))
+                                                  col_names = FALSE,
+                                                  .name_repair = "unique_quiet"))
   ## split based on whitespage rows
   n <- rowSums(is.na(man.page)) == ncol(man.page)
   cs <- cumsum(n) + 1

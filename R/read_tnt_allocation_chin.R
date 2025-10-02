@@ -42,7 +42,8 @@ read_tnt_allocation_chin = function(xlsxFile){
 
 
   raw = readxl::read_excel(xlsxFile, sheet = "2A_CU&M_H+N",
-                           col_names = FALSE)
+                           col_names = FALSE,
+                           .name_repair = "unique_quiet")
   ## rows and columns identified by hand
   df = raw[c(9, 10, 56, 57), c(4:10, 15:21, 25:33)] |>
     t() |>
@@ -57,7 +58,8 @@ read_tnt_allocation_chin = function(xlsxFile){
 
   ## elwha and dungeness separate calculations
   raw = readxl::read_excel(xlsxFile, sheet = "JDF",
-                           col_names = FALSE)
+                           col_names = FALSE,
+                           .name_repair = "unique_quiet")
   ## trimming to the relevant region
   dat.jdf = raw[-(1:7),15:18]
   ## need to trim off the bottom section with summaries

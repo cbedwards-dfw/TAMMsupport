@@ -6,23 +6,31 @@
 #' @param longform Should results be in long form (good for R stuff) (`TRUE`) or replicate the structure of the TAMM sheet (`FALSE`). Logical, defaults to `FALSE`.
 #' @importFrom rlang .data
 #'
-#' @return data frame summarizing the TAMM limiting stock tab.
+#' @return data frame summarizing the TAMM limiting stock tab. The "block" of the limiting tab is identified with column "stock_type". "first_section" is the first section in the TAMM; this section is primarily natural fish but includes some hatchery fish if they were included in management objectives. "ALL_H" is all hatchery fish (in TAMM, block starts on row 81), "UM_H" is unmarked hatchery (in TAMM, starts on row 160), "UM_N" is unmarked naturals (in TAMM, starts row 239), "AD_H" is marked hatchery (in TAMM, starts row 318), and "AD_N" is marked naturals (unless programs begin marking natural fish, this should always be all 0s; in TAMM starts row 397).
 #' @export
 #'
 read_limiting_stock <- function(filename, longform = FALSE) {
   column.names <- c(
     "Fishery", "FisheryID",
     filename |>
-      readxl::read_excel(range = "LimitingStkComplete mod!L3:DL3", col_names = F) |>
+      readxl::read_excel(range = "LimitingStkComplete mod!L3:DL3", col_names = F, .name_repair = "unique_quiet") |>
       unlist() |> stats::na.omit() |> unique() |> rep(each = 7) |>
       paste(rep(c("t2_aeq", "t3_aeq", "t4_aeq", "t2_er", "t3_er", "t4_er", "yr_er"), 15), sep = "_")
   )
 
   res <- dplyr::bind_rows(
-    readxl::read_excel(filename, range = "LimitingStkComplete mod!J163:DL234", col_names = column.names) |> dplyr::mutate(stock_type = "UM_H"),
-    readxl::read_excel(filename, range = "LimitingStkComplete mod!J242:DL313", col_names = column.names) |> dplyr::mutate(stock_type = "UM_N"),
-    readxl::read_excel(filename, range = "LimitingStkComplete mod!J321:DL392", col_names = column.names) |> dplyr::mutate(stock_type = "M_H"),
-    readxl::read_excel(filename, range = "LimitingStkComplete mod!J400:DL471", col_names = column.names) |> dplyr::mutate(stock_type = "M_N")
+    readxl::read_excel(filename, range = "LimitingStkComplete mod!J5:DL76", col_names = column.names, .name_repair = "unique_quiet") |>
+      dplyr::mutate(stock_type = "ALL_N"),
+    readxl::read_excel(filename, range = "LimitingStkComplete mod!J84:DL155", col_names = column.names, .name_repair = "unique_quiet") |>
+      dplyr::mutate(stock_type = "ALL_H"),
+    readxl::read_excel(filename, range = "LimitingStkComplete mod!J163:DL234", col_names = column.names, .name_repair = "unique_quiet") |>
+      dplyr::mutate(stock_type = "UM_H"),
+    readxl::read_excel(filename, range = "LimitingStkComplete mod!J242:DL313", col_names = column.names, .name_repair = "unique_quiet") |>
+      dplyr::mutate(stock_type = "UM_N"),
+    readxl::read_excel(filename, range = "LimitingStkComplete mod!J321:DL392", col_names = column.names, .name_repair = "unique_quiet") |>
+      dplyr::mutate(stock_type = "AD_H"),
+    readxl::read_excel(filename, range = "LimitingStkComplete mod!J400:DL471", col_names = column.names, .name_repair = "unique_quiet") |>
+      dplyr::mutate(stock_type = "AD_N")
   ) |>
     dplyr::mutate(
       fish_type = dplyr::case_when(
@@ -65,7 +73,7 @@ read_limiting_stock <- function(filename, longform = FALSE) {
 #'
 clean_limiting_stock <- function(filename) {
   dat <- read_limiting_stock(filename)
-  run.num <- readxl::read_excel(filename, range = "1!B2", col_names = FALSE)
+  run.num <- readxl::read_excel(filename, range = "1!B2", col_names = FALSE, .name_repair = "unique_quiet")
   if (grepl("Chin", run.num)) {
     attr(dat, "species") <- "CHINOOK"
   }
