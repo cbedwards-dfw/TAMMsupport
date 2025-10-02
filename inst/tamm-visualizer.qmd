@@ -34,7 +34,6 @@ tamm.full <- paste0(tamm.path, "/", tamm.name)
 source("tamm-report-parameters-intermediate.R")
 ```
 
-
 # `r tamm.name`
 
 ## Processing TAMM
@@ -118,7 +117,6 @@ purrr::walk(unique(dat$stock), render_child)
 ```
 :::
 
-
 ```{r}
 render_additional_children <- function(cur.file) {
   res <- knitr::knit_child(
@@ -138,5 +136,3 @@ render_additional_children <- function(cur.file) {
 cat("# Additional content \n\n")
 purrr::walk(additional.children, render_additional_children)
 ```
-
-
