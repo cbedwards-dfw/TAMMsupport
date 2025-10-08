@@ -20,7 +20,7 @@ read_limiting_stock <- function(filename, longform = FALSE) {
 
   res <- dplyr::bind_rows(
     readxl::read_excel(filename, range = "LimitingStkComplete mod!J5:DL76", col_names = column.names, .name_repair = "unique_quiet") |>
-      dplyr::mutate(stock_type = "ALL_N"),
+      dplyr::mutate(stock_type = "first_section"),
     readxl::read_excel(filename, range = "LimitingStkComplete mod!J84:DL155", col_names = column.names, .name_repair = "unique_quiet") |>
       dplyr::mutate(stock_type = "ALL_H"),
     readxl::read_excel(filename, range = "LimitingStkComplete mod!J163:DL234", col_names = column.names, .name_repair = "unique_quiet") |>

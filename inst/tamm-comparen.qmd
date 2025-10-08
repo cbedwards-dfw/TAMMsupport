@@ -91,7 +91,6 @@ purrr::walk(tamm.names, render_child)
 # Compare exploitation
 
 ::: panel-tabset
-
 ```{r}
 render_child <- function(cur.stock) {
   res <- knitr::knit_child(
@@ -109,5 +108,4 @@ render_child <- function(cur.stock) {
 #| echo: false
 purrr::walk(unique(dat.ls[[1]]$stock), render_child)
 ```
-
 :::
