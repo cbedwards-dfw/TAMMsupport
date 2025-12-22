@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">TAMMsupport</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -16,6 +16,7 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto"><li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
+<li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
 <li class="nav-item"><a class="external-link nav-link" href="https://github.com/cbedwards-dfw/TAMMsupport/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
@@ -35,8 +36,7 @@
 
 
 
-
-    </div><div class="section level2">
+      <dl></dl></div><div class="section level2">
 
 
 
@@ -47,259 +47,400 @@
 
         </dt>
         <dd>Parse excel address including sheet</dd>
-      </dl><dl><dt>
+
+        <dt>
+
+          <code><a href="as_numeric_safe.html">as_numeric_safe()</a></code>
+
+        </dt>
+        <dd>Safely convert character numerics into numeric</dd>
+
+        <dt>
 
           <code><a href="chunk_formater_percenter.html">chunk_formater_percenter()</a></code>
 
         </dt>
         <dd>Format chunks of dataframe to present as %s, round digits</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="chunk_formater_rounder.html">chunk_formater_rounder()</a></code>
 
         </dt>
         <dd>Format chunks of dataframe to round digits</dd>
-      </dl><dl><dt>
+
+        <dt>
+
+          <code><a href="chunk_read_2A_CUandM.html">chunk_read_2A_CUandM()</a></code>
+
+        </dt>
+        <dd>Read chunk for table 2A_CUandM</dd>
+
+        <dt>
+
+          <code><a href="chunk_read_2A_CUandM_N.html">chunk_read_2A_CUandM_N()</a></code>
+
+        </dt>
+        <dd>Read in individual chunks for sheet 2A_Cu&amp;M_N</dd>
+
+        <dt>
+
+          <code><a href="chunk_read_2A_CUnmrkd.html">chunk_read_2A_CUnmrkd()</a></code>
+
+        </dt>
+        <dd>Reads chunk of 2A_CUnmrkd sheet</dd>
+
+        <dt>
+
+          <code><a href="chunk_read_2A_Cmrkd.html">chunk_read_2A_Cmrkd()</a></code>
+
+        </dt>
+        <dd>Read in chunks of the 2A_Cmrkd sheet</dd>
+
+        <dt>
+
+          <code><a href="chunk_read_finisher.html">chunk_read_finisher()</a></code>
+
+        </dt>
+        <dd>Finishes a chunk after initial reading</dd>
+
+        <dt>
 
           <code><a href="clean_limiting_stock.html">clean_limiting_stock()</a></code>
 
         </dt>
         <dd>Generates clean read of TAMM limiting stock sheet</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="compare_chinook_inputs.html">compare_chinook_inputs()</a></code>
 
         </dt>
         <dd>Compare differences in input sheets of two TAMM files</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="filter_tamm_wa.html">filter_tamm_wa()</a></code> <code><a href="filter_tamm_wa.html">filter_tamm_wa_chin()</a></code> <code><a href="filter_tamm_wa.html">filter_tamm_wa_coho()</a></code>
 
         </dt>
         <dd>Filters a dataframe to Washington State fisheries.</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="find_color_matches.html">find_color_matches()</a></code>
 
         </dt>
         <dd>Identify all cells in Excel sheet or sheets with matching cell colors</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="fishery_chinook_fram.html">fishery_chinook_fram</a></code>
 
         </dt>
         <dd>Chinook fishery information</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="fishery_coho_fram.html">fishery_coho_fram</a></code>
 
         </dt>
         <dd>Coho fishery information</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="fishery_renamer.html">fishery_renamer()</a></code>
 
         </dt>
         <dd>relabel inconsistent fishery names in FRAM/TAMM</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="format_key_tamm_sheets_chin.html">format_key_tamm_sheets_chin()</a></code>
 
         </dt>
         <dd>Modify list of Chinook TAMM spreadsheet dataframes to facilitate comparison.</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="format_key_tamm_sheets_coho.html">format_key_tamm_sheets_coho()</a></code>
 
         </dt>
         <dd>Modify list of Coho TAMM spreadsheet dataframes to facilitate comparison.</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="format_overview.html">format_overview()</a></code>
 
         </dt>
         <dd>Format TAMM overview for easy printing</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="formula_formater.html">formula_formater()</a></code>
 
         </dt>
         <dd>Add spaces to excel formulas for readability</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="fun_percenter.html">fun_percenter()</a></code>
 
         </dt>
         <dd>Format vector of mixed characters to present numbers as percents</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="fun_rounder.html">fun_rounder()</a></code>
 
         </dt>
         <dd>Format vector of mixed characters to round numbers to specified digits</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="kable_overview.html">kable_overview()</a></code>
 
         </dt>
         <dd>Print table of overview using kable and kableExtra</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="make_tracer_edges.html">make_tracer_edges()</a></code>
 
         </dt>
         <dd>Calculate and format edges from traced objects</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="make_tracer_network.html">make_tracer_network()</a></code>
           <span class="badge lifecycle lifecycle-experimental">experimental</span>
         </dt>
         <dd>Visualize excel formula tracing</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="make_tracer_nodes.html">make_tracer_nodes()</a></code>
 
         </dt>
         <dd>List cells and contents from traced objects</dd>
-      </dl><dl><dt>
+
+        <dt>
+
+          <code><a href="process_2ac_aeqs.html">process_2ac_aeqs()</a></code>
+          <span class="badge lifecycle lifecycle-experimental">experimental</span>
+        </dt>
+        <dd><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="figures/lifecycle-experimental.svg" alt="[Experimental]"></a> Read and combine aeq sections form tables 2a-2c</dd>
+
+        <dt>
+
+          <code><a href="process_2ac_ers.html">process_2ac_ers()</a></code>
+          <span class="badge lifecycle lifecycle-experimental">experimental</span>
+        </dt>
+        <dd><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="figures/lifecycle-experimental.svg" alt="[Experimental]"></a> function to process + combine the er sections from tables 2a-2c, used below</dd>
+
+        <dt>
 
           <code><a href="quick_er_format.html">quick_er_format()</a></code>
 
         </dt>
         <dd>Quick helper function to format vectors that contain text and ERs</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="range_splitter.html">range_splitter()</a></code>
 
         </dt>
         <dd>Translate excel-style cell range to vector of cell addresses.</dd>
-      </dl><dl><dt>
+
+        <dt>
+
+          <code><a href="read_2aCUandM.html">read_2aCUandM()</a></code>
+
+        </dt>
+        <dd>Read and process all parts of sheet 2A CU and M</dd>
+
+        <dt>
+
+          <code><a href="read_2aCUandM_N.html">read_2aCUandM_N()</a></code>
+
+        </dt>
+        <dd>Read and combine all chunks for sheet 2A CU and M_N</dd>
+
+        <dt>
+
+          <code><a href="read_2aCUnmrkd.html">read_2aCUnmrkd()</a></code>
+
+        </dt>
+        <dd>read all info for 2aCUnmrkd and process it.</dd>
+
+        <dt>
+
+          <code><a href="read_2aCmrkd.html">read_2aCmrkd()</a></code>
+
+        </dt>
+        <dd>Reads sheet of 2A_Cmrkd</dd>
+
+        <dt>
+
+          <code><a href="read_2a_sheets.html">read_2a_sheets()</a></code>
+
+        </dt>
+        <dd>Read and combine all 2a sheets from a TAMM file</dd>
+
+        <dt>
+
+          <code><a href="read_jdf.html">read_jdf()</a></code>
+
+        </dt>
+        <dd>Read in AEQ and ER information from the JDF sheet</dd>
+
+        <dt>
 
           <code><a href="read_key_tamm_sheets_chin.html">read_key_tamm_sheets_chin()</a></code>
 
         </dt>
         <dd>Read Chinook TAMM files to extract the key sheets</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="read_key_tamm_sheets_coho.html">read_key_tamm_sheets_coho()</a></code>
 
         </dt>
         <dd>Read Chinook TAMM files to extract the key sheets</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="read_limiting_stock.html">read_limiting_stock()</a></code>
 
         </dt>
         <dd>Read TAMM limiting stock complete tab</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="read_management_chin.html">read_management_chin()</a></code>
 
         </dt>
         <dd>Extract and format management criterion from Chinook TAMM</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="read_overview.html">read_overview()</a></code>
 
         </dt>
         <dd>Read overview sheet from TAMM and return key stock</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="read_overview_complete.html">read_overview_complete()</a></code>
 
         </dt>
         <dd>Read overview sheet from TAMM and return all stock</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="read_tnt_allocation_chin.html">read_tnt_allocation_chin()</a></code>
 
         </dt>
         <dd><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="figures/lifecycle-experimental.svg" alt="[Experimental]"></a></dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="reformat_management.html">reformat_management()</a></code>
 
         </dt>
         <dd>Convenience function for formatting TAMM management criterion chunks</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="safe_convert_numeric.html">safe_convert_numeric()</a></code>
 
         </dt>
         <dd>Convert string of number to numeric</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="stock_chinook_fram.html">stock_chinook_fram</a></code>
 
         </dt>
         <dd>Chinook stock information</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="stock_coho_fram.html">stock_coho_fram</a></code>
 
         </dt>
         <dd>Coho stock information</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="tamm_compare.html">tamm_compare()</a></code>
 
         </dt>
         <dd>Generate summary comparison of any number of TAMM files</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="tamm_compare3.html">tamm_compare3()</a></code>
 
         </dt>
         <dd>Generate summary comparison of 3 TAMM files</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="tamm_diff.html">tamm_diff()</a></code>
 
         </dt>
         <dd>Compare key sheets of TAMM files</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="tamm_diff_chin.html">tamm_diff_chin()</a></code>
 
         </dt>
         <dd>Compare key sheets of Chinook TAMM files</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="tamm_diff_coho.html">tamm_diff_coho()</a></code>
 
         </dt>
         <dd>Compare key sheets of Coho TAMM files</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="tamm_format_sheets.html">tamm_format_overview()</a></code> <code><a href="tamm_format_sheets.html">tamm_format_limiting()</a></code> <code><a href="tamm_format_sheets.html">tamm_format_input()</a></code> <code><a href="tamm_format_sheets.html">tamm_format_wacoast()</a></code>
 
         </dt>
         <dd>Apply final formatting to diff'd TAMM sheets</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="tamm_report.html">tamm_report()</a></code>
 
         </dt>
         <dd>Generate report of figures from TAMM file</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="timestep_chinook_fram.html">timestep_chinook_fram</a></code>
 
         </dt>
         <dd>Chinook timestep information stock information</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="timestep_coho_fram.html">timestep_coho_fram</a></code>
 
         </dt>
         <dd>Coho timestep information stock information</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="trace_formula.html">trace_formula()</a></code>
           <span class="badge lifecycle lifecycle-experimental">experimental</span>
         </dt>
         <dd>Trace the calculations of a cell recursively through all referenced cells</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="validate_data_frame.html">validate_data_frame()</a></code>
 
@@ -314,7 +455,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer></div>

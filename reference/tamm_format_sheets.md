@@ -1,0 +1,41 @@
+# Apply final formatting to diff'd TAMM sheets
+
+Functions that add formatting to broadly replicate the formatting of the
+TAMM sheets. Colored foregrounds have been toned down to help change
+highlighting pop, and some of the complicated or superfluous formatting
+has been skipped.
+
+## Usage
+
+``` r
+tamm_format_overview(wb, diff.sheet, tabname = "overview")
+
+tamm_format_limiting(wb, tabname = "limiting")
+
+tamm_format_input(wb, tabname = "input", wrap.text = FALSE)
+
+tamm_format_wacoast(wb, tabname = "wacoast")
+```
+
+## Arguments
+
+- wb:
+
+  `openxlsx` workbook object containing `$overview`, `limiting` and
+  `$input` sheets with the contents of diffing two TAMM files.
+
+- diff.sheet:
+
+  For `tamm_format_overview`, the output of
+  [`xldiff::sheet_comp`](https://cbedwards-dfw.github.io/xldiff//reference/sheet_comp.html)
+  of the overview tab. Used to programmatically bold the appropriate ERs
+  based on the management objective.
+
+- tabname:
+
+  Name of sheet in the wb to be modified. Defaults to correct value.
+
+- wrap.text:
+
+  Should specific cells with long content use text wrapping? Defaults to
+  FALSE.
