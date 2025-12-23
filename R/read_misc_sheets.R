@@ -121,7 +121,7 @@ process_2ac_aeqs <- function(tab_2a, tab_2b, tab_2c) {
         names_to = "stock"
       )
   ) |>
-    dplyr::filter(!is.na(.data$value)) |>
+    # dplyr::filter(!is.na(.data$value)) |>
     janitor::clean_names()
 
   ## fix weird \1 values in fishery labels. Doing separate from those above
@@ -198,7 +198,16 @@ chunk_read_finisher = function(sheet_name, table_name, raw, raw_titles, data_er,
 
   data = data |>
     dplyr::filter(.data$fishery != "-" | is.na(.data$fishery)) |>
-    dplyr::filter(.data$fishery != "=" | is.na(.data$fishery))
+    dplyr::filter(.data$fishery != "=" | is.na(.data$fishery)) |>
+  ## weird special case: in some cases 2B has "Freshwater Test" in the $fishery_assignment column
+  ## instead of $fishery column. Fixing this:
+    dplyr::mutate(fishery = dplyr::if_else(is.na(fishery) & fishery_assignment == "Freshwater Test",
+                                           "Freshwater Test",
+                                           fishery)) |>
+    dplyr::mutate(fishery_assignment = dplyr::if_else(fishery == "Freshwater Test" & fishery_assignment == "Freshwater Test",
+                                           NA,
+                                           fishery_assignment))
+
 
 
   for(i in 2:nrow(data)){
@@ -325,7 +334,7 @@ chunk_read_2A_CUnmrkd = function(tamm_filepath, start_col, end_col, table_name){
   sheet_name = "2A_CUnmrkd"
   raw = readxl::read_excel(tamm_filepath,
                            sheet = sheet_name,
-                           range = glue::glue("{start_col}12:{end_col}48"),
+                           range = glue::glue("{start_col}12:{end_col}46"),
                            col_names = FALSE,
                            .name_repair = "unique_quiet")
 
