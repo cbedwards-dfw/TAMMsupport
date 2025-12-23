@@ -579,5 +579,17 @@ read_2a_sheets = function(tamm_filepath, stock_cleanup = TRUE){
     aeq = dplyr::bind_rows(aeq, temp$aeq)
     er = dplyr::bind_rows(er, temp$er)
   }
+  aeq <- aeq |>
+    dplyr::mutate(fishery_joint_label = dplyr::if_else(is.na(.data$fishery_assignment),
+                                                       .data$fishery,
+                                 glue::glue("{.data$fishery} {.data$fishery_assignment}")),
+                  .before = .data$fishery
+    )
+  er <- er |>
+    dplyr::mutate(fishery_joint_label = dplyr::if_else(is.na(.data$fishery_assignment),
+                                                       .data$fishery,
+                                                       glue::glue("{.data$fishery} {.data$fishery_assignment}")),
+                  .before = .data$fishery
+    )
   return(list(aeq = aeq, er = er))
 }
