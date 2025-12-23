@@ -201,12 +201,12 @@ chunk_read_finisher = function(sheet_name, table_name, raw, raw_titles, data_er,
     dplyr::filter(.data$fishery != "=" | is.na(.data$fishery)) |>
   ## weird special case: in some cases 2B has "Freshwater Test" in the $fishery_assignment column
   ## instead of $fishery column. Fixing this:
-    dplyr::mutate(fishery = dplyr::if_else(is.na(fishery) & fishery_assignment == "Freshwater Test",
+    dplyr::mutate(fishery = dplyr::if_else(is.na(.data$fishery) & .data$fishery_assignment == "Freshwater Test",
                                            "Freshwater Test",
-                                           fishery)) |>
-    dplyr::mutate(fishery_assignment = dplyr::if_else(fishery == "Freshwater Test" & fishery_assignment == "Freshwater Test",
+                                           .data$fishery)) |>
+    dplyr::mutate(fishery_assignment = dplyr::if_else(.data$fishery == "Freshwater Test" & .data$fishery_assignment == "Freshwater Test",
                                            NA,
-                                           fishery_assignment))
+                                           .data$fishery_assignment))
 
 
 
@@ -548,6 +548,13 @@ read_jdf = function(tamm_filepath, stock_cleanup = TRUE){
 
   aeq$fishery = gsub("Freshwater Sport: \1", "Freshwater Sport:", aeq$fishery, fixed = TRUE)
   aeq$fishery = gsub("Freshwater Sport: \\1", "Freshwater Sport:", aeq$fishery, fixed = TRUE)
+
+  aeq <- aeq |>
+    dplyr::mutate(fishery_joint_label = dplyr::if_else(is.na(.data$fishery_assignment),
+                                                       .data$fishery,
+                                                       glue::glue("{.data$fishery} {.data$fishery_assignment}")),
+                  .before = .data$fishery
+    )
 
   return(list(aeq = aeq, er = NULL))
 
