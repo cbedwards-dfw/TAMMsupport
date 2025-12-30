@@ -4,10 +4,10 @@
 \alias{chunk_read_2A_CUnmrkd}
 \title{Reads chunk of 2A_CUnmrkd sheet}
 \usage{
-chunk_read_2A_CUnmrkd(tamm_filepath, start_col, end_col, table_name)
+chunk_read_2A_CUnmrkd(full_sheet, start_col, end_col, table_name)
 }
 \arguments{
-\item{tamm_filepath}{tame file path}
+\item{full_sheet}{entire raw spreadsheet}
 
 \item{start_col}{Letter of the column the chunk starts on}
 

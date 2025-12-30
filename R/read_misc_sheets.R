@@ -1,32 +1,3 @@
-## For reading each sheet, I've written a "chunk reader" (gets an individual
-## table part) and then a sheet reader. The "chunk readers" need to do a lot of
-## tasks that are identical between sheets. I've extracted that code and put it
-## in `chunk_read_finisher`. basic work flow: individual chunk readers grab one
-## of the tables from one of the sheets (the aeq and er sections), making sure
-## to use the right rows and adding an appropriately placed "total" to one of
-## the er fishery_assignment entries. Then it calls "chunk_read_finisher" to do
-## a bunch of processing. The individual chunk readers (e.g.,
-## chunk_reader_2A_Cmrkd) basically take the table from the excel sheet and
-## cleans it up while keeping it the same shape.
-
-## The "read_*" function like read_2acmrkd() read all the tables from a single
-## sheet, and do some additional processing: making stock names consistent, and
-## convert to longform
-
-## Finally, read_2a_sheets() calls each of the individual read_* functions for
-## the 2A sheets (those with functions to handle them) and then combines those
-## into a single longform "aeq" and a single longform "er" sheet.
-##
-## read_jdf() does something similar, but combines the chunk and sheet reading
-## into one function, and it's not included in read_2a_sheets(), as the data is
-## somewhat differently shaped.
-
-## In terms of actual usage, we should be able to get all the relevant info of a
-## TAMM with read_jdf() and read_2a_sheets(), each of which will return a list
-## containing an aeq and er dataframe. (for read_jdf, there's no er info, but
-## I've got it returning a list of the same shape to make it easier to write
-## consistent code.)
-
 #' Safely convert character numerics into numeric
 #'
 #' Function to translate columns that "should" be numeric into numeric
@@ -36,19 +7,15 @@
 #'
 #' @return Either numeric vector of x or (if that is lossy) character returns input.
 #'
-as_numeric_safe <-  function(x){
+as_numeric_safe <- function(x) {
   attempt_numeric <- as.numeric(x)
   ## did we add NAs by converting? If not, it's safe
-  if(sum(is.na(attempt_numeric)) == sum(is.na(x))){
+  if (sum(is.na(attempt_numeric)) == sum(is.na(x))) {
     return(attempt_numeric)
-  }else{
+  } else {
     return(x)
   }
 }
-
-
-
-
 
 #'  `r lifecycle::badge("experimental")`
 ## function to process + combine the aeq sections from tables 2a-2c, used below
@@ -183,118 +150,138 @@ process_2ac_ers <- function(tab_2a, tab_2b, tab_2c) {
 #'
 #' @return A list with $aeq and $er, each a dataframe
 #'
-chunk_read_finisher = function(sheet_name, table_name, raw, raw_titles, data_er, do_er = TRUE){
-  raw_titles[is.na(raw_titles)] = ""
+chunk_read_finisher <- function(sheet_name, table_name, raw, raw_titles, data_er, do_er = TRUE) {
+  raw_titles[is.na(raw_titles)] <- ""
 
-  raw_titles = apply(raw_titles, 2, paste0, collapse = " ")
-  raw_titles = gsub("[*]", "", raw_titles)
-  raw_titles = gsub("^ ", "", raw_titles)
+  raw_titles <- apply(raw_titles, 2, paste0, collapse = " ")
+  raw_titles <- gsub("[*]", "", raw_titles)
+  raw_titles <- gsub("^ ", "", raw_titles)
   # raw_titles = janitor::make_clean_names(raw_titles)
 
-  data = raw
-  names(data) = raw_titles
-  names(data)[1] = "fishery"
-  names(data)[2] = "fishery_assignment"
+  data <- raw
+  names(data) <- raw_titles
+  names(data)[1] <- "fishery"
+  names(data)[2] <- "fishery_assignment"
 
-  data = data |>
+  data <- data |>
     dplyr::filter(.data$fishery != "-" | is.na(.data$fishery)) |>
     dplyr::filter(.data$fishery != "=" | is.na(.data$fishery)) |>
-  ## weird special case: in some cases 2B has "Freshwater Test" in the $fishery_assignment column
-  ## instead of $fishery column. Fixing this:
+    ## weird special case: in some cases 2B has "Freshwater Test" in the $fishery_assignment column
+    ## instead of $fishery column. Fixing this:
     dplyr::mutate(fishery = dplyr::if_else(is.na(.data$fishery) & .data$fishery_assignment == "Freshwater Test",
-                                           "Freshwater Test",
-                                           .data$fishery)) |>
+      "Freshwater Test",
+      .data$fishery
+    )) |>
     dplyr::mutate(fishery_assignment = dplyr::if_else(.data$fishery == "Freshwater Test" & .data$fishery_assignment == "Freshwater Test",
-                                           NA,
-                                           .data$fishery_assignment))
+      NA,
+      .data$fishery_assignment
+    ))
 
 
 
-  for(i in 2:nrow(data)){
-    if(is.na(data$fishery[i]) & (!is.na(data$fishery_assignment[i]))){
-      data$fishery[i] = data$fishery[i-1]
+  for (i in 2:nrow(data)) {
+    if (is.na(data$fishery[i]) & (!is.na(data$fishery_assignment[i]))) {
+      data$fishery[i] <- data$fishery[i - 1]
     }
   }
   ## tired. Want to cut out rows that are all NAs. Base R solution
-  inds.allna = which(apply(data, 1, function(x){all(is.na(x))}))
-  data = data[-inds.allna,]
-  data = data |>
-    #deal with inconsistent "NA" designation in sheet
-    dplyr::mutate(dplyr::across(-tidyr::any_of(c("fishery", "fishery_assignment")),
-                                ~ dplyr::if_else(.x %in% c("na", "NA", "Na"),
-                                                 NA,
-                                                 .x
-                                )))
+  inds.allna <- which(apply(data, 1, function(x) {
+    all(is.na(x))
+  }))
+  data <- data[-inds.allna, ]
+  data <- data |>
+    # deal with inconsistent "NA" designation in sheet
+    dplyr::mutate(dplyr::across(
+      -tidyr::any_of(c("fishery", "fishery_assignment")),
+      ~ dplyr::if_else(.x %in% c("na", "NA", "Na"),
+        NA,
+        .x
+      )
+    ))
   ## want non-elementwise approach, so looping
   ## for any columns but the first two, if we safely can, convert to numeric
-  cols_numeric = setdiff(colnames(data), c("fishery", "fishery_assignment"))
-  for(cur_col in cols_numeric){
-    data[[cur_col]] =  as_numeric_safe(data[[cur_col]])
+  cols_numeric <- setdiff(colnames(data), c("fishery", "fishery_assignment"))
+  for (cur_col in cols_numeric) {
+    data[[cur_col]] <- as_numeric_safe(data[[cur_col]])
   }
 
-  if(do_er){
-
+  if (do_er) {
     ## annoying fixes to fix implied values
     ## drop down "SUS OCean Only ER" label to the next two rows
     ## give a "total" label for SUS ocean only ER row 1
-    names(data_er) = names(data)
-    for(i in 2:nrow(data_er)){
-      if(is.na(data_er$fishery[i]) & (!is.na(data_er$fishery_assignment[i]))){
-        data_er$fishery[i] = data_er$fishery[i-1]
+    names(data_er) <- names(data)
+    for (i in 2:nrow(data_er)) {
+      if (is.na(data_er$fishery[i]) & (!is.na(data_er$fishery_assignment[i]))) {
+        data_er$fishery[i] <- data_er$fishery[i - 1]
       }
     }
-    data_er = data_er |>
+    data_er <- data_er |>
       dplyr::filter(.data$fishery != "-" | is.na(.data$fishery)) |>
       dplyr::filter(.data$fishery != "=" | is.na(.data$fishery))
 
-    cols_numeric = setdiff(colnames(data_er), c("fishery", "fishery_assignment"))
-    for(cur_col in cols_numeric){
-      data_er[[cur_col]] =  as_numeric_safe(data_er[[cur_col]])
+    cols_numeric <- setdiff(colnames(data_er), c("fishery", "fishery_assignment"))
+    for (cur_col in cols_numeric) {
+      data_er[[cur_col]] <- as_numeric_safe(data_er[[cur_col]])
     }
 
-    data_er$sheet = sheet_name
-    data_er$table = table_name
-  } else{
-    data_er = NULL
+    data_er$sheet <- sheet_name
+    data_er$table <- table_name
+  } else {
+    data_er <- NULL
   }
 
-  data$sheet = sheet_name
-  data$table = table_name
+  data$sheet <- sheet_name
+  data$table <- table_name
 
   return(list(aeq = data, er = data_er))
+}
+
+## helper function to make it easy to slice sections out of a full "worksheet" df
+## based on A1 addresses
+sheet_slicer <- function(full_sheet, a1_start, a1_end) {
+  cell_range <- xldiff::cell_range_translate(as.character(glue::glue("{a1_start}:{a1_end}")),
+    expand = FALSE
+  )
+  sliced <- dplyr::as_tibble(
+    as.matrix(
+      full_sheet[
+        cell_range$row[1]:cell_range$row[2],
+        cell_range$col[1]:cell_range$col[2]
+      ]
+    )
+  )
+  return(sliced)
 }
 
 ## 2A_Cmrkd -----------------------------
 #' Read in chunks of the 2A_Cmrkd sheet
 #'
-#' @param tamm_filepath tame file path
+#' @param full_sheet entire raw spreadsheet
 #' @param start_col Letter of the column the chunk starts on
 #' @param end_col Letter of the column the chunk ends on
 #' @param table_name name of table
 #'
-chunk_read_2A_Cmrkd = function(tamm_filepath, start_col, end_col, table_name){
-  sheet_name = "2A_Cmrkd"
-  raw = readxl::read_excel(tamm_filepath,
-                           sheet = sheet_name,
-                           range = glue::glue("{start_col}12:{end_col}46"),
-                           col_names = FALSE,
-                           .name_repair = "unique_quiet")
+chunk_read_2A_Cmrkd <- function(full_sheet, start_col, end_col, table_name) {
+  sheet_name <- "2A_Cmrkd"
 
-  raw_titles = readxl::read_excel(tamm_filepath,
-                                  sheet = sheet_name,
-                                  range = glue::glue("{start_col}9:{end_col}10"),
-                                  col_names = FALSE,
-                                  .name_repair = "unique_quiet")
-  data_er = readxl::read_excel(tamm_filepath,
-                               sheet = sheet_name,
-                               range = glue::glue("{start_col}59:{end_col}62"),
-                               col_names = FALSE,
-                               .name_repair = "unique_quiet")
+  raw <- sheet_slicer(full_sheet,
+    a1_start = glue::glue("{start_col}12"),
+    a1_end = glue::glue("{end_col}46")
+  )
+
+  raw_titles <- sheet_slicer(full_sheet,
+    a1_start = glue::glue("{start_col}9"),
+    a1_end = glue::glue("{end_col}10")
+  )
+  data_er <- sheet_slicer(full_sheet,
+    a1_start = glue::glue("{start_col}59"),
+    a1_end = glue::glue("{end_col}62")
+  )
   ## drop down "SUS OCean Only ER label to the next two rows
   ## give a "total" label for SUS ocean only ER row 1
-  data_er[1, 2] = "Total"
+  data_er[1, 2] <- "Total"
 
-  res = chunk_read_finisher(sheet_name, table_name, raw, raw_titles, data_er)
+  res <- chunk_read_finisher(sheet_name, table_name, raw, raw_titles, data_er)
 
   return(res)
 }
@@ -306,18 +293,24 @@ chunk_read_2A_Cmrkd = function(tamm_filepath, start_col, end_col, table_name){
 #'
 #' @return a list, with $aeq (the main parts of each table) and $er (the very bottom section)
 #'
-read_2aCmrkd = function(tamm_filepath, stock_cleanup = TRUE){
+read_2aCmrkd <- function(tamm_filepath, stock_cleanup = TRUE) {
+  full_sheet <- readxl::read_excel(tamm_filepath,
+    sheet = "2A_Cmrkd",
+    col_names = FALSE,
+    .name_repair = "unique_quiet"
+  )
 
-  tab_2a = chunk_read_2A_Cmrkd(tamm_filepath, "A", "J", table_name = "2A")
-  tab_2b = chunk_read_2A_Cmrkd(tamm_filepath, "M", "V", table_name = "2B")
-  tab_2c = chunk_read_2A_Cmrkd(tamm_filepath, "X", "AH", table_name = "2C")
 
-  aeq = process_2ac_aeqs(tab_2a, tab_2b, tab_2c)
-  er = process_2ac_ers(tab_2a, tab_2b, tab_2c)
+  tab_2a <- chunk_read_2A_Cmrkd(full_sheet, "A", "J", table_name = "2A")
+  tab_2b <- chunk_read_2A_Cmrkd(full_sheet, "M", "V", table_name = "2B")
+  tab_2c <- chunk_read_2A_Cmrkd(full_sheet, "X", "AH", table_name = "2C")
 
-  if(stock_cleanup){
-    aeq$stock = stringr::str_to_lower(aeq$stock)
-    er$stock = stringr::str_to_lower(er$stock)
+  aeq <- process_2ac_aeqs(tab_2a, tab_2b, tab_2c)
+  er <- process_2ac_ers(tab_2a, tab_2b, tab_2c)
+
+  if (stock_cleanup) {
+    aeq$stock <- stringr::str_to_lower(aeq$stock)
+    er$stock <- stringr::str_to_lower(er$stock)
   }
 
   return(list(aeq = aeq, er = er))
@@ -330,28 +323,25 @@ read_2aCmrkd = function(tamm_filepath, stock_cleanup = TRUE){
 #'
 #' @inheritParams chunk_read_2A_Cmrkd
 #'
-chunk_read_2A_CUnmrkd = function(tamm_filepath, start_col, end_col, table_name){
-  sheet_name = "2A_CUnmrkd"
-  raw = readxl::read_excel(tamm_filepath,
-                           sheet = sheet_name,
-                           range = glue::glue("{start_col}12:{end_col}46"),
-                           col_names = FALSE,
-                           .name_repair = "unique_quiet")
+chunk_read_2A_CUnmrkd <- function(full_sheet, start_col, end_col, table_name) {
+  sheet_name <- "2A_CUnmrkd"
 
-  raw_titles = readxl::read_excel(tamm_filepath,
-                                  sheet = sheet_name,
-                                  range = glue::glue("{start_col}9:{end_col}10"),
-                                  col_names = FALSE,
-                                  .name_repair = "unique_quiet")
-  # grab the "SUS Ocean Only ER and PS Pertimina Net" section at the bottom
-  data_er = readxl::read_excel(tamm_filepath,
-                               sheet = sheet_name,
-                               range = glue::glue("{start_col}57:{end_col}64"),
-                               col_names = FALSE,
-                               .name_repair = "unique_quiet")
-  data_er[5, 2] = "Total"
+  raw <- sheet_slicer(full_sheet,
+    a1_start = glue::glue("{start_col}12"),
+    a1_end = glue::glue("{end_col}46")
+  )
 
-  res = chunk_read_finisher(sheet_name, table_name, raw, raw_titles, data_er)
+  raw_titles <- sheet_slicer(full_sheet,
+    a1_start = glue::glue("{start_col}9"),
+    a1_end = glue::glue("{end_col}10")
+  )
+  data_er <- sheet_slicer(full_sheet,
+    a1_start = glue::glue("{start_col}57"),
+    a1_end = glue::glue("{end_col}64")
+  )
+  data_er[5, 2] <- "Total"
+
+  res <- chunk_read_finisher(sheet_name, table_name, raw, raw_titles, data_er)
 
   return(res)
 }
@@ -363,18 +353,23 @@ chunk_read_2A_CUnmrkd = function(tamm_filepath, start_col, end_col, table_name){
 #'
 #' @return a list, with $aeq (the main parts of the table) and $er (the very bottom section)
 #'
-read_2aCUnmrkd = function(tamm_filepath, stock_cleanup = TRUE){
+read_2aCUnmrkd <- function(tamm_filepath, stock_cleanup = TRUE) {
+  full_sheet <- readxl::read_excel(tamm_filepath,
+    sheet = "2A_CUnmrkd",
+    col_names = FALSE,
+    .name_repair = "unique_quiet"
+  )
 
-  tab_2a = chunk_read_2A_CUnmrkd(tamm_filepath, "A", "K", table_name = "2A")
-  tab_2b = chunk_read_2A_CUnmrkd(tamm_filepath, "M", "V", table_name = "2B")
-  tab_2c = chunk_read_2A_CUnmrkd(tamm_filepath, "X", "AH", table_name = "2C")
+  tab_2a <- chunk_read_2A_CUnmrkd(full_sheet, "A", "K", table_name = "2A")
+  tab_2b <- chunk_read_2A_CUnmrkd(full_sheet, "M", "V", table_name = "2B")
+  tab_2c <- chunk_read_2A_CUnmrkd(full_sheet, "X", "AH", table_name = "2C")
 
-  aeq = process_2ac_aeqs(tab_2a, tab_2b, tab_2c)
-  er = process_2ac_ers(tab_2a, tab_2b, tab_2c)
+  aeq <- process_2ac_aeqs(tab_2a, tab_2b, tab_2c)
+  er <- process_2ac_ers(tab_2a, tab_2b, tab_2c)
 
-  if(stock_cleanup){
-    aeq$stock = stringr::str_to_lower(aeq$stock)
-    er$stock = stringr::str_to_lower(er$stock)
+  if (stock_cleanup) {
+    aeq$stock <- stringr::str_to_lower(aeq$stock)
+    er$stock <- stringr::str_to_lower(er$stock)
   }
 
   return(list(aeq = aeq, er = er))
@@ -385,27 +380,25 @@ read_2aCUnmrkd = function(tamm_filepath, stock_cleanup = TRUE){
 #'
 #' @inheritParams chunk_read_2A_Cmrkd
 #'
-chunk_read_2A_CUandM = function(tamm_filepath, start_col, end_col, table_name){
-  sheet_name = "2A_CU&M"
-  raw = readxl::read_excel(tamm_filepath,
-                           sheet = sheet_name,
-                           range = glue::glue("{start_col}12:{end_col}46"),
-                           col_names = FALSE,
-                           .name_repair = "unique_quiet")
+chunk_read_2A_CUandM <- function(full_sheet, start_col, end_col, table_name) {
+  sheet_name <- "2A_CU&M"
 
-  raw_titles = readxl::read_excel(tamm_filepath,
-                                  sheet = sheet_name,
-                                  range = glue::glue("{start_col}9:{end_col}10"),
-                                  col_names = FALSE,
-                                  .name_repair = "unique_quiet")
+  raw <- sheet_slicer(full_sheet,
+    a1_start = glue::glue("{start_col}12"),
+    a1_end = glue::glue("{end_col}46")
+  )
 
-  data_er = readxl::read_excel(tamm_filepath,
-                               sheet = sheet_name,
-                               range = glue::glue("{start_col}56:{end_col}68"),
-                               col_names = FALSE,
-                               .name_repair = "unique_quiet")
-  data_er[4, 2] = "Total"
-  res = chunk_read_finisher(sheet_name, table_name, raw, raw_titles, data_er)
+  raw_titles <- sheet_slicer(full_sheet,
+    a1_start = glue::glue("{start_col}9"),
+    a1_end = glue::glue("{end_col}10")
+  )
+  data_er <- sheet_slicer(full_sheet,
+    a1_start = glue::glue("{start_col}56"),
+    a1_end = glue::glue("{end_col}68")
+  )
+
+  data_er[4, 2] <- "Total"
+  res <- chunk_read_finisher(sheet_name, table_name, raw, raw_titles, data_er)
 
   return(res)
 }
@@ -418,18 +411,23 @@ chunk_read_2A_CUandM = function(tamm_filepath, start_col, end_col, table_name){
 #'
 #' @return a list, with $aeq (the main parts of the table) and $er (the very bottom section) @return
 #'
-read_2aCUandM = function(tamm_filepath, stock_cleanup = TRUE){
+read_2aCUandM <- function(tamm_filepath, stock_cleanup = TRUE) {
+  full_sheet <- readxl::read_excel(tamm_filepath,
+    sheet = "2A_CU&M",
+    col_names = FALSE,
+    .name_repair = "unique_quiet"
+  )
 
-  tab_2a = chunk_read_2A_CUandM(tamm_filepath, "A", "J", table_name = "2A")
-  tab_2b = chunk_read_2A_CUandM(tamm_filepath, "M", "V", table_name = "2B")
-  tab_2c = chunk_read_2A_CUandM(tamm_filepath, "X", "AH", table_name = "2C")
+  tab_2a <- chunk_read_2A_CUandM(full_sheet, "A", "J", table_name = "2A")
+  tab_2b <- chunk_read_2A_CUandM(full_sheet, "M", "V", table_name = "2B")
+  tab_2c <- chunk_read_2A_CUandM(full_sheet, "X", "AH", table_name = "2C")
 
-  aeq = process_2ac_aeqs(tab_2a, tab_2b, tab_2c)
-  er = process_2ac_ers(tab_2a, tab_2b, tab_2c)
+  aeq <- process_2ac_aeqs(tab_2a, tab_2b, tab_2c)
+  er <- process_2ac_ers(tab_2a, tab_2b, tab_2c)
 
-  if(stock_cleanup){
-    aeq$stock = stringr::str_to_lower(aeq$stock)
-    er$stock = stringr::str_to_lower(er$stock)
+  if (stock_cleanup) {
+    aeq$stock <- stringr::str_to_lower(aeq$stock)
+    er$stock <- stringr::str_to_lower(er$stock)
   }
 
   return(list(aeq = aeq, er = er))
@@ -438,20 +436,20 @@ read_2aCUandM = function(tamm_filepath, stock_cleanup = TRUE){
 #' Read in individual chunks for sheet 2A_Cu&M_N
 #'
 #' @inheritParams chunk_read_2A_Cmrkd
-chunk_read_2A_CUandM_N = function(tamm_filepath, start_col, end_col, table_name){
-  sheet_name = "2A_CU&M_N"
-  raw = readxl::read_excel(tamm_filepath,
-                           sheet = sheet_name,
-                           range = glue::glue("{start_col}12:{end_col}46"),
-                           col_names = FALSE,
-                           .name_repair = "unique_quiet")
+chunk_read_2A_CUandM_N <- function(full_sheet, start_col, end_col, table_name) {
+  sheet_name <- "2A_CU&M_N"
 
-  raw_titles = readxl::read_excel(tamm_filepath,
-                                  sheet = sheet_name,
-                                  range = glue::glue("{start_col}9:{end_col}10"),
-                                  col_names = FALSE,
-                                  .name_repair = "unique_quiet")
-  res = chunk_read_finisher(sheet_name, table_name, raw, raw_titles, data_er = NULL, do_er = FALSE)
+  raw <- sheet_slicer(full_sheet,
+    a1_start = glue::glue("{start_col}12"),
+    a1_end = glue::glue("{end_col}46")
+  )
+
+  raw_titles <- sheet_slicer(full_sheet,
+    a1_start = glue::glue("{start_col}9"),
+    a1_end = glue::glue("{end_col}10")
+  )
+
+  res <- chunk_read_finisher(sheet_name, table_name, raw, raw_titles, data_er = NULL, do_er = FALSE)
 
   return(res)
 }
@@ -463,17 +461,22 @@ chunk_read_2A_CUandM_N = function(tamm_filepath, start_col, end_col, table_name)
 #' @param stock_cleanup Clean up stock name capitalization? Logical, defaults to TRUE
 #'
 #'
-read_2aCUandM_N = function(tamm_filepath, stock_cleanup = TRUE){
+read_2aCUandM_N <- function(tamm_filepath, stock_cleanup = TRUE) {
   ## Note: No "er" chunks in this one
+  full_sheet <- readxl::read_excel(tamm_filepath,
+    sheet = "2A_CU&M_N",
+    col_names = FALSE,
+    .name_repair = "unique_quiet"
+  )
 
-  tab_2a = chunk_read_2A_CUandM_N(tamm_filepath, "A", "J", table_name = "2A")
-  tab_2b = chunk_read_2A_CUandM_N(tamm_filepath, "L", "U", table_name = "2B")
-  tab_2c = chunk_read_2A_CUandM_N(tamm_filepath, "W", "AG", table_name = "2C")
+  tab_2a <- chunk_read_2A_CUandM_N(full_sheet, "A", "J", table_name = "2A")
+  tab_2b <- chunk_read_2A_CUandM_N(full_sheet, "L", "U", table_name = "2B")
+  tab_2c <- chunk_read_2A_CUandM_N(full_sheet, "W", "AG", table_name = "2C")
 
-  aeq = process_2ac_aeqs(tab_2a, tab_2b, tab_2c)
+  aeq <- process_2ac_aeqs(tab_2a, tab_2b, tab_2c)
 
-  if(stock_cleanup){
-    aeq$stock = stringr::str_to_lower(aeq$stock)
+  if (stock_cleanup) {
+    aeq$stock <- stringr::str_to_lower(aeq$stock)
   }
 
   return(list(aeq = aeq, er = NULL))
@@ -493,71 +496,79 @@ read_2aCUandM_N = function(tamm_filepath, stock_cleanup = TRUE){
 #' \dontrun{
 #' library(here)
 #' filepath <- here("tamms/Chin2025.xlsx")
-#' jdf = read_jdf(filepath)
+#' jdf <- read_jdf(filepath)
 #' }
-read_jdf = function(tamm_filepath, stock_cleanup = TRUE){
-  #joint chunk-reader and sheet reader, since one and the same, plus can't use
-  #process_*()
-  sheet_name = "JDF"
-  data = readxl::read_excel(tamm_filepath,
-                            sheet = sheet_name,
-                            range = "O8:T49",
-                            col_names = TRUE,
-                            .name_repair = "unique_quiet")
+read_jdf <- function(tamm_filepath, stock_cleanup = TRUE) {
+  # joint chunk-reader and sheet reader, since one and the same, plus can't use
+  # process_*()
+  sheet_name <- "JDF"
+  data <- readxl::read_excel(tamm_filepath,
+    sheet = sheet_name,
+    range = "O8:T49",
+    col_names = TRUE,
+    .name_repair = "unique_quiet"
+  )
 
-  names(data)[1] = "fishery"
-  names(data)[2] = "fishery_assignment"
+  names(data)[1] <- "fishery"
+  names(data)[2] <- "fishery_assignment"
 
-  data = data |>
+  data <- data |>
     dplyr::filter(.data$fishery != "-" | is.na(.data$fishery)) |>
     dplyr::filter(.data$fishery != "=" | is.na(.data$fishery))
 
 
-  for(i in 2:nrow(data)){
-    if(is.na(data$fishery[i]) & (!is.na(data$fishery_assignment[i]))){
-      data$fishery[i] = data$fishery[i-1]
+  for (i in 2:nrow(data)) {
+    if (is.na(data$fishery[i]) & (!is.na(data$fishery_assignment[i]))) {
+      data$fishery[i] <- data$fishery[i - 1]
     }
   }
   ## tired. Want to cut out rows that are all NAs. Base R solution
-  inds.allna = which(apply(data, 1, function(x){all(is.na(x))}))
-  data = data[-inds.allna,]
-  data = data |>
-    #deal with inconsistent "NA" designation in sheet
-    dplyr::mutate(dplyr::across(-tidyr::any_of(c("fishery", "fishery_assignment")),
-                                ~ dplyr::if_else(.x %in% c("na", "NA", "Na"),
-                                                 NA,
-                                                 .x
-                                )))
+  inds.allna <- which(apply(data, 1, function(x) {
+    all(is.na(x))
+  }))
+  data <- data[-inds.allna, ]
+  data <- data |>
+    # deal with inconsistent "NA" designation in sheet
+    dplyr::mutate(dplyr::across(
+      -tidyr::any_of(c("fishery", "fishery_assignment")),
+      ~ dplyr::if_else(.x %in% c("na", "NA", "Na"),
+        NA,
+        .x
+      )
+    ))
   ## want non-elementwise approach, so looping
   ## for any columns but the first two, if we safely can, convert to numeric
-  cols_numeric = setdiff(colnames(data), c("fishery", "fishery_assignment"))
-  for(cur_col in cols_numeric){
-    data[[cur_col]] =  as_numeric_safe(data[[cur_col]])
+  cols_numeric <- setdiff(colnames(data), c("fishery", "fishery_assignment"))
+  for (cur_col in cols_numeric) {
+    data[[cur_col]] <- as_numeric_safe(data[[cur_col]])
   }
 
   # grab the "SUS Ocean Only ER and PS Pertimina Net" section at the bottom
-  data_er = NULL
+  data_er <- NULL
 
-  data$sheet = sheet_name
-  data$table = "16E"
+  data$sheet <- sheet_name
+  data$table <- "16E"
 
-  aeq = data |>
-    tidyr::pivot_longer(cols = -tidyr::any_of(c("fishery", "fishery_assignment", "sheet", "table")),
-                        names_to = "stock") |>
+  aeq <- data |>
+    tidyr::pivot_longer(
+      cols = -tidyr::any_of(c("fishery", "fishery_assignment", "sheet", "table")),
+      names_to = "stock"
+    ) |>
     janitor::clean_names()
 
-  aeq$fishery = gsub("Freshwater Sport: \1", "Freshwater Sport:", aeq$fishery, fixed = TRUE)
-  aeq$fishery = gsub("Freshwater Sport: \\1", "Freshwater Sport:", aeq$fishery, fixed = TRUE)
+  aeq$fishery <- gsub("Freshwater Sport: \1", "Freshwater Sport:", aeq$fishery, fixed = TRUE)
+  aeq$fishery <- gsub("Freshwater Sport: \\1", "Freshwater Sport:", aeq$fishery, fixed = TRUE)
 
   aeq <- aeq |>
-    dplyr::mutate(fishery_joint_label = dplyr::if_else(is.na(.data$fishery_assignment),
-                                                       .data$fishery,
-                                                       glue::glue("{.data$fishery} {.data$fishery_assignment}")),
-                  .before = .data$fishery
+    dplyr::mutate(
+      fishery_joint_label = dplyr::if_else(is.na(.data$fishery_assignment),
+        .data$fishery,
+        glue::glue("{.data$fishery} {.data$fishery_assignment}")
+      ),
+      .before = .data$fishery
     )
 
   return(list(aeq = aeq, er = NULL))
-
 }
 
 #' Read and combine all 2a sheets from a TAMM file
@@ -574,29 +585,33 @@ read_jdf = function(tamm_filepath, stock_cleanup = TRUE){
 #' \dontrun{
 #' library(here)
 #' filepath <- here("tamms/Chin2025.xlsx")
-#' res = read_2a_sheets(filepath)
-#' jdf = read_jdf(filepath)
-#'}
-read_2a_sheets = function(tamm_filepath, stock_cleanup = TRUE){
-  aeq = NULL
-  er = NULL
-  fun_list = list(read_2aCmrkd, read_2aCUnmrkd, read_2aCUandM, read_2aCUandM_N)
-  for(fun in fun_list){
-    temp = fun(tamm_filepath, stock_cleanup)
-    aeq = dplyr::bind_rows(aeq, temp$aeq)
-    er = dplyr::bind_rows(er, temp$er)
+#' res <- read_2a_sheets(filepath)
+#' jdf <- read_jdf(filepath)
+#' }
+read_2a_sheets <- function(tamm_filepath, stock_cleanup = TRUE) {
+  aeq <- NULL
+  er <- NULL
+  fun_list <- list(read_2aCmrkd, read_2aCUnmrkd, read_2aCUandM, read_2aCUandM_N)
+  for (fun in fun_list) {
+    temp <- fun(tamm_filepath, stock_cleanup)
+    aeq <- dplyr::bind_rows(aeq, temp$aeq)
+    er <- dplyr::bind_rows(er, temp$er)
   }
   aeq <- aeq |>
-    dplyr::mutate(fishery_joint_label = dplyr::if_else(is.na(.data$fishery_assignment),
-                                                       .data$fishery,
-                                 glue::glue("{.data$fishery} {.data$fishery_assignment}")),
-                  .before = .data$fishery
+    dplyr::mutate(
+      fishery_joint_label = dplyr::if_else(is.na(.data$fishery_assignment),
+        .data$fishery,
+        glue::glue("{.data$fishery} {.data$fishery_assignment}")
+      ),
+      .before = .data$fishery
     )
   er <- er |>
-    dplyr::mutate(fishery_joint_label = dplyr::if_else(is.na(.data$fishery_assignment),
-                                                       .data$fishery,
-                                                       glue::glue("{.data$fishery} {.data$fishery_assignment}")),
-                  .before = .data$fishery
+    dplyr::mutate(
+      fishery_joint_label = dplyr::if_else(is.na(.data$fishery_assignment),
+        .data$fishery,
+        glue::glue("{.data$fishery} {.data$fishery_assignment}")
+      ),
+      .before = .data$fishery
     )
   return(list(aeq = aeq, er = er))
 }
