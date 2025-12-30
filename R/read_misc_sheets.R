@@ -199,14 +199,14 @@ chunk_read_finisher = function(sheet_name, table_name, raw, raw_titles, data_er,
   data = data |>
     dplyr::filter(.data$fishery != "-" | is.na(.data$fishery)) |>
     dplyr::filter(.data$fishery != "=" | is.na(.data$fishery)) |>
-  ## weird special case: in some cases 2B has "Freshwater Test" in the $fishery_assignment column
-  ## instead of $fishery column. Fixing this:
+    ## weird special case: in some cases 2B has "Freshwater Test" in the $fishery_assignment column
+    ## instead of $fishery column. Fixing this:
     dplyr::mutate(fishery = dplyr::if_else(is.na(.data$fishery) & .data$fishery_assignment == "Freshwater Test",
                                            "Freshwater Test",
                                            .data$fishery)) |>
     dplyr::mutate(fishery_assignment = dplyr::if_else(.data$fishery == "Freshwater Test" & .data$fishery_assignment == "Freshwater Test",
-                                           NA,
-                                           .data$fishery_assignment))
+                                                      NA,
+                                                      .data$fishery_assignment))
 
 
 
@@ -264,6 +264,20 @@ chunk_read_finisher = function(sheet_name, table_name, raw, raw_titles, data_er,
   return(list(aeq = data, er = data_er))
 }
 
+## helper function to make it easy to slice sections out of a full "worksheet" df
+## based on A1 addresses
+sheet_slicer <-  function(full_sheet, a1_start, a1_end){
+  cell_range <-  xldiff::cell_range_translate(as.character(glue::glue("{a1_start}:{a1_end}")),
+                                              expand = FALSE)
+  sliced <- dplyr::as_tibble(
+    as.matrix(
+      full_sheet[ cell_range$row[1]:cell_range$row[2],
+                  cell_range$col[1]:cell_range$col[2] ]
+    )
+  )
+  return(sliced)
+}
+
 ## 2A_Cmrkd -----------------------------
 #' Read in chunks of the 2A_Cmrkd sheet
 #'
@@ -272,24 +286,19 @@ chunk_read_finisher = function(sheet_name, table_name, raw, raw_titles, data_er,
 #' @param end_col Letter of the column the chunk ends on
 #' @param table_name name of table
 #'
-chunk_read_2A_Cmrkd = function(tamm_filepath, start_col, end_col, table_name){
-  sheet_name = "2A_Cmrkd"
-  raw = readxl::read_excel(tamm_filepath,
-                           sheet = sheet_name,
-                           range = glue::glue("{start_col}12:{end_col}46"),
-                           col_names = FALSE,
-                           .name_repair = "unique_quiet")
+chunk_read_2A_Cmrkd = function(full_sheet, start_col, end_col, table_name){
+  sheet_name  <-  "2A_Cmrkd"
 
-  raw_titles = readxl::read_excel(tamm_filepath,
-                                  sheet = sheet_name,
-                                  range = glue::glue("{start_col}9:{end_col}10"),
-                                  col_names = FALSE,
-                                  .name_repair = "unique_quiet")
-  data_er = readxl::read_excel(tamm_filepath,
-                               sheet = sheet_name,
-                               range = glue::glue("{start_col}59:{end_col}62"),
-                               col_names = FALSE,
-                               .name_repair = "unique_quiet")
+  raw <-  sheet_slicer(full_sheet,
+                       a1_start = glue::glue("{start_col}12"),
+                       a1_end = glue::glue("{end_col}46"))
+
+  raw_titles <- sheet_slicer(full_sheet,
+                             a1_start = glue::glue("{start_col}9"),
+                             a1_end = glue::glue("{end_col}10") )
+  data_er <-  sheet_slicer(full_sheet,
+                           a1_start = glue::glue("{start_col}59"),
+                           a1_end = glue::glue("{end_col}62"))
   ## drop down "SUS OCean Only ER label to the next two rows
   ## give a "total" label for SUS ocean only ER row 1
   data_er[1, 2] = "Total"
@@ -308,9 +317,15 @@ chunk_read_2A_Cmrkd = function(tamm_filepath, start_col, end_col, table_name){
 #'
 read_2aCmrkd = function(tamm_filepath, stock_cleanup = TRUE){
 
-  tab_2a = chunk_read_2A_Cmrkd(tamm_filepath, "A", "J", table_name = "2A")
-  tab_2b = chunk_read_2A_Cmrkd(tamm_filepath, "M", "V", table_name = "2B")
-  tab_2c = chunk_read_2A_Cmrkd(tamm_filepath, "X", "AH", table_name = "2C")
+  full_sheet <- readxl::read_excel(tamm_filepath,
+                                   sheet = "2A_Cmrkd",
+                                   col_names = FALSE,
+                                   .name_repair = "unique_quiet")
+
+
+  tab_2a = chunk_read_2A_Cmrkd(full_sheet, "A", "J", table_name = "2A")
+  tab_2b = chunk_read_2A_Cmrkd(full_sheet, "M", "V", table_name = "2B")
+  tab_2c = chunk_read_2A_Cmrkd(full_sheet, "X", "AH", table_name = "2C")
 
   aeq = process_2ac_aeqs(tab_2a, tab_2b, tab_2c)
   er = process_2ac_ers(tab_2a, tab_2b, tab_2c)
@@ -330,25 +345,19 @@ read_2aCmrkd = function(tamm_filepath, stock_cleanup = TRUE){
 #'
 #' @inheritParams chunk_read_2A_Cmrkd
 #'
-chunk_read_2A_CUnmrkd = function(tamm_filepath, start_col, end_col, table_name){
+chunk_read_2A_CUnmrkd = function(full_sheet, start_col, end_col, table_name){
   sheet_name = "2A_CUnmrkd"
-  raw = readxl::read_excel(tamm_filepath,
-                           sheet = sheet_name,
-                           range = glue::glue("{start_col}12:{end_col}46"),
-                           col_names = FALSE,
-                           .name_repair = "unique_quiet")
 
-  raw_titles = readxl::read_excel(tamm_filepath,
-                                  sheet = sheet_name,
-                                  range = glue::glue("{start_col}9:{end_col}10"),
-                                  col_names = FALSE,
-                                  .name_repair = "unique_quiet")
-  # grab the "SUS Ocean Only ER and PS Pertimina Net" section at the bottom
-  data_er = readxl::read_excel(tamm_filepath,
-                               sheet = sheet_name,
-                               range = glue::glue("{start_col}57:{end_col}64"),
-                               col_names = FALSE,
-                               .name_repair = "unique_quiet")
+  raw <-  sheet_slicer(full_sheet,
+                       a1_start = glue::glue("{start_col}12"),
+                       a1_end = glue::glue("{end_col}46"))
+
+  raw_titles <- sheet_slicer(full_sheet,
+                             a1_start = glue::glue("{start_col}9"),
+                             a1_end = glue::glue("{end_col}10") )
+  data_er <-  sheet_slicer(full_sheet,
+                           a1_start = glue::glue("{start_col}57"),
+                           a1_end = glue::glue("{end_col}64"))
   data_er[5, 2] = "Total"
 
   res = chunk_read_finisher(sheet_name, table_name, raw, raw_titles, data_er)
@@ -365,9 +374,14 @@ chunk_read_2A_CUnmrkd = function(tamm_filepath, start_col, end_col, table_name){
 #'
 read_2aCUnmrkd = function(tamm_filepath, stock_cleanup = TRUE){
 
-  tab_2a = chunk_read_2A_CUnmrkd(tamm_filepath, "A", "K", table_name = "2A")
-  tab_2b = chunk_read_2A_CUnmrkd(tamm_filepath, "M", "V", table_name = "2B")
-  tab_2c = chunk_read_2A_CUnmrkd(tamm_filepath, "X", "AH", table_name = "2C")
+  full_sheet <- readxl::read_excel(tamm_filepath,
+                                   sheet = "2A_CUnmrkd",
+                                   col_names = FALSE,
+                                   .name_repair = "unique_quiet")
+
+  tab_2a = chunk_read_2A_CUnmrkd(full_sheet, "A", "K", table_name = "2A")
+  tab_2b = chunk_read_2A_CUnmrkd(full_sheet, "M", "V", table_name = "2B")
+  tab_2c = chunk_read_2A_CUnmrkd(full_sheet, "X", "AH", table_name = "2C")
 
   aeq = process_2ac_aeqs(tab_2a, tab_2b, tab_2c)
   er = process_2ac_ers(tab_2a, tab_2b, tab_2c)
@@ -385,25 +399,20 @@ read_2aCUnmrkd = function(tamm_filepath, stock_cleanup = TRUE){
 #'
 #' @inheritParams chunk_read_2A_Cmrkd
 #'
-chunk_read_2A_CUandM = function(tamm_filepath, start_col, end_col, table_name){
+chunk_read_2A_CUandM = function(full_sheet, start_col, end_col, table_name){
   sheet_name = "2A_CU&M"
-  raw = readxl::read_excel(tamm_filepath,
-                           sheet = sheet_name,
-                           range = glue::glue("{start_col}12:{end_col}46"),
-                           col_names = FALSE,
-                           .name_repair = "unique_quiet")
 
-  raw_titles = readxl::read_excel(tamm_filepath,
-                                  sheet = sheet_name,
-                                  range = glue::glue("{start_col}9:{end_col}10"),
-                                  col_names = FALSE,
-                                  .name_repair = "unique_quiet")
+  raw <-sheet_slicer(full_sheet,
+                       a1_start = glue::glue("{start_col}12"),
+                       a1_end = glue::glue("{end_col}46"))
 
-  data_er = readxl::read_excel(tamm_filepath,
-                               sheet = sheet_name,
-                               range = glue::glue("{start_col}56:{end_col}68"),
-                               col_names = FALSE,
-                               .name_repair = "unique_quiet")
+  raw_titles <- sheet_slicer(full_sheet,
+                             a1_start = glue::glue("{start_col}9"),
+                             a1_end = glue::glue("{end_col}10") )
+  data_er <-  sheet_slicer(full_sheet,
+                           a1_start = glue::glue("{start_col}56"),
+                           a1_end = glue::glue("{end_col}68"))
+
   data_er[4, 2] = "Total"
   res = chunk_read_finisher(sheet_name, table_name, raw, raw_titles, data_er)
 
@@ -420,9 +429,14 @@ chunk_read_2A_CUandM = function(tamm_filepath, start_col, end_col, table_name){
 #'
 read_2aCUandM = function(tamm_filepath, stock_cleanup = TRUE){
 
-  tab_2a = chunk_read_2A_CUandM(tamm_filepath, "A", "J", table_name = "2A")
-  tab_2b = chunk_read_2A_CUandM(tamm_filepath, "M", "V", table_name = "2B")
-  tab_2c = chunk_read_2A_CUandM(tamm_filepath, "X", "AH", table_name = "2C")
+  full_sheet <- readxl::read_excel(tamm_filepath,
+                                   sheet = "2A_CU&M",
+                                   col_names = FALSE,
+                                   .name_repair = "unique_quiet")
+
+  tab_2a = chunk_read_2A_CUandM(full_sheet, "A", "J", table_name = "2A")
+  tab_2b = chunk_read_2A_CUandM(full_sheet, "M", "V", table_name = "2B")
+  tab_2c = chunk_read_2A_CUandM(full_sheet, "X", "AH", table_name = "2C")
 
   aeq = process_2ac_aeqs(tab_2a, tab_2b, tab_2c)
   er = process_2ac_ers(tab_2a, tab_2b, tab_2c)
@@ -438,19 +452,17 @@ read_2aCUandM = function(tamm_filepath, stock_cleanup = TRUE){
 #' Read in individual chunks for sheet 2A_Cu&M_N
 #'
 #' @inheritParams chunk_read_2A_Cmrkd
-chunk_read_2A_CUandM_N = function(tamm_filepath, start_col, end_col, table_name){
+chunk_read_2A_CUandM_N = function(full_sheet, start_col, end_col, table_name){
   sheet_name = "2A_CU&M_N"
-  raw = readxl::read_excel(tamm_filepath,
-                           sheet = sheet_name,
-                           range = glue::glue("{start_col}12:{end_col}46"),
-                           col_names = FALSE,
-                           .name_repair = "unique_quiet")
 
-  raw_titles = readxl::read_excel(tamm_filepath,
-                                  sheet = sheet_name,
-                                  range = glue::glue("{start_col}9:{end_col}10"),
-                                  col_names = FALSE,
-                                  .name_repair = "unique_quiet")
+  raw <-  sheet_slicer(full_sheet,
+                       a1_start = glue::glue("{start_col}12"),
+                       a1_end = glue::glue("{end_col}46"))
+
+  raw_titles <- sheet_slicer(full_sheet,
+                             a1_start = glue::glue("{start_col}9"),
+                             a1_end = glue::glue("{end_col}10") )
+
   res = chunk_read_finisher(sheet_name, table_name, raw, raw_titles, data_er = NULL, do_er = FALSE)
 
   return(res)
@@ -465,10 +477,14 @@ chunk_read_2A_CUandM_N = function(tamm_filepath, start_col, end_col, table_name)
 #'
 read_2aCUandM_N = function(tamm_filepath, stock_cleanup = TRUE){
   ## Note: No "er" chunks in this one
+  full_sheet <- readxl::read_excel(tamm_filepath,
+                                   sheet = "2A_CU&M_N",
+                                   col_names = FALSE,
+                                   .name_repair = "unique_quiet")
 
-  tab_2a = chunk_read_2A_CUandM_N(tamm_filepath, "A", "J", table_name = "2A")
-  tab_2b = chunk_read_2A_CUandM_N(tamm_filepath, "L", "U", table_name = "2B")
-  tab_2c = chunk_read_2A_CUandM_N(tamm_filepath, "W", "AG", table_name = "2C")
+  tab_2a = chunk_read_2A_CUandM_N(full_sheet, "A", "J", table_name = "2A")
+  tab_2b = chunk_read_2A_CUandM_N(full_sheet, "L", "U", table_name = "2B")
+  tab_2c = chunk_read_2A_CUandM_N(full_sheet, "W", "AG", table_name = "2C")
 
   aeq = process_2ac_aeqs(tab_2a, tab_2b, tab_2c)
 
@@ -589,7 +605,7 @@ read_2a_sheets = function(tamm_filepath, stock_cleanup = TRUE){
   aeq <- aeq |>
     dplyr::mutate(fishery_joint_label = dplyr::if_else(is.na(.data$fishery_assignment),
                                                        .data$fishery,
-                                 glue::glue("{.data$fishery} {.data$fishery_assignment}")),
+                                                       glue::glue("{.data$fishery} {.data$fishery_assignment}")),
                   .before = .data$fishery
     )
   er <- er |>
