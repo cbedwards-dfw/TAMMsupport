@@ -31,7 +31,7 @@ bottom of the spreadsheets.
 if (FALSE) { # \dontrun{
 library(here)
 filepath <- here("tamms/Chin2025.xlsx")
-res = read_2a_sheets(filepath)
-jdf = read_jdf(filepath)
+res <- read_2a_sheets(filepath)
+jdf <- read_jdf(filepath)
 } # }
 ```

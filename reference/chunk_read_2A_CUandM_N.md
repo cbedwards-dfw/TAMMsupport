@@ -5,14 +5,14 @@ Read in individual chunks for sheet 2A_Cu&M_N
 ## Usage
 
 ``` r
-chunk_read_2A_CUandM_N(tamm_filepath, start_col, end_col, table_name)
+chunk_read_2A_CUandM_N(full_sheet, start_col, end_col, table_name)
 ```
 
 ## Arguments
 
-- tamm_filepath:
+- full_sheet:
 
-  tame file path
+  entire raw spreadsheet
 
 - start_col:
 

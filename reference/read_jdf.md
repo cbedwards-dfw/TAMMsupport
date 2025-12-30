@@ -31,6 +31,6 @@ a non-null \$er item in the output list.
 if (FALSE) { # \dontrun{
 library(here)
 filepath <- here("tamms/Chin2025.xlsx")
-jdf = read_jdf(filepath)
+jdf <- read_jdf(filepath)
 } # }
 ```

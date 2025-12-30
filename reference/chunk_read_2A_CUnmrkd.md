@@ -5,14 +5,14 @@ Reads chunk of 2A_CUnmrkd sheet
 ## Usage
 
 ``` r
-chunk_read_2A_CUnmrkd(tamm_filepath, start_col, end_col, table_name)
+chunk_read_2A_CUnmrkd(full_sheet, start_col, end_col, table_name)
 ```
 
 ## Arguments
 
-- tamm_filepath:
+- full_sheet:
 
-  tame file path
+  entire raw spreadsheet
 
 - start_col:
 
