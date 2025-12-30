@@ -21,6 +21,6 @@ Read in AEQ and ER information from the JDF sheet
 \dontrun{
 library(here)
 filepath <- here("tamms/Chin2025.xlsx")
-jdf = read_jdf(filepath)
+jdf <- read_jdf(filepath)
 }
 }
