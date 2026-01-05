@@ -1,3 +1,5 @@
+# TAMMsupport 1.0.0
+
 # TAMMsupport 0.2.0
 
 - added read_jdf() to read the important info in the `JDF` sheet, reformat into something useable in R
