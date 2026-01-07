@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">TAMMsupport</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -32,6 +32,12 @@
       <small>Source: <a href="https://github.com/cbedwards-dfw/TAMMsupport/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.1.0" id="tammsupport-110">TAMMsupport 1.1.0<a class="anchor" aria-label="anchor" href="#tammsupport-110"></a></h2>
+<p>Updated <code><a href="../reference/tamm_diff.html">tamm_diff()</a></code> to use the new version of <code>xldiff</code>, which in turn now harnesses updates the newer excel interaction package <code>openxslx2</code>. The upshot is that <code>excel_diff()</code> now copies sheet formatting (things be in percentage form, font sizes, cell borders, etc),</p>
+<p>From the user end, all this means is that <code><a href="../reference/tamm_diff.html">tamm_diff()</a></code> is prettier when applied to coho. On the developer end, I don’t have to custom code every important formatting choice in the TAMM (font sizes, cell borders) in order to make the output easy to read. Additionally, I’m able to remove a lot of code under the hood that existed to do all the formatting. And if the TAMM changes (e.g., a new row gets added, etc), <code><a href="../reference/tamm_diff.html">tamm_diff()</a></code> will continue to work.</p>
+<p>Other changes: - readme updated to represent newer functions - function arguments relabeled to consistently use snake_case. This may break older scripts :(</p>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.0.0" id="tammsupport-100">TAMMsupport 1.0.0<a class="anchor" aria-label="anchor" href="#tammsupport-100"></a></h2>
 <div class="section level3">

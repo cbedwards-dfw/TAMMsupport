@@ -5,12 +5,12 @@ Format TAMM overview for easy printing
 ## Usage
 
 ``` r
-format_overview(dat.overview)
+format_overview(dat_overview)
 ```
 
 ## Arguments
 
-- dat.overview:
+- dat_overview:
 
   dataframe of TAMM overview page, as produced by read_overview()
 

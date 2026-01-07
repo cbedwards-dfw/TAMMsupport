@@ -22,7 +22,7 @@
 
     <a class="navbar-brand me-2" href="index.html">TAMMsupport</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -58,12 +58,13 @@
 </h2>
 <p>I want to…</p>
 <ul>
-<li>Summarize and visualize key aspects of a Chinook TAMM? Use <code><a href="reference/tamm_report.html">tamm_report()</a></code>.</li>
-<li>compare two Chinook TAMM files to look for changes in inputs or results? Use <code><a href="reference/tamm_diff.html">tamm_diff()</a></code>. (Comparing Coho TAMM files is currently supported, but does not replicate Coho TAMM formatting)</li>
+<li>Summarize and visualize key aspects of a Chinook TAMM? Use <code><a href="reference/tamm_report.html">tamm_report()</a></code>. (OR, even better, check out the <a href="https://cbedwards-dfw.github.io/crayolaTAMM/" class="external-link">crayolaTAMM package!</a>)</li>
+<li>compare two Chinook TAMM files to look for changes in inputs or results? Use <code><a href="reference/tamm_diff.html">tamm_diff()</a></code>.</li>
 <li>compare two or more Chinook TAMM files (e.g. look across three ocean options) to see how ER varies by stock and fishery between the models? Use <code><a href="reference/tamm_compare.html">tamm_compare()</a></code>.</li>
 <li>extract the overview sheet info from a Chinook TAMM? Use <code><a href="reference/read_overview.html">read_overview()</a></code> or <code><a href="reference/read_overview_complete.html">read_overview_complete()</a></code>.</li>
 <li>extract the limiting stock complete sheet from a Chinook TAMM? Use <code><a href="reference/read_limiting_stock.html">read_limiting_stock()</a></code> or <code><a href="reference/clean_limiting_stock.html">clean_limiting_stock()</a></code>. If desired, use <code><a href="reference/filter_tamm_wa.html">filter_tamm_wa()</a></code> to then filter the results to just Washington fisheries.</li>
-<li>Trace the network of cells used by a formula in a TAMM (or other excel file)? Use <code><a href="reference/trace_formula.html">trace_formula()</a></code> to generate a dependency network, and <code><a href="reference/make_tracer_network.html">make_tracer_network()</a></code> to visualize it.</li>
+<li>extract the ER and AEQ of the <code>2A_C*</code> and <code>JDF</code> tabs? Use <code><a href="reference/read_2a_sheets.html">read_2a_sheets()</a></code> and <code><a href="reference/read_jdf.html">read_jdf()</a></code> respectively.</li>
+<li>Trace the network of cells used by a formula in a TAMM or other excel file? Use <code><a href="reference/trace_formula.html">trace_formula()</a></code> to generate a dependency network, and <code><a href="reference/make_tracer_network.html">make_tracer_network()</a></code> to visualize it.</li>
 </ul>
 </div>
 <div class="section level2">
@@ -71,14 +72,13 @@
 </h2>
 <p>You can install the compiled version of <a href="https://framverse.r-universe.dev/TAMMsupport" class="external-link">TAMMsupport</a> through the R-universe package repository:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"TAMMsupport"</span>, repos <span class="op">=</span> <span class="st">"https://framverse.r-universe.dev"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"TAMMsupport"</span>, <span class="st">"xldiff"</span><span class="op">)</span>, repos <span class="op">=</span> <span class="st">"https://framverse.r-universe.dev"</span><span class="op">)</span></span></code></pre></div>
 <p>If you have RTools installed, you can also install the development version of TAMMsupport with <a href="https://devtools.r-lib.org/" class="external-link">devtools</a> like so:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"cbedwards-dfw/TAMMsupport"</span><span class="op">)</span>    </span></code></pre></div>
 <p>or with <a href="https://pak.r-lib.org/" class="external-link">pak</a> like so:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pkg_install.html" class="external-link">pkg_install</a></span><span class="op">(</span><span class="st">"cbedwards-dfw/TAMMsupport"</span><span class="op">)</span></span></code></pre></div>
-<p><code>TAMMsupport</code> depends on the <code>xldiff</code> package, which contains our general tools for comparing excel files using R. <code>xldiff</code> should automatically be installed when <code>TAMMsupport</code> is. <code>xldiff</code> and its documentation can be found here: <a href="https://github.com/cbedwards-dfw/xldiff" class="external-link uri">https://github.com/cbedwards-dfw/xldiff</a>.</p>
 <p>With <code>TAMMsupport</code> installed, we can use functions from it by including the library in our script, like so:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://framverse.r-universe.dev/TAMMsupport" class="external-link">TAMMsupport</a></span><span class="op">)</span></span></code></pre></div>
@@ -90,24 +90,24 @@
 <p><code><a href="reference/tamm_diff.html">tamm_diff()</a></code> facilitates comparing the outputs and inputs of two tamm files by identifying changes in cell values in the overview, limiting stock complete, and input sheets. <code>tamm_diff</code> then creates a “diff” excel file that contains the contents of those three sheets, highlighting the changed cells. The formatting of the diff file broadly reflects that of the Chinook TAMM, but with simpler border and highlighting choices.</p>
 <p><code><a href="reference/tamm_diff.html">tamm_diff()</a></code> takes three arguments: the names of the first TAMM file, the second tamm file, and the name to give the resulting file (in all cases, the name should include filepath, if relevant). All three filenames should end in “.xlsx”. The following is an example use:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">cur.wd</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">setwd</a></span><span class="op">(</span><span class="st">"C:/Users/edwc1477/OneDrive - Washington State Executive Branch Agencies/Documents/WDFW FRAM team work/NOF material/NOF 2024"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="reference/tamm_diff.html">tamm_diff</a></span><span class="op">(</span>filename.1 <span class="op">=</span> <span class="st">"FRAM/Chin1124.xlsx"</span>,</span>
-<span>          filename.2 <span class="op">=</span> <span class="st">"NOF 2/Chin2524.xlsx"</span>,</span>
-<span>          results.name <span class="op">=</span> <span class="st">"comparison of Chin 1124 vs 2524.xlsx"</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">setwd</a></span><span class="op">(</span><span class="va">cur.wd</span><span class="op">)</span></span></code></pre></div>
-<p>By default, <code><a href="reference/tamm_diff.html">tamm_diff()</a></code> rounds percents and numbers of fish to the nearest 0.1 (1 decimal place) before comparing, and rounds numbers that are expected to be longer decimanls (e.g. rates, proportions) to the nearest 0.0001 (4 decimal places). In some cases, we may want to solely focus on larger changes (e.g. changes in whole fish). The optional arguments <code>percent_digits</code>, <code>numeric.digits</code> and <code>numeric.digits.small</code> control the decimal place rounding for percents, numbers of fish, and numbers that are expected to be rates or proportions, respectively. To highlight only larger changes, we might use</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/tamm_diff.html">tamm_diff</a></span><span class="op">(</span>filename.1 <span class="op">=</span> <span class="st">"FRAM/Chin1124.xlsx"</span>,</span>
-<span>          filename.2 <span class="op">=</span> <span class="st">"NOF 2/Chin2524.xlsx"</span>,</span>
-<span>          results.name <span class="op">=</span> <span class="st">"comparison of Chin 1124 vs 2524.xlsx"</span>,</span>
-<span>          percent_digits <span class="op">=</span> <span class="fl">1</span>, numeric.digits <span class="op">=</span> <span class="fl">0</span>, numeric.digits.small <span class="op">=</span> <span class="fl">3</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/tamm_diff.html">tamm_diff</a></span><span class="op">(</span>file_1 <span class="op">=</span> <span class="st">"Chin1124.xlsx"</span>,</span>
+<span>          file_2 <span class="op">=</span> <span class="st">"Chin2524.xlsx"</span>,</span>
+<span>          results_name <span class="op">=</span> <span class="st">"comparison of Chin 1124 vs 2524.xlsx"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p>Note that since we typically manage ER to the nearest 0.1%, it is unlikely that a percent_digits value of 0 would be useful.</p>
-<p>Currently <code><a href="reference/tamm_diff.html">tamm_diff()</a></code> only works well when comparing Chinook TAMM files. Comparison of Coho TAMM files is in development – the comparison itself works, but the output file does not replicate the formatting of the Coho TAMM, which makes reading the file unpleasant.</p>
+<p>By default, <code><a href="reference/tamm_diff.html">tamm_diff()</a></code> flags changes that were at least 0.1% of the value in <code>file_1</code> (or, if that value was zero, to within an absolute value of 0.001). In some cases, we may want to solely focus on larger changes (e.g. changes in whole fish). We can change the minimum threshold for proportional change with with the argument <code>proportional_threshold</code>: a value of 0.1 would mean only flagging changes of 10% or greater, and a value of 0.01 would flag change of 1% or greater.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/tamm_diff.html">tamm_diff</a></span><span class="op">(</span>file_1 <span class="op">=</span> <span class="st">"Chin1124.xlsx"</span>,</span>
+<span>          file_2 <span class="op">=</span> <span class="st">"Chin2524.xlsx"</span>,</span>
+<span>          results_name <span class="op">=</span> <span class="st">"comparison of Chin 1124 vs 2524.xlsx"</span>,</span>
+<span>          proportional_threshold <span class="op">=</span> <span class="fl">0.01</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p>Alternatively, we might want to use an absolute threshold (e.g., if we were only interested in entries of fish, we might want to flag changes of 1 or more fish). By providing a value to the optional argument <code>absolute_threshold</code>, we override the use of <code>proportional_threshold</code>, and the difference will flag any difference of absolute magnitude <code>proprotional_threshold</code>. Here’s an example that flags changes of at least 1:</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/tamm_diff.html">tamm_diff</a></span><span class="op">(</span>file_1 <span class="op">=</span> <span class="st">"Chin1124.xlsx"</span>,</span>
+<span>          file_2 <span class="op">=</span> <span class="st">"Chin2524.xlsx"</span>,</span>
+<span>          results_name <span class="op">=</span> <span class="st">"comparison of Chin 1124 vs 2524.xlsx"</span>,</span>
+<span>          absolute_threshold <span class="op">=</span> <span class="fl">1</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="working-with-limiting-stock-sheet">Working with limiting stock sheet<a class="anchor" aria-label="anchor" href="#working-with-limiting-stock-sheet"></a>
@@ -115,7 +115,7 @@
 <p><code><a href="reference/read_limiting_stock.html">read_limiting_stock()</a></code> reads in the limiting stock sheet of a TAMM file and applies some minimal formatting and filtering (notably, combining into a single table with variable <code>stock_type</code> to distingish hatchery and natural, unmarked and natural; giving categorization of fisheries).</p>
 <p><code><a href="reference/clean_limiting_stock.html">clean_limiting_stock()</a></code> does everything read_limiting stock does, but then filters to unmarked naturals, filters out AEQ entries, and provides the results in a long-form table that is ready for plotting or analysis of exploitation rates.</p>
 <p><code>filter_tamm_wa</code> filters a limiting stock dataframe (e.g. the output of <code>read_limiting_stock or</code> <code>clean_limiting_stock</code>) to just Washington fisheries. <code>filter_tamm_wa</code> looks for a <code>species</code> attribute in the dataframe (in line with This function can be included in a pipe, consistent with the filtering approaches in the <code>framrsquared package</code>. Unless you add that attribute to your data frame, it makes more sense to call <code><a href="reference/filter_tamm_wa.html">filter_tamm_wa_chin()</a></code> (for chinook TAMMs) or <code><a href="reference/filter_tamm_wa.html">filter_tamm_wa_coho()</a></code> (for Coho tamms)</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="reference/clean_limiting_stock.html">clean_limiting_stock</a></span><span class="op">(</span><span class="st">"Chin1224.xlsx"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
@@ -125,412 +125,27 @@
 <span>    <span class="fu">geom_bar</span><span class="op">(</span>position<span class="op">=</span><span class="st">"stack"</span>, stat<span class="op">=</span><span class="st">"identity"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="tools-in-development">Tools in development<a class="anchor" aria-label="anchor" href="#tools-in-development"></a>
+<h2 id="working-with-other-chinook-sheets">Working with other Chinook sheets<a class="anchor" aria-label="anchor" href="#working-with-other-chinook-sheets"></a>
 </h2>
-<p>These tools are functional, but still being developed.</p>
-<div class="section level3">
-<h3 id="tamm_report">
-<code>tamm_report()</code><a class="anchor" aria-label="anchor" href="#tamm_report"></a>
-</h3>
-<p><code><a href="reference/tamm_report.html">tamm_report()</a></code> summarizes key aspects of a single Chinook TAMM file in an html report, which is generated in the same folder as the summarized TAMM.</p>
-<p>Under the hood, tamm_report() uses a template parameterized quarto report and a child quarto file to help automate the creation of tabs for each stock. To see the underlying quarto files used (e.g., to suggest additional edits or features), set argument <code>clean = FALSE</code> when calling <code><a href="reference/tamm_report.html">tamm_report()</a></code>. This will prevent the deletion of <code>tamm-visualizer.qmd</code> and <code>tamm-visualizer-child.qmd</code>, which will be present in the same folder as the TAMM and report.</p>
-<p>Future goals include</p>
 <ul>
-<li>workshopping and adding additional summary information based on user needs</li>
+<li>
+<code><a href="reference/read_2a_sheets.html">read_2a_sheets()</a></code> parses the sheets “2A_Cmrkd”, “2A_CUnmrkd”, “2A_CUandM” and “2A_CUandM_N”, extracts the AEQs and ERs, and labels them with the appropriate stocks and fisheries. This makes it much easier to writes scripts that depend on these values. It returns a list with <code>$AEQ</code> (all the AEQ values in tabular form) and <code>$ER</code> (all the ER values in tabular form)</li>
+<li>
+<code><a href="reference/read_jdf.html">read_jdf()</a></code> is analogous to <code><a href="reference/read_2a_sheets.html">read_2a_sheets()</a></code> but parses the AEQ information in the “JDF” sheet. For compatibility reasons it also returns a list with <code>$AEQ</code> and <code>$ER</code> like <code><a href="reference/read_2a_sheets.html">read_2a_sheets()</a></code> does, but as there is not a bottom bar with ER values on the JDF sheet, the <code>$ER</code> entry is empty</li>
 </ul>
 </div>
-<div class="section level3">
-<h3 id="tamm_compare">
-<code>tamm_compare()</code><a class="anchor" aria-label="anchor" href="#tamm_compare"></a>
-</h3>
-<p><code><a href="reference/tamm_compare.html">tamm_compare()</a></code> uses the same general approach as <code><a href="reference/tamm_report.html">tamm_report()</a></code>, but creates a report to compare any number TAMM files based off of Yi Xu’s Rmarkdown report to compare exploitation rates for three ocean options. The optional argument <code>fisheries</code> takes a numeric vector of fishery IDs; visualization of stock ERs will only plot those ERs. If <code>fisheries</code> is not provided, for each stock <code><a href="reference/tamm_compare.html">tamm_compare()</a></code> will create a figure of impacts from all fisheries, and a separate plot of impacts from all SUS fisheries.</p>
-</div>
+<div class="section level2">
+<h2 id="tamm_report">
+<code>tamm_report()</code><a class="anchor" aria-label="anchor" href="#tamm_report"></a>
+</h2>
+<p><code><a href="reference/tamm_report.html">tamm_report()</a></code> summarizes key aspects of a single Chinook TAMM file in an html report, which is generated in the same folder as the summarized TAMM.</p>
+<p>Under the hood, tamm_report() uses a template parameterized quarto report and a child quarto file to help automate the creation of tabs for each stock. To see the underlying quarto files used (e.g., to suggest additional edits or features), set argument <code>clean = FALSE</code> when calling <code><a href="reference/tamm_report.html">tamm_report()</a></code>. This will prevent the deletion of <code>tamm-visualizer.qmd</code> and <code>tamm-visualizer-child.qmd</code>, which will be leftin the same folder as the TAMM and report.</p>
 </div>
 <div class="section level2">
-<h2 id="stock-fishery-and-timestep-tables">Stock, Fishery, and Timestep tables<a class="anchor" aria-label="anchor" href="#stock-fishery-and-timestep-tables"></a>
+<h2 id="tamm_compare">
+<code>tamm_compare()</code><a class="anchor" aria-label="anchor" href="#tamm_compare"></a>
 </h2>
-<p>FRAM and TAMM often use stock ID number, fishery ID number, and time step number to represent stock, fishery, and timestep respectively. TAMMsupport includes dataframe versions of the <code>Stock</code>, <code>Fishery</code>, and <code>TimeStep</code> tables of the Coho and Chinook FRAM databases for easy reference and to streamline merging human-readable names to dataframes that have only id numbers. These dataframes are named <code>fishery_chinook_fram</code>, <code>fishery_coho_fram</code>, <code>stock_chinook_fram</code>, <code>stock_coho_fram</code>, <code>timestep_chinook_fram</code>, and <code>timestep_coho_fram</code>, and have associated help files accessible with <code>?fishery_chinook_fram</code> etc. The initial rows of these dataframes are shown below.</p>
-<div class="section level3">
-<h3 id="stock_chinook_fram">
-<code>stock_chinook_fram</code><a class="anchor" aria-label="anchor" href="#stock_chinook_fram"></a>
-</h3>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu">TAMMsupport</span><span class="fu">::</span><span class="va">stock_chinook_fram</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<table style="width:100%;" class="table">
-<colgroup>
-<col width="14%">
-<col width="14%">
-<col width="14%">
-<col width="14%">
-<col width="14%">
-<col width="14%">
-<col width="14%">
-</colgroup>
-<thead><tr class="header">
-<th align="left">species</th>
-<th align="right">stock_version</th>
-<th align="right">stock_id</th>
-<th align="right">production_region_number</th>
-<th align="right">management_unit_number</th>
-<th align="left">stock_name</th>
-<th align="left">stock_long_name</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td align="left">CHINOOK</td>
-<td align="right">5</td>
-<td align="right">4</td>
-<td align="right">1</td>
-<td align="right">6</td>
-<td align="left">M-NK Sp Hat</td>
-<td align="left">Marked Nooksack Spr Hatchery</td>
-</tr>
-<tr class="even">
-<td align="left">CHINOOK</td>
-<td align="right">5</td>
-<td align="right">6</td>
-<td align="right">1</td>
-<td align="right">10</td>
-<td align="left">M-NK Sp Nat</td>
-<td align="left">Marked Nooksack Spr Natural</td>
-</tr>
-<tr class="odd">
-<td align="left">CHINOOK</td>
-<td align="right">5</td>
-<td align="right">8</td>
-<td align="right">2</td>
-<td align="right">2</td>
-<td align="left">M-Skag FF</td>
-<td align="left">Marked Skagit Summer/Fall Fing</td>
-</tr>
-<tr class="even">
-<td align="left">CHINOOK</td>
-<td align="right">5</td>
-<td align="right">10</td>
-<td align="right">2</td>
-<td align="right">6</td>
-<td align="left">M-SkagFYr</td>
-<td align="left">Marked Skagit Summer/Fall Year</td>
-</tr>
-<tr class="odd">
-<td align="left">CHINOOK</td>
-<td align="right">5</td>
-<td align="right">12</td>
-<td align="right">2</td>
-<td align="right">10</td>
-<td align="left">M-SkagSpY</td>
-<td align="left">Marked Skagit Spring Year</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="section level3">
-<h3 id="stock_coho_fram">
-<code>stock_coho_fram</code><a class="anchor" aria-label="anchor" href="#stock_coho_fram"></a>
-</h3>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu">TAMMsupport</span><span class="fu">::</span><span class="va">stock_coho_fram</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<table style="width:100%;" class="table">
-<colgroup>
-<col width="14%">
-<col width="14%">
-<col width="14%">
-<col width="14%">
-<col width="14%">
-<col width="14%">
-<col width="14%">
-</colgroup>
-<thead><tr class="header">
-<th align="left">species</th>
-<th align="right">stock_version</th>
-<th align="right">stock_id</th>
-<th align="right">production_region_number</th>
-<th align="right">management_unit_number</th>
-<th align="left">stock_name</th>
-<th align="left">stock_long_name</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td align="left">COHO</td>
-<td align="right">1</td>
-<td align="right">1</td>
-<td align="right">1</td>
-<td align="right">1</td>
-<td align="left">U-nkskrw</td>
-<td align="left">Nooksack River Wild UnMarked</td>
-</tr>
-<tr class="even">
-<td align="left">COHO</td>
-<td align="right">1</td>
-<td align="right">2</td>
-<td align="right">1</td>
-<td align="right">2</td>
-<td align="left">M-nkskrw</td>
-<td align="left">Nooksack River Wild Marked</td>
-</tr>
-<tr class="odd">
-<td align="left">COHO</td>
-<td align="right">1</td>
-<td align="right">3</td>
-<td align="right">1</td>
-<td align="right">3</td>
-<td align="left">U-kendlh</td>
-<td align="left">Kendall Creek Hatchery UnMarked</td>
-</tr>
-<tr class="even">
-<td align="left">COHO</td>
-<td align="right">1</td>
-<td align="right">4</td>
-<td align="right">1</td>
-<td align="right">4</td>
-<td align="left">M-kendlh</td>
-<td align="left">Kendall Creek Hatchery Marked</td>
-</tr>
-<tr class="odd">
-<td align="left">COHO</td>
-<td align="right">1</td>
-<td align="right">5</td>
-<td align="right">1</td>
-<td align="right">5</td>
-<td align="left">U-skokmh</td>
-<td align="left">Skookum Creek Hatchery UnMarked</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="section level3">
-<h3 id="fishery_chinook_fram">
-<code>fishery_chinook_fram</code><a class="anchor" aria-label="anchor" href="#fishery_chinook_fram"></a>
-</h3>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu">TAMMsupport</span><span class="fu">::</span><span class="va">fishery_chinook_fram</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<table style="width:100%;" class="table">
-<colgroup>
-<col width="12%">
-<col width="22%">
-<col width="17%">
-<col width="20%">
-<col width="27%">
-</colgroup>
-<thead><tr class="header">
-<th align="left">species</th>
-<th align="right">version_number</th>
-<th align="right">fishery_id</th>
-<th align="left">fishery_name</th>
-<th align="left">fishery_title</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td align="left">CHINOOK</td>
-<td align="right">1</td>
-<td align="right">55</td>
-<td align="left">Tr 6B:9Net</td>
-<td align="left">Tr Area 6B:9 Net</td>
-</tr>
-<tr class="even">
-<td align="left">CHINOOK</td>
-<td align="right">1</td>
-<td align="right">56</td>
-<td align="left">A 10 Sport</td>
-<td align="left">NT Area 10 Sport</td>
-</tr>
-<tr class="odd">
-<td align="left">CHINOOK</td>
-<td align="right">1</td>
-<td align="right">57</td>
-<td align="left">A 11 Sport</td>
-<td align="left">NT Area 11 Sport</td>
-</tr>
-<tr class="even">
-<td align="left">CHINOOK</td>
-<td align="right">1</td>
-<td align="right">58</td>
-<td align="left">NT10:11Net</td>
-<td align="left">NT Area 10:11 Net</td>
-</tr>
-<tr class="odd">
-<td align="left">CHINOOK</td>
-<td align="right">1</td>
-<td align="right">59</td>
-<td align="left">Tr10:11Net</td>
-<td align="left">Tr Area 10:11 Net</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="section level3">
-<h3 id="fishery_coho_fram">
-<code>fishery_coho_fram</code><a class="anchor" aria-label="anchor" href="#fishery_coho_fram"></a>
-</h3>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu">TAMMsupport</span><span class="fu">::</span><span class="va">fishery_coho_fram</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<table class="table">
-<colgroup>
-<col width="11%">
-<col width="20%">
-<col width="15%">
-<col width="17%">
-<col width="36%">
-</colgroup>
-<thead><tr class="header">
-<th align="left">species</th>
-<th align="right">version_number</th>
-<th align="right">fishery_id</th>
-<th align="left">fishery_name</th>
-<th align="left">fishery_title</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td align="left">COHO</td>
-<td align="right">1</td>
-<td align="right">1</td>
-<td align="left">No Cal Trm</td>
-<td align="left">No Calif Cst Terminal Catch</td>
-</tr>
-<tr class="even">
-<td align="left">COHO</td>
-<td align="right">1</td>
-<td align="right">2</td>
-<td align="left">Cn Cal Trm</td>
-<td align="left">Cntrl Cal Cst Term Catch</td>
-</tr>
-<tr class="odd">
-<td align="left">COHO</td>
-<td align="right">1</td>
-<td align="right">3</td>
-<td align="left">Ft Brg Spt</td>
-<td align="left">Fort Bragg Sport</td>
-</tr>
-<tr class="even">
-<td align="left">COHO</td>
-<td align="right">1</td>
-<td align="right">4</td>
-<td align="left">Ft Brg Trl</td>
-<td align="left">Fort Bragg Troll</td>
-</tr>
-<tr class="odd">
-<td align="left">COHO</td>
-<td align="right">1</td>
-<td align="right">5</td>
-<td align="left">Ca KMZ Spt</td>
-<td align="left">KMZ Sport</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="section level3">
-<h3 id="timestep_chinook_fram">
-<code>timestep_chinook_fram</code><a class="anchor" aria-label="anchor" href="#timestep_chinook_fram"></a>
-</h3>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu">TAMMsupport</span><span class="fu">::</span><span class="va">timestep_chinook_fram</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<table style="width:100%;" class="table">
-<colgroup>
-<col width="12%">
-<col width="21%">
-<col width="19%">
-<col width="21%">
-<col width="24%">
-</colgroup>
-<thead><tr class="header">
-<th align="left">species</th>
-<th align="right">version_number</th>
-<th align="right">time_step_id</th>
-<th align="left">time_step_name</th>
-<th align="left">time_step_title</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td align="left">CHINOOK</td>
-<td align="right">1</td>
-<td align="right">1</td>
-<td align="left">Oct-Apr</td>
-<td align="left">October-April</td>
-</tr>
-<tr class="even">
-<td align="left">CHINOOK</td>
-<td align="right">1</td>
-<td align="right">2</td>
-<td align="left">May-June</td>
-<td align="left">May - June</td>
-</tr>
-<tr class="odd">
-<td align="left">CHINOOK</td>
-<td align="right">1</td>
-<td align="right">3</td>
-<td align="left">July-Sept</td>
-<td align="left">July - September</td>
-</tr>
-<tr class="even">
-<td align="left">CHINOOK</td>
-<td align="right">1</td>
-<td align="right">4</td>
-<td align="left">Oct-Apr-2</td>
-<td align="left">October-April-2</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="section level3">
-<h3 id="timestep_coho_fram">
-<code>timestep_coho_fram</code><a class="anchor" aria-label="anchor" href="#timestep_coho_fram"></a>
-</h3>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu">TAMMsupport</span><span class="fu">::</span><span class="va">timestep_coho_fram</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<table class="table">
-<colgroup>
-<col width="12%">
-<col width="21%">
-<col width="18%">
-<col width="21%">
-<col width="26%">
-</colgroup>
-<thead><tr class="header">
-<th align="left">species</th>
-<th align="right">version_number</th>
-<th align="right">time_step_id</th>
-<th align="left">time_step_name</th>
-<th align="left">time_step_title</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td align="left">COHO</td>
-<td align="right">1</td>
-<td align="right">1</td>
-<td align="left">Jan-Jun</td>
-<td align="left">January - June</td>
-</tr>
-<tr class="even">
-<td align="left">COHO</td>
-<td align="right">1</td>
-<td align="right">2</td>
-<td align="left">July</td>
-<td align="left">July</td>
-</tr>
-<tr class="odd">
-<td align="left">COHO</td>
-<td align="right">1</td>
-<td align="right">3</td>
-<td align="left">August</td>
-<td align="left">August</td>
-</tr>
-<tr class="even">
-<td align="left">COHO</td>
-<td align="right">1</td>
-<td align="right">4</td>
-<td align="left">Septmbr</td>
-<td align="left">September</td>
-</tr>
-<tr class="odd">
-<td align="left">COHO</td>
-<td align="right">1</td>
-<td align="right">5</td>
-<td align="left">Oct-Dec</td>
-<td align="left">October - December</td>
-</tr>
-</tbody>
-</table>
-</div>
+<p><code><a href="reference/tamm_compare.html">tamm_compare()</a></code> uses the same general approach as <code><a href="reference/tamm_report.html">tamm_report()</a></code>, but creates a report to compare any number TAMM files based off of Yi Xu’s Rmarkdown report to compare exploitation rates for three ocean options. The optional argument <code>fisheries</code> takes a numeric vector of fishery IDs; visualization of stock ERs will only plot those ERs. If <code>fisheries</code> is not provided, for each stock <code><a href="reference/tamm_compare.html">tamm_compare()</a></code> will create a figure of impacts from all fisheries, and a separate plot of impacts from all SUS fisheries.</p>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">

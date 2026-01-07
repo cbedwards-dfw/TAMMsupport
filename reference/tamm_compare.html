@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">TAMMsupport</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -40,8 +40,8 @@
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">tamm_compare</span><span class="op">(</span></span>
-<span>  <span class="va">tamm.names</span>,</span>
-<span>  tamm.path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  <span class="va">tamm_names</span>,</span>
+<span>  tamm_path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  fisheries <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  clean <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  overwrite <span class="op">=</span> <span class="cn">TRUE</span></span>
@@ -52,11 +52,11 @@
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
 
 
-<dl><dt id="arg-tamm-names">tamm.names<a class="anchor" aria-label="anchor" href="#arg-tamm-names"></a></dt>
+<dl><dt id="arg-tamm-names">tamm_names<a class="anchor" aria-label="anchor" href="#arg-tamm-names"></a></dt>
 <dd><p>character vector of the three tamm files to compare (including .xlsx suffix).</p></dd>
 
 
-<dt id="arg-tamm-path">tamm.path<a class="anchor" aria-label="anchor" href="#arg-tamm-path"></a></dt>
+<dt id="arg-tamm-path">tamm_path<a class="anchor" aria-label="anchor" href="#arg-tamm-path"></a></dt>
 <dd><p>Absolute path to directory containing the tamm file. <code>here::here()</code> can be useful in identifying appropriate path. Character atomic; defaults to current working directory.</p></dd>
 
 
@@ -81,9 +81,9 @@ to explore the .qmd files underlying the report.</p></dd>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
-<span class="r-in"><span><span class="va">tamm.path</span> <span class="op">&lt;-</span> <span class="st">"C:/Users/edwc1477/Documents/WDFW FRAM team work/NOF material/NOF 2024/FRAM"</span></span></span>
-<span class="r-in"><span><span class="va">tamm.names</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Chin1024.xlsx"</span>, <span class="st">"Chin1124.xlsx"</span>, <span class="st">"Chin1224.xlsx"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="tamm_compare3.html">tamm_compare3</a></span><span class="op">(</span>tamm.names <span class="op">=</span> <span class="va">tamm.names</span>, tamm.path <span class="op">=</span> <span class="va">tamm.path</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">tamm_path</span> <span class="op">&lt;-</span> <span class="st">"C:/Users/edwc1477/Documents/WDFW FRAM team work/NOF material/NOF 2024/FRAM"</span></span></span>
+<span class="r-in"><span><span class="va">tamm_names</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Chin1024.xlsx"</span>, <span class="st">"Chin1124.xlsx"</span>, <span class="st">"Chin1224.xlsx"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="tamm_compare3.html">tamm_compare3</a></span><span class="op">(</span>tamm_names <span class="op">=</span> <span class="va">tamm_names</span>, tamm_path <span class="op">=</span> <span class="va">tamm_path</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 </code></pre></div>
     </div>

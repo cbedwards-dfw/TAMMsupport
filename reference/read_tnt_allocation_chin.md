@@ -7,12 +7,12 @@ of the JDF tab
 ## Usage
 
 ``` r
-read_tnt_allocation_chin(xlsxFile)
+read_tnt_allocation_chin(file)
 ```
 
 ## Arguments
 
-- xlsxFile:
+- file:
 
   Character vector. Filename (including path) for chinook TAMM
 

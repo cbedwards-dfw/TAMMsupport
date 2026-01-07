@@ -5,12 +5,12 @@ Reads in the table, adds fishery type information.
 ## Usage
 
 ``` r
-read_limiting_stock(filename, longform = FALSE)
+read_limiting_stock(file, longform = FALSE)
 ```
 
 ## Arguments
 
-- filename:
+- file:
 
   Tamm name (and path)
 

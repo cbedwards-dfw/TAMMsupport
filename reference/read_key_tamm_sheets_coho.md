@@ -5,12 +5,12 @@ Read Chinook TAMM files to extract the key sheets
 ## Usage
 
 ``` r
-read_key_tamm_sheets_coho(xlsxFile)
+read_key_tamm_sheets_coho(file)
 ```
 
 ## Arguments
 
-- xlsxFile:
+- file:
 
   \#Tamm file name
 

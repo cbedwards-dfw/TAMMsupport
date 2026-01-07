@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">TAMMsupport</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -40,12 +40,12 @@
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">tamm_report</span><span class="op">(</span></span>
-<span>  <span class="va">tamm.name</span>,</span>
-<span>  tamm.path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  <span class="va">tamm_name</span>,</span>
+<span>  tamm_path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  clean <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  overwrite <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  additional.children <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  additional.support.files <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  additional_children <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  additional_support_files <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -53,11 +53,11 @@
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
 
 
-<dl><dt id="arg-tamm-name">tamm.name<a class="anchor" aria-label="anchor" href="#arg-tamm-name"></a></dt>
+<dl><dt id="arg-tamm-name">tamm_name<a class="anchor" aria-label="anchor" href="#arg-tamm-name"></a></dt>
 <dd><p>Name of tamm file (including .xlsx suffix). Character atomic</p></dd>
 
 
-<dt id="arg-tamm-path">tamm.path<a class="anchor" aria-label="anchor" href="#arg-tamm-path"></a></dt>
+<dt id="arg-tamm-path">tamm_path<a class="anchor" aria-label="anchor" href="#arg-tamm-path"></a></dt>
 <dd><p>Absolute path to directory containing the tamm file. <code>here::here()</code> can be useful in identifying appropriate path. Character atomic; defaults to current working directory.</p></dd>
 
 
@@ -70,13 +70,13 @@ to explore the .qmd files underlying the report.</p></dd>
 <dd><p>Should the intermediate .qmd files or the final report be overwritten if those files already exist?; Logical, defaults to <code>TRUE</code>.</p></dd>
 
 
-<dt id="arg-additional-children">additional.children<a class="anchor" aria-label="anchor" href="#arg-additional-children"></a></dt>
+<dt id="arg-additional-children">additional_children<a class="anchor" aria-label="anchor" href="#arg-additional-children"></a></dt>
 <dd><p>Optional argument with filepath(s) to additional quarto child documents (see <code>Details</code>). Defaults to <code>NULL</code>.</p></dd>
 
 
-<dt id="arg-additional-support-files">additional.support.files<a class="anchor" aria-label="anchor" href="#arg-additional-support-files"></a></dt>
+<dt id="arg-additional-support-files">additional_support_files<a class="anchor" aria-label="anchor" href="#arg-additional-support-files"></a></dt>
 <dd><p>Optional argument with filepath(s) to additional files needed by additional quarto documents. Files will be copied into the same directory as the TAMM for
-easy reading/use by <code>additional.children</code> quarto files, and then deleted after the report is generated</p></dd>
+easy reading/use by <code>additional_children</code> quarto files, and then deleted after the report is generated</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -95,24 +95,24 @@ bar charts showing the breakdown of exploitation rates by fishery for each stock
 <code>limiting stock complete</code> TAMM sheet. However, individuals or organizations may consistently want
 additional, specific visualizations based on their own needs. For example, individual tribes may want
 to visualize impacts on a single stock, but use AEQ instead of ER rates. The <code>tamm_report</code> function is
-designed to integrate these extra components with the <code>additional.children</code> argument.</p>
+designed to integrate these extra components with the <code>additional_children</code> argument.</p>
 <p>The basic principle is that the individual or group can write a reusable "child" .qmd file, <a href="https://bookdown.org/yihui/rmarkdown-cookbook/child-document.html" class="external-link">see this explanation using Rmarkdown</a>), which will effectively
 be inserted into the main report. As an example, we might create a simple additional
 child .qmd file called <code>extra-tamm-child.qmd</code> to include a small table summarizing a few
 key aspects of the Nooksack Earlies stock. The contents of that file are provided in the example below.</p>
-<p>When we call <code>tamm_report()</code>, we can include as an argument <code>additional.children = </code> with the file name (including file path) for
+<p>When we call <code>tamm_report()</code>, we can include as an argument <code>additional_children = </code> with the file name (including file path) for
 our new file. In this way we can easily include this extra content any time we create a tamm report. If desired,
-multiple child files can be created, and <code>additional.children</code> can take a character vector with each child file name.</p>
+multiple child files can be created, and <code>additional_children</code> can take a character vector with each child file name.</p>
 <p>When writing child documents, formatting and chunks work akin to copy-pasting a section of a quarto file out of the main file. (To easily
 access the main quarto file, run tamm_report() with <code>clean = FALSE</code>, which will leave <code>tamm-visualizer.qmd</code> and <code>tamm-visualizer-child.qmd</code> files in the folder with the TAMM file).
 The child document will have access to key objects</p><ul><li><p><code>dat.all</code>: the output of <code><a href="read_limiting_stock.html">read_limiting_stock</a></code> with <code>longform = TRUE</code> called on the TAMM;</p></li>
-<li><p><code>dat.overview</code>: the output of of <code><a href="read_overview.html">read_overview</a></code> called on the TAMM;</p></li>
+<li><p><code>dat_overview</code>: the output of of <code><a href="read_overview.html">read_overview</a></code> called on the TAMM;</p></li>
 <li><p>and <code>dat</code>: the specific filtered and formatted version of the limiting stock data generated in the <code>limiting stock tab</code> chunk of <code>tamm-visualizer.qmd</code> and used in generating the unmarked natural stock exploitation rate figures.
-When developing a child document, it may be useful to create in the working environment versions of <code>dat.all</code> and <code>dat.overview</code> from an example TAMM to facilitate
+When developing a child document, it may be useful to create in the working environment versions of <code>dat.all</code> and <code>dat_overview</code> from an example TAMM to facilitate
 writing appropriate filters, plot-making code, etc. The primary quarto report loads in the tidyverse, framrsquared, kableExtra, and TAMMsupport packages,
 but you can include additional packages for the child documents as needed by adding <code>library(packagename</code> calls just
 like in any other context.</p></li>
-</ul><p>If the <code>additional.children</code> files need to read contents of additional files (or call children .qmd files of their own
+</ul><p>If the <code>additional_children</code> files need to read contents of additional files (or call children .qmd files of their own
 to streamline looping over stocks or fisheries), the file paths to these supplemental
 files can be provided in the <code>additional.support files</code> argument. These files will be copied into the
 same folder as the .qmd files, so the children quarto files can be written to access the supplemental

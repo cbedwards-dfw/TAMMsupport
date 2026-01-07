@@ -5,17 +5,17 @@ Intended use case is to compare low, mid, and high ocean option.
 ## Usage
 
 ``` r
-tamm_compare3(tamm.names, tamm.path = getwd(), clean = TRUE, overwrite = TRUE)
+tamm_compare3(tamm_names, tamm_path = getwd(), clean = TRUE, overwrite = TRUE)
 ```
 
 ## Arguments
 
-- tamm.names:
+- tamm_names:
 
   character vector of the three tamm files to compare (including .xlsx
   suffix).
 
-- tamm.path:
+- tamm_path:
 
   Absolute path to directory containing the tamm file. `here::here()`
   can be useful in identifying appropriate path. Character atomic;
@@ -40,8 +40,8 @@ Nothing
 
 ``` r
 if (FALSE) { # \dontrun{
-tamm.path <- "C:/Users/edwc1477/Documents/WDFW FRAM team work/NOF material/NOF 2024/FRAM"
-tamm.names <- c("Chin1024.xlsx", "Chin1124.xlsx", "Chin1224.xlsx")
-tamm_compare3(tamm.names = tamm.names, tamm.path = tamm.path)
+tamm_path <- "C:/Users/edwc1477/Documents/WDFW FRAM team work/NOF material/NOF 2024/FRAM"
+tamm_names <- c("Chin1024.xlsx", "Chin1124.xlsx", "Chin1224.xlsx")
+tamm_compare3(tamm_names = tamm_names, tamm_path = tamm_path)
 } # }
 ```

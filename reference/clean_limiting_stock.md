@@ -7,12 +7,12 @@ values.
 ## Usage
 
 ``` r
-clean_limiting_stock(filename)
+clean_limiting_stock(file)
 ```
 
 ## Arguments
 
-- filename:
+- file:
 
   Name (and path) for TAMM files
 

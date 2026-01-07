@@ -7,10 +7,10 @@
 ``` r
 trace_formula(
   path,
-  cell.start,
-  max.it = 5000,
+  cell_start,
+  max_it = 5000,
   verbose = TRUE,
-  split.ranges = FALSE
+  split_ranges = FALSE
 )
 ```
 
@@ -20,12 +20,12 @@ trace_formula(
 
   Filepath of an excel file
 
-- cell.start:
+- cell_start:
 
   Character string of intiial cell in excel format. MUST include sheet
   name (e.g. "SPS!AS20", not "AS20")
 
-- max.it:
+- max_it:
 
   Maximum iterations; used as a failsafe to ensure function eventually
   in case of circular error. Defaults to 5000; increase if actual
@@ -36,7 +36,7 @@ trace_formula(
   Print cell addresses to console during tracing? Logical, defaults to
   `FALSE`.
 
-- split.ranges:
+- split_ranges:
 
   When encountering a reference that includes a cell range, trace
   backwards for all cells (TRUE) or just the first cell in the range
@@ -53,7 +53,7 @@ trace_formula(
 - `$cells`:
 
   tibble summarizing each of the cells in the dependency network,
-  starting with the `cell.start`. Within this, `$id` is an index;
+  starting with the `cell_start`. Within this, `$id` is an index;
   `$label` is the cell address; `$formula` is the formula in that cell
   if there is a formula, otherwise it is the contents of the cell,
   `$contents` is the non-formula cell contents (i.e., if a formula is
@@ -83,6 +83,6 @@ trace_formula(
 ``` r
 if (FALSE) { # \dontrun{
 trace_network = trace_formula(path = "NOF material/NOF 2024/NOF 2/Chin1624.xlsx",
- cell.start = "SPSmrkd!AS20")
+ cell_start = "SPSmrkd!AS20")
 } # }
 ```
