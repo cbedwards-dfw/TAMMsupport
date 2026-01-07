@@ -12,14 +12,14 @@
 Source:
 [`DESCRIPTION`](https://github.com/cbedwards-dfw/TAMMsupport/blob/main/DESCRIPTION)
 
-Edwards C, Garber T (2025). *TAMMsupport: Streamline working with
-Terminal Area Management Modules*. R package version 0.2.0,
+Edwards C, Garber T (2026). *TAMMsupport: Streamline working with
+Terminal Area Management Modules*. R package version 1.0.0,
 <https://framverse.r-universe.dev/TAMMsupport>.
 
     @Manual{,
       title = {TAMMsupport: Streamline working with Terminal Area Management Modules},
       author = {Collin Edwards and Ty Garber},
-      year = {2025},
-      note = {R package version 0.2.0},
+      year = {2026},
+      note = {R package version 1.0.0},
       url = {https://framverse.r-universe.dev/TAMMsupport},
     }

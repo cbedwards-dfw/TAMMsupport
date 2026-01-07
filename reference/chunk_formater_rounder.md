@@ -5,7 +5,7 @@ Format chunks of dataframe to round digits
 ## Usage
 
 ``` r
-chunk_formater_rounder(df, block.ranges, digits = 1)
+chunk_formater_rounder(df, block_ranges, digits = 1)
 ```
 
 ## Arguments
@@ -14,7 +14,7 @@ chunk_formater_rounder(df, block.ranges, digits = 1)
 
   dataframe of sheet to apply formatting to.
 
-- block.ranges:
+- block_ranges:
 
   vector of characters specifying blocks of cells (in excel
   nomenclature) to format as %s

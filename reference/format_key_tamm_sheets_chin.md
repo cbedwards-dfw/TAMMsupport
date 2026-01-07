@@ -1,14 +1,13 @@
-# Modify list of Chinook TAMM spreadsheet dataframes to facilitate comparison.
+# **\[superseded\]** Modify list of Chinook TAMM spreadsheet dataframes to facilitate comparison.
 
-Modify list of Chinook TAMM spreadsheet dataframes to facilitate
-comparison.
+Function is no longer needed for tamm_diff now that openxlsx
 
 ## Usage
 
 ``` r
 format_key_tamm_sheets_chin(
   dat,
-  percent.digits = 1,
+  percent_digits = 1,
   numeric.digits = 1,
   numeric.digits.small = 4
 )
@@ -21,7 +20,7 @@ format_key_tamm_sheets_chin(
   list of dataframes corresponding to the overview, limiting stock, and
   inputs tabs. Must be named `$overview`, `$limiting`, and `$input`
 
-- percent.digits:
+- percent_digits:
 
   Optional, number of decimal places to round percentages to before
   comparison. Defaults to 1.

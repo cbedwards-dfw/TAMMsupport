@@ -5,6 +5,7 @@
 <url><loc>https://cbedwards-dfw.github.io/TAMMsupport/authors.html</loc></url>
 <url><loc>https://cbedwards-dfw.github.io/TAMMsupport/index.html</loc></url>
 <url><loc>https://cbedwards-dfw.github.io/TAMMsupport/news/index.html</loc></url>
+<url><loc>https://cbedwards-dfw.github.io/TAMMsupport/reference/TAMMsupport-package.html</loc></url>
 <url><loc>https://cbedwards-dfw.github.io/TAMMsupport/reference/address_parser.html</loc></url>
 <url><loc>https://cbedwards-dfw.github.io/TAMMsupport/reference/as_numeric_safe.html</loc></url>
 <url><loc>https://cbedwards-dfw.github.io/TAMMsupport/reference/chunk_formater_percenter.html</loc></url>
@@ -18,8 +19,6 @@
 <url><loc>https://cbedwards-dfw.github.io/TAMMsupport/reference/compare_chinook_inputs.html</loc></url>
 <url><loc>https://cbedwards-dfw.github.io/TAMMsupport/reference/filter_tamm_wa.html</loc></url>
 <url><loc>https://cbedwards-dfw.github.io/TAMMsupport/reference/find_color_matches.html</loc></url>
-<url><loc>https://cbedwards-dfw.github.io/TAMMsupport/reference/fishery_chinook_fram.html</loc></url>
-<url><loc>https://cbedwards-dfw.github.io/TAMMsupport/reference/fishery_coho_fram.html</loc></url>
 <url><loc>https://cbedwards-dfw.github.io/TAMMsupport/reference/fishery_renamer.html</loc></url>
 <url><loc>https://cbedwards-dfw.github.io/TAMMsupport/reference/format_key_tamm_sheets_chin.html</loc></url>
 <url><loc>https://cbedwards-dfw.github.io/TAMMsupport/reference/format_key_tamm_sheets_coho.html</loc></url>
@@ -51,17 +50,11 @@
 <url><loc>https://cbedwards-dfw.github.io/TAMMsupport/reference/read_tnt_allocation_chin.html</loc></url>
 <url><loc>https://cbedwards-dfw.github.io/TAMMsupport/reference/reformat_management.html</loc></url>
 <url><loc>https://cbedwards-dfw.github.io/TAMMsupport/reference/safe_convert_numeric.html</loc></url>
-<url><loc>https://cbedwards-dfw.github.io/TAMMsupport/reference/stock_chinook_fram.html</loc></url>
-<url><loc>https://cbedwards-dfw.github.io/TAMMsupport/reference/stock_coho_fram.html</loc></url>
 <url><loc>https://cbedwards-dfw.github.io/TAMMsupport/reference/tamm_compare.html</loc></url>
 <url><loc>https://cbedwards-dfw.github.io/TAMMsupport/reference/tamm_compare3.html</loc></url>
 <url><loc>https://cbedwards-dfw.github.io/TAMMsupport/reference/tamm_diff.html</loc></url>
-<url><loc>https://cbedwards-dfw.github.io/TAMMsupport/reference/tamm_diff_chin.html</loc></url>
-<url><loc>https://cbedwards-dfw.github.io/TAMMsupport/reference/tamm_diff_coho.html</loc></url>
 <url><loc>https://cbedwards-dfw.github.io/TAMMsupport/reference/tamm_format_sheets.html</loc></url>
 <url><loc>https://cbedwards-dfw.github.io/TAMMsupport/reference/tamm_report.html</loc></url>
-<url><loc>https://cbedwards-dfw.github.io/TAMMsupport/reference/timestep_chinook_fram.html</loc></url>
-<url><loc>https://cbedwards-dfw.github.io/TAMMsupport/reference/timestep_coho_fram.html</loc></url>
 <url><loc>https://cbedwards-dfw.github.io/TAMMsupport/reference/trace_formula.html</loc></url>
 <url><loc>https://cbedwards-dfw.github.io/TAMMsupport/reference/validate_data_frame.html</loc></url>
 </urlset>

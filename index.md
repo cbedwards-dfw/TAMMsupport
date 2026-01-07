@@ -113,7 +113,7 @@ rounds percents and numbers of fish to the nearest 0.1 (1 decimal place)
 before comparing, and rounds numbers that are expected to be longer
 decimanls (e.g. rates, proportions) to the nearest 0.0001 (4 decimal
 places). In some cases, we may want to solely focus on larger changes
-(e.g. changes in whole fish). The optional arguments `percent.digits`,
+(e.g. changes in whole fish). The optional arguments `percent_digits`,
 `numeric.digits` and `numeric.digits.small` control the decimal place
 rounding for percents, numbers of fish, and numbers that are expected to
 be rates or proportions, respectively. To highlight only larger changes,
@@ -123,12 +123,12 @@ we might use
 tamm_diff(filename.1 = "FRAM/Chin1124.xlsx",
           filename.2 = "NOF 2/Chin2524.xlsx",
           results.name = "comparison of Chin 1124 vs 2524.xlsx",
-          percent.digits = 1, numeric.digits = 0, numeric.digits.small = 3
+          percent_digits = 1, numeric.digits = 0, numeric.digits.small = 3
 )
 ```
 
 Note that since we typically manage ER to the nearest 0.1%, it is
-unlikely that a percent.digits value of 0 would be useful.
+unlikely that a percent_digits value of 0 would be useful.
 
 Currently
 [`tamm_diff()`](https://cbedwards-dfw.github.io/TAMMsupport/reference/tamm_diff.md)
@@ -221,8 +221,7 @@ reference and to streamline merging human-readable names to dataframes
 that have only id numbers. These dataframes are named
 `fishery_chinook_fram`, `fishery_coho_fram`, `stock_chinook_fram`,
 `stock_coho_fram`, `timestep_chinook_fram`, and `timestep_coho_fram`,
-and have associated help files accessible with
-[`?fishery_chinook_fram`](https://cbedwards-dfw.github.io/TAMMsupport/reference/fishery_chinook_fram.md)
+and have associated help files accessible with `?fishery_chinook_fram`
 etc. The initial rows of these dataframes are shown below.
 
 ### `stock_chinook_fram`

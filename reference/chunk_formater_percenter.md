@@ -5,7 +5,7 @@ Format chunks of dataframe to present as %s, round digits
 ## Usage
 
 ``` r
-chunk_formater_percenter(df, block.ranges, percent.digits = 1)
+chunk_formater_percenter(df, block_ranges, percent_digits = 1)
 ```
 
 ## Arguments
@@ -14,12 +14,12 @@ chunk_formater_percenter(df, block.ranges, percent.digits = 1)
 
   dataframe of sheet to apply formatting to.
 
-- block.ranges:
+- block_ranges:
 
   vector of characters specifying blocks of cells (in excel
   nomenclature) to format as %s
 
-- percent.digits:
+- percent_digits:
 
   Decimal place to round to in percent
 

@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">TAMMsupport</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -40,14 +40,12 @@
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">tamm_diff</span><span class="op">(</span></span>
-<span>  <span class="va">filename.1</span>,</span>
-<span>  <span class="va">filename.2</span>,</span>
-<span>  <span class="va">results.name</span>,</span>
-<span>  percent.digits <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  numeric.digits <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  numeric.digits.small <span class="op">=</span> <span class="fl">4</span>,</span>
-<span>  dim.override <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  wrap.text <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  <span class="va">file_1</span>,</span>
+<span>  <span class="va">file_2</span>,</span>
+<span>  <span class="va">results_name</span>,</span>
+<span>  proportional_threshold <span class="op">=</span> <span class="fl">0.001</span>,</span>
+<span>  absolute_threshold <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  extra_width <span class="op">=</span> <span class="fl">0.4</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -55,61 +53,38 @@
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
 
 
-<dl><dt id="arg-filename-">filename.1<a class="anchor" aria-label="anchor" href="#arg-filename-"></a></dt>
+<dl><dt id="arg-file-">file_1<a class="anchor" aria-label="anchor" href="#arg-file-"></a></dt>
 <dd><p>name of first TAMM file to compare. Include file path if file is not in working directory.</p></dd>
 
 
-<dt id="arg-filename-">filename.2<a class="anchor" aria-label="anchor" href="#arg-filename-"></a></dt>
+<dt id="arg-file-">file_2<a class="anchor" aria-label="anchor" href="#arg-file-"></a></dt>
 <dd><p>name of second TAMM file to compare. Include file path if file is not in working directory.</p></dd>
 
 
-<dt id="arg-results-name">results.name<a class="anchor" aria-label="anchor" href="#arg-results-name"></a></dt>
+<dt id="arg-results-name">results_name<a class="anchor" aria-label="anchor" href="#arg-results-name"></a></dt>
 <dd><p>name of output sheets. Include file path if save location is not in working directory.</p></dd>
 
 
-<dt id="arg-percent-digits">percent.digits<a class="anchor" aria-label="anchor" href="#arg-percent-digits"></a></dt>
-<dd><p>Number of decimals to round percentages to before comparing. Defaults to 1.</p></dd>
+<dt id="arg-proportional-threshold">proportional_threshold<a class="anchor" aria-label="anchor" href="#arg-proportional-threshold"></a></dt>
+<dd><p>Sets a threshold of proportional change below which differences should be ignored. For example, a value of 0.1 means any changes less than 10% will not be flagged as having changed. <code>proportional_threshold</code> will override this value and behavior if it is provided. Numeric, defaults to 0.001 (0.1% change).</p></dd>
 
 
-<dt id="arg-numeric-digits">numeric.digits<a class="anchor" aria-label="anchor" href="#arg-numeric-digits"></a></dt>
-<dd><p>Number of decimals to round numbers to before comparing. Applied to cells which expect to be whole numbers (e.g. #s of fish). Defaults to 1.</p></dd>
+<dt id="arg-absolute-threshold">absolute_threshold<a class="anchor" aria-label="anchor" href="#arg-absolute-threshold"></a></dt>
+<dd><p>Optional. Sets a threshold of absolute change below which differences should be ignored. For example, a value of 0.1 means any changes less than 0.1 will not be flagged as having changed. If provided, will override <code>proportional_threshold</code>. Numeric, defaults to NULL.</p></dd>
 
 
-<dt id="arg-numeric-digits-small">numeric.digits.small<a class="anchor" aria-label="anchor" href="#arg-numeric-digits-small"></a></dt>
-<dd><p>Number of decimals to round numbers to before comparing. Applied to cells which expect to be small decimals. Defaults to 4.</p></dd>
-
-
-<dt id="arg-dim-override">dim.override<a class="anchor" aria-label="anchor" href="#arg-dim-override"></a></dt>
-<dd><p>Should we force comparisons even if one or more of the sheets don't have matching dimensions between the two files? Defaults to FALSE.</p></dd>
-
-
-<dt id="arg-wrap-text">wrap.text<a class="anchor" aria-label="anchor" href="#arg-wrap-text"></a></dt>
-<dd><p>Should specific cells with long contents (e.g., input "Fishery Description" cells) use text wrapping? Defaults to FALSE</p></dd>
+<dt id="arg-extra-width">extra_width<a class="anchor" aria-label="anchor" href="#arg-extra-width"></a></dt>
+<dd><p>How much extra width should be added to columns that changed? Helpful to improve readability, since changed cells have longer entries. Numeric, defaults to 0.4.</p></dd>
 
 </dl></div>
-    <div class="section level2">
-    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>If TAMM formatting is changes (e.g. the addition of rows, etc), make changes in the following areas:</p><ul><li><p><code>read_key_tamm_sheets_SPECIES()</code>: The <code>range</code> argument in each <code>read_excel</code> call should change to match the new dimensions of each sheet.</p></li>
-<li><p><code>format_key_tamm_sheets_SPECIES()</code>: These functions designate groups of cells to be
-Depending on the sheets that change, any amount of the content here may need to change. In the case of
-the inputs tab section, the cell ranges can be reported directly. Remember that we are separately designating cells which should be rounded to the nearest
-<code>numeric.digits</code> (generally measures of fish) and those that should be rounded to the nearest <code>numeric.digits.small</code> (generall proportions and rates; typically
-values that are less than 1.). Note that the earlier code was written before the more flexible <code>chunk_formater_percenter</code> and <code>chunk_formater_rounder</code> had been developed.
-If rewriting, lean into those tools, as they will streamline designating regions of cells for the various rounding criterion.</p></li>
-<li><p><code>tamm_format_SHEETNAME()</code> (for the sheet formatting functions relevant to that species): each individual
-sheet has custom formatting to generally match the corresponding TAMM sheets. If the locations of cells move,
-the changes to font size, addition of borders, etc, will also need to move. Note that <code>tamm_format_limiting</code> and <code>tamm_format_overview</code> were written
-before the development of the more flexible <code>add_cell_borders</code>, or the combined use of <code><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">purrr::map</a></code> and <code>cell_range_translate</code>. Look to <code>tamm_format_input</code>
-for relatively inputting of formatting. Consider developing other helper functions as needed (esp for merging).</p></li>
-</ul></div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
 <span class="r-in"><span><span class="fu">tamm_diff</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  filename.1 <span class="op">=</span> <span class="fu">here</span><span class="op">(</span><span class="st">"FRAM/Chin1124.xlsx"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  filename.2 <span class="op">=</span> <span class="fu">here</span><span class="op">(</span><span class="st">"NOF 2/Chin2524.xlsx"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  results.name <span class="op">=</span> <span class="fu">here</span><span class="op">(</span><span class="st">"Chin 1124 vs Chin 2524.xlsx"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  file_1 <span class="op">=</span> <span class="fu">here</span><span class="op">(</span><span class="st">"FRAM/Chin1124.xlsx"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  file_2 <span class="op">=</span> <span class="fu">here</span><span class="op">(</span><span class="st">"NOF 2/Chin2524.xlsx"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  results_name <span class="op">=</span> <span class="fu">here</span><span class="op">(</span><span class="st">"Chin 1124 vs Chin 2524.xlsx"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 </code></pre></div>

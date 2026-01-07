@@ -7,7 +7,7 @@ percents to make saved files more readable.
 ## Usage
 
 ``` r
-fun_percenter(x, percent.digits)
+fun_percenter(x, percent_digits)
 ```
 
 ## Arguments
@@ -17,7 +17,7 @@ fun_percenter(x, percent.digits)
   Character vector, presumably containing some entries that are numbers
   in character form
 
-- percent.digits:
+- percent_digits:
 
   Number of digits to round to after converting to percents
 

@@ -8,7 +8,7 @@ comparison.
 ``` r
 format_key_tamm_sheets_coho(
   dat,
-  percent.digits = 2,
+  percent_digits = 2,
   numeric.digits = 1,
   numeric.digits.small = 4
 )
@@ -21,7 +21,7 @@ format_key_tamm_sheets_coho(
   list of dataframes corresponding to the overview, limiting stock, and
   inputs tabs. Must be named `$overview`, `$limiting`, and `$input`
 
-- percent.digits:
+- percent_digits:
 
   Optional, number of decimal places to round percentages to before
   comparison. Defaults to 1.

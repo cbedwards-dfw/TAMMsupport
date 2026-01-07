@@ -44,18 +44,14 @@
   : Identify all cells in Excel sheet or sheets with matching cell
   colors
 
-- [`fishery_chinook_fram`](https://cbedwards-dfw.github.io/TAMMsupport/reference/fishery_chinook_fram.md)
-  : Chinook fishery information
-
-- [`fishery_coho_fram`](https://cbedwards-dfw.github.io/TAMMsupport/reference/fishery_coho_fram.md)
-  : Coho fishery information
-
 - [`fishery_renamer()`](https://cbedwards-dfw.github.io/TAMMsupport/reference/fishery_renamer.md)
   : relabel inconsistent fishery names in FRAM/TAMM
 
 - [`format_key_tamm_sheets_chin()`](https://cbedwards-dfw.github.io/TAMMsupport/reference/format_key_tamm_sheets_chin.md)
-  : Modify list of Chinook TAMM spreadsheet dataframes to facilitate
-  comparison.
+  :
+
+  **\[superseded\]** Modify list of Chinook TAMM spreadsheet dataframes
+  to facilitate comparison.
 
 - [`format_key_tamm_sheets_coho()`](https://cbedwards-dfw.github.io/TAMMsupport/reference/format_key_tamm_sheets_coho.md)
   : Modify list of Coho TAMM spreadsheet dataframes to facilitate
@@ -150,12 +146,6 @@
 - [`safe_convert_numeric()`](https://cbedwards-dfw.github.io/TAMMsupport/reference/safe_convert_numeric.md)
   : Convert string of number to numeric
 
-- [`stock_chinook_fram`](https://cbedwards-dfw.github.io/TAMMsupport/reference/stock_chinook_fram.md)
-  : Chinook stock information
-
-- [`stock_coho_fram`](https://cbedwards-dfw.github.io/TAMMsupport/reference/stock_coho_fram.md)
-  : Coho stock information
-
 - [`tamm_compare()`](https://cbedwards-dfw.github.io/TAMMsupport/reference/tamm_compare.md)
   : Generate summary comparison of any number of TAMM files
 
@@ -165,12 +155,6 @@
 - [`tamm_diff()`](https://cbedwards-dfw.github.io/TAMMsupport/reference/tamm_diff.md)
   : Compare key sheets of TAMM files
 
-- [`tamm_diff_chin()`](https://cbedwards-dfw.github.io/TAMMsupport/reference/tamm_diff_chin.md)
-  : Compare key sheets of Chinook TAMM files
-
-- [`tamm_diff_coho()`](https://cbedwards-dfw.github.io/TAMMsupport/reference/tamm_diff_coho.md)
-  : Compare key sheets of Coho TAMM files
-
 - [`tamm_format_overview()`](https://cbedwards-dfw.github.io/TAMMsupport/reference/tamm_format_sheets.md)
   [`tamm_format_limiting()`](https://cbedwards-dfw.github.io/TAMMsupport/reference/tamm_format_sheets.md)
   [`tamm_format_input()`](https://cbedwards-dfw.github.io/TAMMsupport/reference/tamm_format_sheets.md)
@@ -179,12 +163,6 @@
 
 - [`tamm_report()`](https://cbedwards-dfw.github.io/TAMMsupport/reference/tamm_report.md)
   : Generate report of figures from TAMM file
-
-- [`timestep_chinook_fram`](https://cbedwards-dfw.github.io/TAMMsupport/reference/timestep_chinook_fram.md)
-  : Chinook timestep information stock information
-
-- [`timestep_coho_fram`](https://cbedwards-dfw.github.io/TAMMsupport/reference/timestep_coho_fram.md)
-  : Coho timestep information stock information
 
 - [`trace_formula()`](https://cbedwards-dfw.github.io/TAMMsupport/reference/trace_formula.md)
   **\[experimental\]** : Trace the calculations of a cell recursively
