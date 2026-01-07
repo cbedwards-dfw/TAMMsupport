@@ -1,17 +1,20 @@
+#' `r lifecycle::badge("superseded")`
 #' Modify list of Chinook TAMM spreadsheet dataframes to facilitate comparison.
 #'
+#' Function is no longer needed for tamm_diff now that openxlsx
+#'
 #' @param dat list of dataframes corresponding to the overview, limiting stock, and inputs tabs. Must be named `$overview`, `$limiting`, and `$input`
-#' @param percent.digits Optional, number of decimal places to round percentages to before comparison. Defaults to 1.
+#' @param percent_digits Optional, number of decimal places to round percentages to before comparison. Defaults to 1.
 #' @param numeric.digits Optional, number of decimal places to round non-percentage numerics to before comparison. Applied to numbers that are expected to have natural units of whole numbers (e.g. numbers of fish). Defaults to 1.
 #' @param numeric.digits.small Optional, number of decimal places to round non-percentage numerics to before comparison. Applied to numbers that are expected to be small (e.g. rates, proportions) Defaults to 4.
 #'
 #' @return list of dataframes with same structure as `dat`, contents modified.
 #'
-format_key_tamm_sheets_chin <- function(dat, percent.digits = 1, # decimal digits to track/display for %s
+format_key_tamm_sheets_chin <- function(dat, percent_digits = 1, # decimal digits to track/display for %s
                                         numeric.digits = 1,
                                         numeric.digits.small = 4) { # if numeric vector, avoid percantage-ing those rows.
   ## overview tab
-  dat$overview[, c(3, 6:8)] <- apply(dat$overview[, c(3, 6:8)], 2, fun_percenter, percent.digits = percent.digits)
+  dat$overview[, c(3, 6:8)] <- apply(dat$overview[, c(3, 6:8)], 2, fun_percenter, percent_digits = percent_digits)
   dat$overview[, 5] <- fun_rounder(dat$overview[, 5, drop = TRUE], digits = numeric.digits)
 
   ## limiting stock complete
@@ -24,12 +27,12 @@ format_key_tamm_sheets_chin <- function(dat, percent.digits = 1, # decimal digit
   rows.unders <- c(3, 82, 161, 240, 319, 398) + 76 # starting rows for each chunk plus offset
 
   dat$limiting[, cols.escape] <- apply(dat$limiting[, cols.escape], 2, fun_rounder, digits = numeric.digits)
-  dat$limiting[-(rows.unders), cols.perc] <- apply(dat$limiting[-(rows.unders), cols.perc], 2, fun_percenter, percent.digits = percent.digits)
+  dat$limiting[-(rows.unders), cols.perc] <- apply(dat$limiting[-(rows.unders), cols.perc], 2, fun_percenter, percent_digits = percent_digits)
 
   ## inputs tab
   ## Percentage cells
   dat$input <- chunk_formater_percenter(dat$input,
-    block.ranges = c(
+    block_ranges = c(
       "D14:F16", "B20:B26",
       "D30:F34", "B35",
       "D41:D47", "B53:E70",
@@ -42,11 +45,11 @@ format_key_tamm_sheets_chin <- function(dat, percent.digits = 1, # decimal digit
       "J200", "L200", "AC201",
       "Q220", "L284"
     ),
-    percent.digits = percent.digits
+    percent_digits = percent_digits
   )
   ## cells to round to minimal digits (e.g. fish counts)
   dat$input <- chunk_formater_rounder(dat$input,
-    block.ranges = c(
+    block_ranges = c(
       "K14:N91", "O53:R72",
       "S87:S88", "S78:S80",
       "J117:L117",
@@ -60,7 +63,7 @@ format_key_tamm_sheets_chin <- function(dat, percent.digits = 1, # decimal digit
   )
   ## Cells to round to 4 digits (e.g., proportions)
   dat$input <- chunk_formater_rounder(dat$input,
-    block.ranges = c(
+    block_ranges = c(
       "B18", "B41:C47",
       "B101:B299", "L183:O191",
       "P77:P80", "AB198:AC199",
@@ -81,22 +84,22 @@ format_key_tamm_sheets_chin <- function(dat, percent.digits = 1, # decimal digit
 #'
 #' @return list of dataframes with same structure as `dat`, contents modified.
 #'
-format_key_tamm_sheets_coho <- function(dat, percent.digits = 2, # decimal digits to track/display for %s
+format_key_tamm_sheets_coho <- function(dat, percent_digits = 2, # decimal digits to track/display for %s
                                         numeric.digits = 1,
                                         numeric.digits.small = 4) { # if numeric vector, avoid percantage-ing those rows.
   #"two" sheet modifications
   dat$two <- chunk_formater_percenter(dat$two,
-                                          block.ranges = c(
+                                          block_ranges = c(
                                             "E11:T13",
                                             "Z11:AK13",
                                             "AE51",
                                             "BC11:BP13"
 
                                           ),
-                                          percent.digits = percent.digits
+                                          percent_digits = percent_digits
   )
   dat$two <- chunk_formater_rounder(dat$two,
-                                        block.ranges = c(
+                                        block_ranges = c(
                                           "E9:BP65",
                                           "AT67:AX73"
 
@@ -107,7 +110,7 @@ format_key_tamm_sheets_coho <- function(dat, percent.digits = 2, # decimal digit
   ## wacoast modifications
   ## cells to format as percentages
   dat$wacoast <- chunk_formater_percenter(dat$wacoast,
-                                        block.ranges = c(
+                                        block_ranges = c(
                                           "L19",
                                           "L35:L36",
                                           "L51:M51",
@@ -119,11 +122,11 @@ format_key_tamm_sheets_coho <- function(dat, percent.digits = 2, # decimal digit
                                           "W24:AB31",
                                           "W41:AC47"
                                         ),
-                                        percent.digits = percent.digits
+                                        percent_digits = percent_digits
   )
   ## cells to round to minimal digits (e.g., fish counts)
   dat$wacoast <- chunk_formater_rounder(dat$wacoast,
-                                      block.ranges = c(
+                                      block_ranges = c(
                                       "H14:H104", "H112:H144",
                                       "J14:K144","P14:R144",
                                      "Q151:S187",
@@ -135,7 +138,7 @@ format_key_tamm_sheets_coho <- function(dat, percent.digits = 2, # decimal digit
 
   ## cells to round to many digits (e.g., harvest rates)
   dat$wacoast <- chunk_formater_rounder(dat$wacoast,
-                                        block.ranges = c(
+                                        block_ranges = c(
                                           "I14:I144"),
                                         digits = numeric.digits.small
   )

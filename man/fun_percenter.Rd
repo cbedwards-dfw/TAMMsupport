@@ -4,12 +4,12 @@
 \alias{fun_percenter}
 \title{Format vector of mixed characters to present numbers as percents}
 \usage{
-fun_percenter(x, percent.digits)
+fun_percenter(x, percent_digits)
 }
 \arguments{
 \item{x}{Character vector, presumably containing some entries that are numbers in character form}
 
-\item{percent.digits}{Number of digits to round to after converting to percents}
+\item{percent_digits}{Number of digits to round to after converting to percents}
 }
 \value{
 character vector with individual entries converted to percentages and rounded as appropriate.

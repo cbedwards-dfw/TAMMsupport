@@ -103,7 +103,7 @@ tamm_format_overview <- function(wb, diff.sheet, tabname = "overview") {
   ##    thick boxes
   xldiff::add_cell_borders(wb,
                            sheet = tabname,
-                           block.ranges = c(
+                           block_ranges = c(
                              "A2", "B1:D34", "E1:H34",
                              "A3:H12", "A13:H32", "A33:H34",
                              "D36:H37"
@@ -321,7 +321,7 @@ tamm_format_input <- function(wb, tabname = "input", wrap.text = FALSE) {
   # Give light gray cell shading for entries in chunks:
   xldiff::cells_stylize(wb,
                         sheet = tabname, style = openxlsx::createStyle(fgFill = "#f0f4f9"),
-                        block.ranges = c(
+                        block_ranges = c(
                           "A11:O47", "A51:S72", "A75:P83", "A87:O94", "A99:H120",
                           "A123:H147", "A150:I170", "A173:H205", "J178:P191",
                           "N197:U203", "W195:Y202", "AA196:AC202", "W204:AB213",
@@ -381,7 +381,7 @@ tamm_format_input <- function(wb, tabname = "input", wrap.text = FALSE) {
 
   xldiff::cells_stylize(wb,
                         sheet = tabname, style = openxlsx::createStyle(fontSize = 12, textDecoration = "bold"),
-                        block.ranges = c(
+                        block_ranges = c(
                           "A11:O13", "A28:O29",
                           "A39:O40", "A51:S52",
                           "A75:O76", "A87:O88",
@@ -429,7 +429,7 @@ tamm_format_input <- function(wb, tabname = "input", wrap.text = FALSE) {
   ## Identify all cells that are completely surrounded
   xldiff::add_cell_borders(
     wb = wb, sheet = tabname,
-    block.ranges = c(
+    block_ranges = c(
       "A14:O26", "A30:J34", "K30:O33", "A41:E47", "G41:O47", "A53:S72",
       "A77:O83", "P77:P80", "A89:O91", "A102:H117",
       "A119:H120", "A126:H147", "A153:H163", "I153:I155",
@@ -452,7 +452,7 @@ tamm_format_input <- function(wb, tabname = "input", wrap.text = FALSE) {
   ## add in thick outer borders
   xldiff::add_cell_borders(
     wb = wb, sheet = tabname,
-    block.ranges = c(
+    block_ranges = c(
       # Skagit stock data
       "A9:O9", "A10:O10", "A11:O26", "A14:O26", "A14:A26",
       # Stilly/sno stock data
@@ -517,7 +517,7 @@ tamm_format_input <- function(wb, tabname = "input", wrap.text = FALSE) {
 
   xldiff::cells_stylize(wb,
                         sheet = tabname, style = openxlsx::createStyle(fgFill = "black"),
-                        block.ranges = c(
+                        block_ranges = c(
                           "D102", "B159:B160", "B226", "G226:H226",
                           "B238", "G238:H238", "B255", "G255:H255",
                           "B262", "G262:H262"
@@ -530,7 +530,7 @@ tamm_format_input <- function(wb, tabname = "input", wrap.text = FALSE) {
   if (wrap.text) {
     xldiff::cells_stylize(wb,
                           sheet = tabname, style = openxlsx::createStyle(wrapText = TRUE),
-                          block.ranges = c("H102:H299"),
+                          block_ranges = c("H102:H299"),
                           stack = TRUE
     )
   }
@@ -541,7 +541,7 @@ tamm_format_wacoast <- function(wb, tabname = "wacoast") {
   ## Minor headers
   xldiff::cells_stylize(wb,
                         sheet = tabname, style = openxlsx::createStyle(fontSize = 12, textDecoration = "bold"),
-                        block.ranges = c(
+                        block_ranges = c(
                           ## left part
                           "C11:C12", "A22:D22", "A24:D24",
                           ## first block
@@ -606,7 +606,7 @@ tamm_format_wacoast <- function(wb, tabname = "wacoast") {
   ## Underlines
   xldiff::cells_stylize(wb,
                         sheet = tabname, style = openxlsx::createStyle(textDecoration = "underline"),
-                        block.ranges = c("O13:Q13",
+                        block_ranges = c("O13:Q13",
                                          "O21:Q21",
                                          "O30:Q30",
                                          "O37:Q37",
@@ -642,7 +642,7 @@ tamm_format_wacoast <- function(wb, tabname = "wacoast") {
   )
   xldiff::add_cell_borders(
     wb = wb, sheet = tabname,
-    block.ranges = c(
+    block_ranges = c(
       "G4:P10", "G12:P27",
       "G29:P41", "G43:P58",
       "G60:P72", "G74:P127", "G129:P146",
@@ -657,7 +657,7 @@ tamm_format_wacoast <- function(wb, tabname = "wacoast") {
   ## thick borders for subsection callouts
   xldiff::add_cell_borders(
     wb = wb, sheet = tabname,
-    block.ranges = c(
+    block_ranges = c(
       "M7:M9",
       "M13",
       "M21",
@@ -683,7 +683,7 @@ tamm_format_wacoast <- function(wb, tabname = "wacoast") {
   xldiff::cells_stylize(wb = wb,
                         sheet = tabname,
                         style = openxlsx::createStyle(halign = "right"),
-                        block.ranges = c("K35:K36",
+                        block_ranges = c("K35:K36",
                                          "K51",
                                          "K65",
                                          "K82",
@@ -714,7 +714,7 @@ tamm_format_two <- function(wb, tabname = "two") {
   ## Major headers
   xldiff::cells_stylize(wb,
                         sheet = tabname, style = openxlsx::createStyle(fontSize = 14, textDecoration = "bold"),
-                        block.ranges = c(
+                        block_ranges = c(
                           "A1", "Y1",
                           "A67",
                           "AP1", "AZ1",
@@ -725,7 +725,7 @@ tamm_format_two <- function(wb, tabname = "two") {
   ## Minor headers
   xldiff::cells_stylize(wb,
                         sheet = tabname, style = openxlsx::createStyle(fontSize = 12, textDecoration = "bold"),
-                        block.ranges = c(
+                        block_ranges = c(
                           "J78:J80",
                           "Y36:Y39",
                           "BC9:BP9"
@@ -736,7 +736,7 @@ tamm_format_two <- function(wb, tabname = "two") {
   ## adding vertical lines
   xldiff::cells_stylize(wb,
                         sheet = tabname, style = openxlsx::createStyle(border = "right", borderStyle = "thin"),
-                        block.ranges = c(
+                        block_ranges = c(
                           "A7:P61",
                           "A68:P74",
                           "Y7:Y39",
@@ -749,7 +749,7 @@ tamm_format_two <- function(wb, tabname = "two") {
   ## adding horizontal lines
   xldiff::cells_stylize(wb,
                         sheet = tabname, style = openxlsx::createStyle(border = "bottom", borderStyle = "thin"),
-                        block.ranges = c(
+                        block_ranges = c(
                           "A8:T8",
                           "Y8:BP8"
                         ),
@@ -760,7 +760,7 @@ tamm_format_two <- function(wb, tabname = "two") {
   xldiff::cells_stylize(wb = wb,
                         sheet = tabname,
                         style = openxlsx::createStyle(halign = "right"),
-                        block.ranges = c("E9:T74"),
+                        block_ranges = c("E9:T74"),
                         stack = TRUE
 
   )

@@ -1,6 +1,6 @@
 Package: TAMMsupport
 Title: Streamline working with Terminal Area Management Modules
-Version: 0.2.0
+Version: 1.0.0
 Authors@R: c(
     person("Collin", "Edwards", , "Collin.Edwards@dfw.wa.gov", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-4937-5159")),
@@ -17,9 +17,11 @@ RoxygenNote: 7.3.2
 Imports: 
     cli,
     dplyr,
+    framrosetta,
     glue,
     janitor,
     kableExtra,
+    lifecycle,
     openxlsx,
     openxlsx2,
     purrr,
@@ -30,11 +32,13 @@ Imports:
     stringr,
     tibble,
     tidyr,
-    tidyxl,
+      tidyxl,
     utils,
     visNetwork,
     xldiff (>= 0.1.0)
-Remotes: cbedwards-dfw/xldiff
+Remotes: 
+  cbedwards-dfw/xldiff
+  FRAMverse/framrosetta
 Depends: 
     R (>= 2.10)
 LazyData: true
