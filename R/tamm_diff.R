@@ -17,7 +17,7 @@
 #' )
 #' }
 tamm_diff <- function(file_1, file_2, results_name, proportional_threshold = 0.001, absolute_threshold = NULL,
-                      extra_width = .4) {
+                      extra_width = NULL) {
   if (!all(grepl(".xlsx$|.xlsm$", c(file_1, file_2, results_name)))) {
     cli::cli_abort("`file_1`, `file_2`, and `results_name` must end in \".xlsx\" or \".xlsm\".")
   }
