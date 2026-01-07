@@ -6,27 +6,27 @@
 \usage{
 trace_formula(
   path,
-  cell.start,
-  max.it = 5000,
+  cell_start,
+  max_it = 5000,
   verbose = TRUE,
-  split.ranges = FALSE
+  split_ranges = FALSE
 )
 }
 \arguments{
 \item{path}{Filepath of an excel file}
 
-\item{cell.start}{Character string of intiial cell in excel format. MUST include sheet name (e.g. "SPS!AS20", not "AS20")}
+\item{cell_start}{Character string of intiial cell in excel format. MUST include sheet name (e.g. "SPS!AS20", not "AS20")}
 
-\item{max.it}{Maximum iterations; used as a failsafe to ensure function eventually in case of circular error. Defaults to 5000; increase if actual dependency network is likely to have more than 5000 nodes.}
+\item{max_it}{Maximum iterations; used as a failsafe to ensure function eventually in case of circular error. Defaults to 5000; increase if actual dependency network is likely to have more than 5000 nodes.}
 
 \item{verbose}{Print cell addresses to console during tracing? Logical, defaults to \code{FALSE}.}
 
-\item{split.ranges}{When encountering a reference that includes a cell range, trace backwards for all cells (TRUE) or just the first cell in the range (FALSE)? Logical, defaults to \code{FALSE}. This option was added because sometimes formulas include sums across large ranges, ballooning the size of the resulting network. For building understanding, it is sometimes sufficient to trace only a representative from each referenced range, leading to smaller and simpler plots.}
+\item{split_ranges}{When encountering a reference that includes a cell range, trace backwards for all cells (TRUE) or just the first cell in the range (FALSE)? Logical, defaults to \code{FALSE}. This option was added because sometimes formulas include sums across large ranges, ballooning the size of the resulting network. For building understanding, it is sometimes sufficient to trace only a representative from each referenced range, leading to smaller and simpler plots.}
 }
 \value{
 "trace object" -- list defining the dependency network.
 \describe{
-\item{\verb{$cells}}{tibble summarizing each of the cells in the dependency network, starting with the \code{cell.start}. Within this,
+\item{\verb{$cells}}{tibble summarizing each of the cells in the dependency network, starting with the \code{cell_start}. Within this,
 \verb{$id} is an index; \verb{$label} is the cell address; \verb{$formula} is the formula in that cell if there is a formula, otherwise it is the
 contents of the cell, \verb{$contents} is the non-formula cell contents (i.e., if a formula is present, \verb{$contents} will be the results of the formula);
 \verb{$is.formula} is a logical identifying if this cell contains a formula, or is purely a numeric / string / etc contents;
@@ -42,6 +42,6 @@ contents of the cell, \verb{$contents} is the non-formula cell contents (i.e., i
 \examples{
 \dontrun{
 trace_network = trace_formula(path = "NOF material/NOF 2024/NOF 2/Chin1624.xlsx",
- cell.start = "SPSmrkd!AS20")
+ cell_start = "SPSmrkd!AS20")
 }
 }

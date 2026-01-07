@@ -12,8 +12,8 @@ toc: true
 embed-resources: true
 editor: visual
 params:
-  tamm.path: "NOF 2"
-  tamm.name: "Chin2024.xlsx"
+  tamm_path: "NOF 2"
+  tamm_name: "Chin2024.xlsx"
 knitr: 
   opts_chunk: 
     R.options: 
@@ -28,13 +28,13 @@ library("readxl")
 library(here)
 library(kableExtra)
 library(TAMMsupport)
-tamm.path <- params$tamm.path
-tamm.name <- params$tamm.name
-tamm.full <- paste0(tamm.path, "/", tamm.name)
+tamm_path <- params$tamm_path
+tamm_name <- params$tamm_name
+tamm.full <- paste0(tamm_path, "/", tamm_name)
 source("tamm-report-parameters-intermediate.R")
 ```
 
-# `r tamm.name`
+# `r tamm_name`
 
 ## Processing TAMM
 
@@ -84,12 +84,12 @@ dat.all <- TAMMsupport::read_limiting_stock(tamm.full, longform = TRUE)
 # Summary table
 
 ```{r results='asis'}
-dat.overview <- TAMMsupport::read_overview(tamm.full)
-overview.form <- TAMMsupport::format_overview(dat.overview)
+dat_overview <- TAMMsupport::read_overview(tamm.full)
+overview.form <- TAMMsupport::format_overview(dat_overview)
 TAMMsupport::kable_overview(
-  dat.overview = overview.form$dat.overview,
-  ind.indent = overview.form$ind.indent,
-  col.bold = overview.form$col.bold
+  dat_overview = overview.form$dat_overview,
+  ind_indent = overview.form$ind_indent,
+  col_bold = overview.form$col_bold
 )
 ```
 
@@ -101,7 +101,7 @@ Summarizes the Unmarked Natural section of the `LimitingStkComplete mod` workshe
 render_child <- function(cur.stock) {
   res <- knitr::knit_child(
     text = xfun::read_utf8("tamm-visualizer-child.qmd"),
-    envir = rlang::env(cur.stock = cur.stock, dat = dat, dat.overview = dat.overview),
+    envir = rlang::env(cur.stock = cur.stock, dat = dat, dat_overview = dat_overview),
     quiet = TRUE
   )
   cat(res, sep = "\n")
@@ -121,7 +121,7 @@ purrr::walk(unique(dat$stock), render_child)
 render_additional_children <- function(cur.file) {
   res <- knitr::knit_child(
     text = xfun::read_utf8(cur.file),
-    envir = rlang::env(dat = dat, dat.overview = dat.overview, dat.all = dat.all),
+    envir = rlang::env(dat = dat, dat_overview = dat_overview, dat.all = dat.all),
     quiet = TRUE
   )
   cat(res, sep = "\n")
@@ -129,10 +129,10 @@ render_additional_children <- function(cur.file) {
 }
 ```
 
-```{r, eval = !is.null(additional.children)}
+```{r, eval = !is.null(additional_children)}
 #| label: simple-addition
 #| results: 'asis'
 #| echo: false
 cat("# Additional content \n\n")
-purrr::walk(additional.children, render_additional_children)
+purrr::walk(additional_children, render_additional_children)
 ```

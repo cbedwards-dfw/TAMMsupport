@@ -1,17 +1,17 @@
 #' Trace the calculations of a cell recursively through all referenced cells
 #'
 #' @param path Filepath of an excel file
-#' @param cell.start Character string of intiial cell in excel format. MUST include sheet name (e.g. "SPS!AS20", not "AS20")
-#' @param max.it Maximum iterations; used as a failsafe to ensure function eventually in case of circular error. Defaults to 5000; increase if actual dependency network is likely to have more than 5000 nodes.
+#' @param cell_start Character string of intiial cell in excel format. MUST include sheet name (e.g. "SPS!AS20", not "AS20")
+#' @param max_it Maximum iterations; used as a failsafe to ensure function eventually in case of circular error. Defaults to 5000; increase if actual dependency network is likely to have more than 5000 nodes.
 #' @param verbose Print cell addresses to console during tracing? Logical, defaults to `FALSE`.
-#' @param split.ranges When encountering a reference that includes a cell range, trace backwards for all cells (TRUE) or just the first cell in the range (FALSE)? Logical, defaults to `FALSE`. This option was added because sometimes formulas include sums across large ranges, ballooning the size of the resulting network. For building understanding, it is sometimes sufficient to trace only a representative from each referenced range, leading to smaller and simpler plots.
+#' @param split_ranges When encountering a reference that includes a cell range, trace backwards for all cells (TRUE) or just the first cell in the range (FALSE)? Logical, defaults to `FALSE`. This option was added because sometimes formulas include sums across large ranges, ballooning the size of the resulting network. For building understanding, it is sometimes sufficient to trace only a representative from each referenced range, leading to smaller and simpler plots.
 #'
 #' @description
 #' `r lifecycle::badge("experimental")`
 #'
 #' @return "trace object" -- list defining the dependency network.
 #' \describe{
-#'       \item{`$cells`}{tibble summarizing each of the cells in the dependency network, starting with the `cell.start`. Within this,
+#'       \item{`$cells`}{tibble summarizing each of the cells in the dependency network, starting with the `cell_start`. Within this,
 #'       `$id` is an index; `$label` is the cell address; `$formula` is the formula in that cell if there is a formula, otherwise it is the
 #'       contents of the cell, `$contents` is the non-formula cell contents (i.e., if a formula is present, `$contents` will be the results of the formula);
 #'       `$is.formula` is a logical identifying if this cell contains a formula, or is purely a numeric / string / etc contents;
@@ -25,16 +25,16 @@
 #' @examples
 #' \dontrun{
 #' trace_network = trace_formula(path = "NOF material/NOF 2024/NOF 2/Chin1624.xlsx",
-#'  cell.start = "SPSmrkd!AS20")
+#'  cell_start = "SPSmrkd!AS20")
 #' }
 trace_formula = function(path,
-                         cell.start, ## MUST include sheet name! as in "SPSmrkd!AS20"
-                         max.it = 5000, ##failsafe -- using a while loop, and it will stop after this many cell checks
+                         cell_start, ## MUST include sheet name! as in "SPSmrkd!AS20"
+                         max_it = 5000, ##failsafe -- using a while loop, and it will stop after this many cell checks
                          verbose = TRUE, ##print each cell when checked?
-                         split.ranges = FALSE){
+                         split_ranges = FALSE){
   ## regular expression for pulling out addresses from excel formulas, used below.
   address.splitter.regex = "['][ &A-Za-z0-9_-]*?['][!]([$]?[A-Z]{1,3}[$]?[0-9]{1,7}(:[$]?[A-Z]{1,3}[$]?[0-9]{1,7})?)|[A-Za-z0-9]*?[!]([$]?[A-Z]{1,3}[$]?[0-9]{1,7}(:[$]?[A-Z]{1,3}[$]?[0-9]{1,7})?)|([$]?[A-Z]{1,3}[$]?[0-9]{1,7}(:[$]?[A-Z]{1,3}[$]?[0-9]{1,7})?)"
-  cells.sample = cell.start
+  cells.sample = cell_start
   ## storing results
   res = list()
   ## starting iteration counter. Using a `while` loop, so I want a failsafe
@@ -46,7 +46,7 @@ trace_formula = function(path,
 
 
 
-  while(length(cells.sample)>0 & it.counter < max.it){
+  while(length(cells.sample)>0 & it.counter < max_it){
 
     cell.cur = cells.sample[1]
     if(verbose){
@@ -78,7 +78,7 @@ trace_formula = function(path,
     if(!is.na(formula)){
       new.addresses = unlist(stringr::str_extract_all(formula,
                                                       address.splitter.regex))
-      if(split.ranges & any(grepl(":", new.addresses))){## if "split.ranges" flag is true, generate all the cells from a range. Otherwise, using only initial cell of range.
+      if(split_ranges & any(grepl(":", new.addresses))){## if "split_ranges" flag is true, generate all the cells from a range. Otherwise, using only initial cell of range.
         addresses.clean = new.addresses[!grepl(":", new.addresses)]
         addresses.range = new.addresses[grepl(":", new.addresses)]
         new.addresses = c(addresses.clean, do.call(c, purrr::map(as.list(addresses.range), range_splitter)))
@@ -110,8 +110,8 @@ trace_formula = function(path,
 
     cells.sample = setdiff(c(cells.sample, new.addresses), cells.complete)
     it.counter = it.counter + 1
-    if(it.counter >= max.it){
-      cli::cli_alert_danger("Iteration counter greater than `max.it` argument ({max.it}), triggering failsafe exit. If you expect a large network, increase `max.it` argument.")
+    if(it.counter >= max_it){
+      cli::cli_alert_danger("Iteration counter greater than `max_it` argument ({max_it}), triggering failsafe exit. If you expect a large network, increase `max_it` argument.")
     }
   }
 
@@ -130,7 +130,7 @@ trace_formula = function(path,
 ##
 ## Example use:
 ## trace_network = trace_formula(path = "NOF material/NOF 2024/NOF 2/Chin1624.xlsx",
-##  cell.start = "SPSmrkd!AS20")
+##  cell_start = "SPSmrkd!AS20")
 ## make_tracer_network(trace_network)
 
 
@@ -151,7 +151,7 @@ trace_formula = function(path,
 #' @examples
 #' \dontrun{
 #' trace_network = trace_formula(path = "NOF material/NOF 2024/NOF 2/Chin1624.xlsx",
-#' cell.start = "SPSmrkd!AS20")
+#' cell_start = "SPSmrkd!AS20")
 #' make_tracer_network(trace_network)
 #' }
 make_tracer_network = function(tracer_list, ## output object of `trace_formula`

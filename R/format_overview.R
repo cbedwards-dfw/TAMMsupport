@@ -1,14 +1,14 @@
 #' Format TAMM overview for easy printing
 #'
-#' @param dat.overview dataframe of TAMM overview page, as produced by read_overview()
+#' @param dat_overview dataframe of TAMM overview page, as produced by read_overview()
 #'
 #' @importFrom rlang .data
 #' @return list with the formatted data, a vector of indent information, and a vector of bolding information.
 #' @export
 #'
 
-format_overview <- function(dat.overview) {
-  dat.overview <- dat.overview |>
+format_overview <- function(dat_overview) {
+  dat_overview <- dat_overview |>
     dplyr::mutate(
       er_ceiling = quick_er_format(.data$er_ceiling),
       escapement = round(.data$escapement, 1),
@@ -17,21 +17,21 @@ format_overview <- function(dat.overview) {
       pt_sus_er = quick_er_format(.data$pt_sus_er)
     )
   ## bold appropriate data
-  dat.overview <- dat.overview |>
-    dplyr::mutate(col.bold = dplyr::case_when(
+  dat_overview <- dat_overview |>
+    dplyr::mutate(col_bold = dplyr::case_when(
       er_type == "PT-SUS" ~ "pt_sus_er",
       grepl("SUS$", er_type) ~ "sus_er",
       er_type == "Total" ~ "total_er"
     ))
 
-  dat.overview <- as.data.frame(lapply(dat.overview, function(x) {
+  dat_overview <- as.data.frame(lapply(dat_overview, function(x) {
     x[is.na(x)] <- ""
     return(x)
   }))
 
-  col.bold <- dat.overview$col.bold
-  dat.overview <- dat.overview |>
-    dplyr::select(-col.bold)
+  col_bold <- dat_overview$col_bold
+  dat_overview <- dat_overview |>
+    dplyr::select(-col_bold)
 
   ## handling stock labels: want indentations
   vec.indent <- c(
@@ -39,11 +39,11 @@ format_overview <- function(dat.overview) {
     "Suiattle", "Upper Skagit", "Sauk", "Lower Skagit", "STILLAGUAMISH UM", "STILLAGUAMISH M",
     "Skykomish", "Snoqualmie"
   )
-  ind.indent <- which(dat.overview$stock %in% vec.indent)
+  ind_indent <- which(dat_overview$stock %in% vec.indent)
   return(list(
-    dat.overview = dat.overview,
-    ind.indent = ind.indent,
-    col.bold = col.bold
+    dat_overview = dat_overview,
+    ind_indent = ind_indent,
+    col_bold = col_bold
   ))
 }
 
@@ -53,31 +53,31 @@ format_overview <- function(dat.overview) {
 #'
 #' Uses output of format_overview()
 #'
-#' @param dat.overview formatted data, first item of format_overview() output
-#' @param ind.indent Vector of indices that need indenting to match TAMM overview formatting. Second item of format_overview() output
-#' @param col.bold vector of names for bolding to match TAMM overview formatting. Third item of format_overview() output.
+#' @param dat_overview formatted data, first item of format_overview() output
+#' @param ind_indent Vector of indices that need indenting to match TAMM overview formatting. Second item of format_overview() output
+#' @param col_bold vector of names for bolding to match TAMM overview formatting. Third item of format_overview() output.
 #'
 #' @return html table
 #' @export
 #'
-kable_overview <- function(dat.overview, ind.indent, col.bold) {
-  kableExtra::kbl(dat.overview,
+kable_overview <- function(dat_overview, ind_ident, col_bold) {
+  kableExtra::kbl(dat_overview,
     format = "html",
     table.attr = "style='width:90%;'",
     align = c("l", "c", "r", "c", "r", "r", "r", "r"),
     col.names = c("Stock", "Abund. Tier", "ER Ceiling", "ER Type", "Escape.", "Total ER", "SUS ER", "PT-SUS ER")
   ) |>
     kableExtra::kable_styling("striped", full_width = F, html_font = "Cambria", font_size = 9) |>
-    kableExtra::add_indent(ind.indent, level_of_indent = 1) |> # this line needs to be before any extra_css
+    kableExtra::add_indent(ind_ident, level_of_indent = 1) |> # this line needs to be before any extra_css
     kableExtra::row_spec(1, extra_css = "border-top: 2px solid;") |>
     kableExtra::column_spec(2:4, width = ".9cm") |>
-    kableExtra::column_spec(6, bold = col.bold == "total_er") |>
-    kableExtra::column_spec(7, bold = col.bold == "sus_er") |>
-    kableExtra::column_spec(8, bold = col.bold == "pt_sus_er") |>
+    kableExtra::column_spec(6, bold = col_bold == "total_er") |>
+    kableExtra::column_spec(7, bold = col_bold == "sus_er") |>
+    kableExtra::column_spec(8, bold = col_bold == "pt_sus_er") |>
     kableExtra::column_spec(c(1, 4, 8), extra_css = "border-right: 2px solid;") |>
     kableExtra::column_spec(c(1), extra_css = "border-left: 2px solid;") |>
-    kableExtra::row_spec(c(3, 7, 8, 13, 16, 19, 20:(nrow(dat.overview) - 2)), extra_css = "border-bottom: 1px solid") |>
-    kableExtra::row_spec(c(9, nrow(dat.overview) - 1), extra_css = "border-bottom: 2px solid;")
+    kableExtra::row_spec(c(3, 7, 8, 13, 16, 19, 20:(nrow(dat_overview) - 2)), extra_css = "border-bottom: 1px solid") |>
+    kableExtra::row_spec(c(9, nrow(dat_overview) - 1), extra_css = "border-bottom: 2px solid;")
 }
 
 #' Quick helper function to format vectors that contain text and ERs

@@ -7,11 +7,11 @@
 #' in the TAMM, and `stock.clean` with more human-readable names (which are generally consistent
 #' with other stock names, like those used to label the management criterion).
 #'
-#' @param xlsxFile Character vector. Filename (including path) for chinook TAMM
+#' @param file Character vector. Filename (including path) for chinook TAMM
 #' @return dataframe with the treaty and nontreaty mortalities at each stock.
 #' @export
 
-read_tnt_allocation_chin = function(xlsxFile){
+read_tnt_allocation_chin = function(file){
   name.mapping = c("NOOKSACK Early [*]" = "Nooksack Spring",
                    "SKAGIT Spr H[+]W" = "Skagit Spring",
                    "SKAGIT S[/]F H[+]W" = "Skagit Summer/Fall",
@@ -41,7 +41,7 @@ read_tnt_allocation_chin = function(xlsxFile){
 
 
 
-  raw = readxl::read_excel(xlsxFile, sheet = "2A_CU&M_H+N",
+  raw = readxl::read_excel(file, sheet = "2A_CU&M_H+N",
                            col_names = FALSE,
                            .name_repair = "unique_quiet")
   ## rows and columns identified by hand
@@ -57,7 +57,7 @@ read_tnt_allocation_chin = function(xlsxFile){
                   treaty = as.numeric(.data$treaty))
 
   ## elwha and dungeness separate calculations
-  raw = readxl::read_excel(xlsxFile, sheet = "JDF",
+  raw = readxl::read_excel(file, sheet = "JDF",
                            col_names = FALSE,
                            .name_repair = "unique_quiet")
   ## trimming to the relevant region

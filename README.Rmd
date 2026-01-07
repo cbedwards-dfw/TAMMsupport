@@ -26,12 +26,13 @@ The goal of `{TAMMsupport}` is to provide R-based tools for working with and int
 
 I want to...
  
- - Summarize and visualize key aspects of a Chinook TAMM? Use `tamm_report()`.
- - compare two Chinook TAMM files to look for changes in inputs or results? Use `tamm_diff()`. (Comparing Coho TAMM files is currently supported, but does not replicate Coho TAMM formatting)
+ - Summarize and visualize key aspects of a Chinook TAMM? Use `tamm_report()`. (OR, even better, check out the [crayolaTAMM package!](https://cbedwards-dfw.github.io/crayolaTAMM/))
+ - compare two Chinook TAMM files to look for changes in inputs or results? Use `tamm_diff()`.
  - compare two or more Chinook TAMM files (e.g. look across three ocean options) to see how ER varies by stock and fishery between the models? Use `tamm_compare()`.
  - extract the overview sheet info from a Chinook TAMM? Use `read_overview()` or `read_overview_complete()`.
  - extract the limiting stock complete sheet from a Chinook TAMM? Use `read_limiting_stock()` or `clean_limiting_stock()`. If desired, use `filter_tamm_wa()` to then filter the results to just Washington fisheries.
- - Trace the network of cells used by a formula in a TAMM (or other excel file)? Use `trace_formula()` to generate a dependency network, and `make_tracer_network()` to visualize it.
+ - extract the ER and AEQ of the `2A_C*` and `JDF` tabs? Use `read_2a_sheets()` and `read_jdf()` respectively.
+ - Trace the network of cells used by a formula in a TAMM or other excel file? Use `trace_formula()` to generate a dependency network, and `make_tracer_network()` to visualize it.
 
 
 ## Installation
@@ -39,7 +40,7 @@ I want to...
 You can install the compiled version of `{TAMMsupport}` through the R-universe package repository:
 
 ```r
-install.packages("TAMMsupport", repos = "https://framverse.r-universe.dev")
+install.packages(c("TAMMsupport", "xldiff"), repos = "https://framverse.r-universe.dev")
 
 ```
 
@@ -56,9 +57,6 @@ or with `{pak}` like so:
 pak::pkg_install("cbedwards-dfw/TAMMsupport")
 ```
 
-`TAMMsupport` depends on the `xldiff` package, which contains our general tools for comparing excel files using R. `xldiff` should automatically be installed when `TAMMsupport` is. `xldiff` and its documentation can be found here: https://github.com/cbedwards-dfw/xldiff. 
-
-
 With `TAMMsupport` installed, we can use functions from it by including the library in our script, like so:
 
 ```r
@@ -73,31 +71,34 @@ library(TAMMsupport)
 `tamm_diff()` takes three arguments: the names of the first TAMM file, the second tamm file, and the name to give the resulting file (in all cases, the name should include filepath, if relevant). All three filenames should end in ".xlsx". The following is an example use:
 
 ```r
-cur.wd = getwd()
-setwd("C:/Users/edwc1477/OneDrive - Washington State Executive Branch Agencies/Documents/WDFW FRAM team work/NOF material/NOF 2024")
-
-tamm_diff(filename.1 = "FRAM/Chin1124.xlsx",
-          filename.2 = "NOF 2/Chin2524.xlsx",
-          results.name = "comparison of Chin 1124 vs 2524.xlsx"
+tamm_diff(file_1 = "Chin1124.xlsx",
+          file_2 = "Chin2524.xlsx",
+          results_name = "comparison of Chin 1124 vs 2524.xlsx"
 )
 
-setwd(cur.wd)
 ```
 
-By default, `tamm_diff()` rounds percents and numbers of fish to the nearest 0.1 (1 decimal place) before comparing, and rounds numbers that are expected to be longer decimanls (e.g. rates, proportions) to the nearest 0.0001 (4 decimal places). In some cases, we may want to solely focus on larger changes (e.g. changes in whole fish). The optional arguments `percent_digits`, `numeric.digits` and `numeric.digits.small` control the decimal place rounding for percents, numbers of fish, and numbers that are expected to be rates or proportions, respectively. To highlight only larger changes, we might use
+By default, `tamm_diff()` flags changes that were at least 0.1% of the value in `file_1` (or, if that value was zero, to within an absolute value of 0.001). In some cases, we may want to solely focus on larger changes (e.g. changes in whole fish). We can change the minimum threshold for proportional change with with the argument `proportional_threshold`: a value of 0.1 would mean only flagging changes of 10% or greater, and a value of 0.01 would flag change of 1% or greater.
 
 ```r
-tamm_diff(filename.1 = "FRAM/Chin1124.xlsx",
-          filename.2 = "NOF 2/Chin2524.xlsx",
-          results.name = "comparison of Chin 1124 vs 2524.xlsx",
-          percent_digits = 1, numeric.digits = 0, numeric.digits.small = 3
+tamm_diff(file_1 = "Chin1124.xlsx",
+          file_2 = "Chin2524.xlsx",
+          results_name = "comparison of Chin 1124 vs 2524.xlsx",
+          proportional_threshold = 0.01
 )
 
 ```
 
-Note that since we typically manage ER to the nearest 0.1%, it is unlikely that a percent_digits value of 0 would be useful.
+Alternatively, we might want to use an absolute threshold (e.g., if we were only interested in entries of fish, we might want to flag changes of 1 or more fish). By providing a value to the optional argument `absolute_threshold`, we override the use of `proportional_threshold`, and the difference will flag any difference of absolute magnitude `proprotional_threshold`. Here's an example that flags changes of at least 1:
 
-Currently `tamm_diff()` only works well when comparing Chinook TAMM files. Comparison of Coho TAMM files is in development -- the comparison itself works, but the output file does not replicate the formatting of the Coho TAMM, which makes reading the file unpleasant.
+```r
+tamm_diff(file_1 = "Chin1124.xlsx",
+          file_2 = "Chin2524.xlsx",
+          results_name = "comparison of Chin 1124 vs 2524.xlsx",
+          absolute_threshold = 1
+)
+
+```
 
 ## Working with limiting stock sheet
 
@@ -117,67 +118,22 @@ clean_limiting_stock("Chin1224.xlsx") |>
     geom_bar(position="stack", stat="identity")
 ```
 
-## Tools in development
+## Working with other Chinook sheets
 
-These tools are functional, but still being developed.
+- `read_2a_sheets()` parses the sheets "2A_Cmrkd", "2A_CUnmrkd", "2A_CUandM" and "2A_CUandM_N", extracts the AEQs and ERs, and labels them with the appropriate stocks and fisheries. This makes it much easier to writes scripts that depend on these values. It returns a list with `$AEQ` (all the AEQ values in tabular form) and `$ER` (all the ER values in tabular form)
+- `read_jdf()` is analogous to `read_2a_sheets()` but parses the AEQ information in the "JDF" sheet. For compatibility reasons it also returns a list with `$AEQ` and `$ER` like `read_2a_sheets()` does, but as there is not a bottom bar with ER values on the JDF sheet, the `$ER` entry is empty
 
-### `tamm_report()`
+
+## `tamm_report()`
 
 `tamm_report()` summarizes key aspects of a single Chinook TAMM file in an html report, which is generated in the same folder as the summarized TAMM.
 
-Under the hood, tamm_report() uses a template parameterized quarto report and a child quarto file to help automate the creation of tabs for each stock. To see the underlying 
-quarto files used (e.g., to suggest additional edits or features), set argument `clean = FALSE` when calling `tamm_report()`. This will prevent the deletion of `tamm-visualizer.qmd` and `tamm-visualizer-child.qmd`, which will be present in the same folder as the TAMM and report. 
+Under the hood, tamm_report() uses a template parameterized quarto report and a child quarto file to help automate the creation of tabs for each stock. 
+To see the underlying quarto files used (e.g., to suggest additional edits or features), set argument `clean = FALSE` when calling `tamm_report()`. This will prevent the deletion of `tamm-visualizer.qmd` and `tamm-visualizer-child.qmd`, which will be leftin the same folder as the TAMM and report. 
 
-Future goals include
-
-- workshopping and adding additional summary information based on user needs
-
-### `tamm_compare()`
+## `tamm_compare()`
 
 `tamm_compare()` uses the same general approach as `tamm_report()`, but creates a report to compare any number TAMM files based off of Yi Xu's Rmarkdown report to compare exploitation rates for three ocean options. The optional argument `fisheries` takes a numeric vector of fishery IDs; visualization of stock ERs will only plot those ERs. If `fisheries` is not provided, for each stock `tamm_compare()` will create a figure of impacts from all fisheries, and a separate plot of impacts from all SUS fisheries.
-
-
-
-## Stock, Fishery, and Timestep tables
-
-FRAM and TAMM often use stock ID number, fishery ID number, and time step number to represent stock, fishery, and timestep respectively. TAMMsupport includes dataframe versions of the `Stock`, `Fishery`, and `TimeStep` tables of the Coho and Chinook FRAM databases for easy reference and to streamline merging human-readable names to dataframes that have only id numbers. These dataframes are named `fishery_chinook_fram`, `fishery_coho_fram`, `stock_chinook_fram`, `stock_coho_fram`, `timestep_chinook_fram`, and `timestep_coho_fram`, and have associated help files accessible with `?fishery_chinook_fram` etc. The initial rows of these dataframes are shown below.
-
-### `stock_chinook_fram`
-
-```{r, results = 'asis'}
-knitr::kable(head(TAMMsupport::stock_chinook_fram, 5))
-```
-
-### `stock_coho_fram`
-
-```{r, results = 'asis'}
-knitr::kable(head(TAMMsupport::stock_coho_fram, 5))
-```
-
-### `fishery_chinook_fram`
-
-```{r, results = 'asis'}
-knitr::kable(head(TAMMsupport::fishery_chinook_fram, 5))
-```
-
-### `fishery_coho_fram`
-
-```{r, results = 'asis'}
-knitr::kable(head(TAMMsupport::fishery_coho_fram, 5))
-```
-
-### `timestep_chinook_fram`
-
-```{r, results = 'asis'}
-knitr::kable(head(TAMMsupport::timestep_chinook_fram, 5))
-```
-
-
-### `timestep_coho_fram`
-
-```{r, results = 'asis'}
-knitr::kable(head(TAMMsupport::timestep_coho_fram, 5))
-```
 
 
 

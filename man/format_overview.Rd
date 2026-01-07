@@ -4,10 +4,10 @@
 \alias{format_overview}
 \title{Format TAMM overview for easy printing}
 \usage{
-format_overview(dat.overview)
+format_overview(dat_overview)
 }
 \arguments{
-\item{dat.overview}{dataframe of TAMM overview page, as produced by read_overview()}
+\item{dat_overview}{dataframe of TAMM overview page, as produced by read_overview()}
 }
 \value{
 list with the formatted data, a vector of indent information, and a vector of bolding information.

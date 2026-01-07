@@ -12,7 +12,7 @@ toc: true
 embed-resources: true
 editor: visual
 params:
-  tamm.path: "C:/Users/edwc1477/OneDrive - Washington State Executive Branch Agencies/Documents/WDFW FRAM team work/NOF material/NOF 2024/FRAM"
+  tamm_path: "C:/Users/edwc1477/OneDrive - Washington State Executive Branch Agencies/Documents/WDFW FRAM team work/NOF material/NOF 2024/FRAM"
 knitr:
   opts_chunk: 
     R.options: 
@@ -28,12 +28,12 @@ library(here)
 library(framrsquared)
 library(kableExtra)
 library(TAMMsupport)
-tamm.path <- params$tamm.path
+tamm_path <- params$tamm_path
 
-## read in `tamm.names`  and `fisheries` by sourcing our external parameter files
-source(paste0(tamm.path, "/tamm-compare-parameters-intermediate.R"))
+## read in `tamm_names`  and `fisheries` by sourcing our external parameter files
+source(paste0(tamm_path, "/tamm-compare-parameters-intermediate.R"))
 
-tamms.full <- paste0(tamm.path, "/", tamm.names)
+tamms.full <- paste0(tamm_path, "/", tamm_names)
 
 ## deal with fisheries -- the TAMM files read in includes fisheries "13-15", so all are characters
 fisheries.char <- NULL
@@ -45,7 +45,7 @@ if (!is.null(fisheries)) {
 }
 ```
 
-# Comparing `r paste0(tamm.names, collapse = ", ")`
+# Comparing `r paste0(tamm_names, collapse = ", ")`
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
@@ -58,7 +58,7 @@ knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
 dat.ls <- list()
 for (i in 1:length(tamms.full)) {
   dat.ls[[i]] <- TAMMsupport::clean_limiting_stock(tamms.full[i]) |>
-    dplyr::mutate(tamm = tamm.names[i])
+    dplyr::mutate(tamm = tamm_names[i])
   if (!is.null(fisheries)) {
     dat.ls[[i]] <- dat.ls[[i]] |>
       dplyr::filter(fishery_id %in% fisheries.char)
@@ -73,7 +73,7 @@ for (i in 1:length(tamms.full)) {
 render_child <- function(cur.tamm) {
   res <- knitr::knit_child(
     text = xfun::read_utf8("tamm-comparen-child1.qmd"),
-    envir = rlang::env(cur.tamm = cur.tamm, tamm.path = tamm.path),
+    envir = rlang::env(cur.tamm = cur.tamm, tamm_path = tamm_path),
     quiet = TRUE
   )
   cat(res, sep = "\n")
@@ -84,7 +84,7 @@ render_child <- function(cur.tamm) {
 ```{r}
 #| results: 'asis'
 #| echo: false
-purrr::walk(tamm.names, render_child)
+purrr::walk(tamm_names, render_child)
 ```
 :::
 

@@ -4,12 +4,12 @@
 \alias{tamm_compare3}
 \title{Generate summary comparison of 3 TAMM files}
 \usage{
-tamm_compare3(tamm.names, tamm.path = getwd(), clean = TRUE, overwrite = TRUE)
+tamm_compare3(tamm_names, tamm_path = getwd(), clean = TRUE, overwrite = TRUE)
 }
 \arguments{
-\item{tamm.names}{character vector of the three tamm files to compare (including .xlsx suffix).}
+\item{tamm_names}{character vector of the three tamm files to compare (including .xlsx suffix).}
 
-\item{tamm.path}{Absolute path to directory containing the tamm file. \code{here::here()} can be useful in identifying appropriate path. Character atomic; defaults to current working directory.}
+\item{tamm_path}{Absolute path to directory containing the tamm file. \code{here::here()} can be useful in identifying appropriate path. Character atomic; defaults to current working directory.}
 
 \item{clean}{Should the intermediate .qmd files used to make the report be deleted afterwards? Logical, defaults to \code{TRUE}. Set to \code{FALSE}
 to explore the .qmd files underlying the report.}
@@ -24,8 +24,8 @@ Intended use case is to compare low, mid, and high ocean option.
 }
 \examples{
 \dontrun{
-tamm.path <- "C:/Users/edwc1477/Documents/WDFW FRAM team work/NOF material/NOF 2024/FRAM"
-tamm.names <- c("Chin1024.xlsx", "Chin1124.xlsx", "Chin1224.xlsx")
-tamm_compare3(tamm.names = tamm.names, tamm.path = tamm.path)
+tamm_path <- "C:/Users/edwc1477/Documents/WDFW FRAM team work/NOF material/NOF 2024/FRAM"
+tamm_names <- c("Chin1024.xlsx", "Chin1124.xlsx", "Chin1224.xlsx")
+tamm_compare3(tamm_names = tamm_names, tamm_path = tamm_path)
 }
 }

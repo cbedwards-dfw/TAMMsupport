@@ -10,7 +10,7 @@ tamm_diff(
   results_name,
   proportional_threshold = 0.001,
   absolute_threshold = NULL,
-  extra_width = 0.4
+  extra_width = NULL
 )
 }
 \arguments{

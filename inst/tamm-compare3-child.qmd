@@ -4,9 +4,9 @@
 thresh <- 0.001
 
 allER <- rbind(
-  data.frame(tamm = tamm.name1, dat1),
-  data.frame(tamm = tamm.name2, dat2),
-  data.frame(tamm = tamm.name3, dat3)
+  data.frame(tamm = tamm_name1, dat1),
+  data.frame(tamm = tamm_name2, dat2),
+  data.frame(tamm = tamm_name3, dat3)
 ) |>
   rename(er = value) |>
   dplyr::filter(er >= 0.001) |>

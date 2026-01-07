@@ -12,10 +12,10 @@ toc: true
 embed-resources: true
 editor: visual
 params:
-  tamm.path: "C:/Users/edwc1477/OneDrive - Washington State Executive Branch Agencies/Documents/WDFW FRAM team work/NOF material/NOF 2024/FRAM"
-  tamm.name1: "Chin1024.xlsx"
-  tamm.name2: "Chin1124.xlsx"
-  tamm.name3: "Chin1224.xlsx"
+  tamm_path: "C:/Users/edwc1477/OneDrive - Washington State Executive Branch Agencies/Documents/WDFW FRAM team work/NOF material/NOF 2024/FRAM"
+  tamm_name1: "Chin1024.xlsx"
+  tamm_name2: "Chin1124.xlsx"
+  tamm_name3: "Chin1224.xlsx"
 ---
 
 *Report generated programmatically using the `TAMMsupport` package*
@@ -27,17 +27,17 @@ library(here)
 library(framrsquared)
 library(kableExtra)
 library(TAMMsupport)
-tamm.path <- params$tamm.path
-tamm.name1 <- params$tamm.name1
-tamm.name2 <- params$tamm.name2
-tamm.name3 <- params$tamm.name3
-tamm.full1 <- paste0(tamm.path, "/", tamm.name1)
-tamm.full2 <- paste0(tamm.path, "/", tamm.name2)
-tamm.full3 <- paste0(tamm.path, "/", tamm.name3)
+tamm_path <- params$tamm_path
+tamm_name1 <- params$tamm_name1
+tamm_name2 <- params$tamm_name2
+tamm_name3 <- params$tamm_name3
+tamm.full1 <- paste0(tamm_path, "/", tamm_name1)
+tamm.full2 <- paste0(tamm_path, "/", tamm_name2)
+tamm.full3 <- paste0(tamm_path, "/", tamm_name3)
 ```
 
 
-# Comparing `r paste0(tamm.name1, ", ", tamm.name2, ", and ", tamm.name3)`
+# Comparing `r paste0(tamm_name1, ", ", tamm_name2, ", and ", tamm_name3)`
 
 
 ```{r setup, include=FALSE}
@@ -59,45 +59,45 @@ dat3 <- TAMMsupport::clean_limiting_stock(tamm.full3)
 
 ::: {.panel-tabset}
 
-## `r tamm.name1`
+## `r tamm_name1`
 
 ```{r}
 path.cur <- tamm.full1
-dat.overview <- TAMMsupport::read_overview(path.cur)
-overview.form <- TAMMsupport::format_overview(dat.overview)
+dat_overview <- TAMMsupport::read_overview(path.cur)
+overview.form <- TAMMsupport::format_overview(dat_overview)
 TAMMsupport::kable_overview(
-  dat.overview = overview.form$dat.overview,
-  ind.indent = overview.form$ind.indent,
-  col.bold = overview.form$col.bold
+  dat_overview = overview.form$dat_overview,
+  ind_indent = overview.form$ind_indent,
+  col_bold = overview.form$col_bold
 )
 ```
 
 
-## `r tamm.name2`
+## `r tamm_name2`
 
 ```{r}
 path.cur <- tamm.full2
-dat.overview <- TAMMsupport::read_overview(path.cur)
-overview.form <- TAMMsupport::format_overview(dat.overview)
+dat_overview <- TAMMsupport::read_overview(path.cur)
+overview.form <- TAMMsupport::format_overview(dat_overview)
 TAMMsupport::kable_overview(
-  dat.overview = overview.form$dat.overview,
-  ind.indent = overview.form$ind.indent,
-  col.bold = overview.form$col.bold
+  dat_overview = overview.form$dat_overview,
+  ind_indent = overview.form$ind_indent,
+  col_bold = overview.form$col_bold
 )
 ```
 
 
 
-## `r tamm.name3`
+## `r tamm_name3`
 
 ```{r}
 path.cur <- tamm.full3
-dat.overview <- TAMMsupport::read_overview(path.cur)
-overview.form <- TAMMsupport::format_overview(dat.overview)
+dat_overview <- TAMMsupport::read_overview(path.cur)
+overview.form <- TAMMsupport::format_overview(dat_overview)
 TAMMsupport::kable_overview(
-  dat.overview = overview.form$dat.overview,
-  ind.indent = overview.form$ind.indent,
-  col.bold = overview.form$col.bold
+  dat_overview = overview.form$dat_overview,
+  ind_indent = overview.form$ind_indent,
+  col_bold = overview.form$col_bold
 )
 ```
 

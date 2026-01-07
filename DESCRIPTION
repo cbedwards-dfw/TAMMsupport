@@ -37,8 +37,7 @@ Imports:
     visNetwork,
     xldiff (>= 0.1.0)
 Remotes: 
-  cbedwards-dfw/xldiff,
-  FRAMverse/framrosetta
+  cbedwards-dfw/xldiff
 Depends: 
     R (>= 2.10)
 LazyData: true

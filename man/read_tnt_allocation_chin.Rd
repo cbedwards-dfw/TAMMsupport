@@ -4,10 +4,10 @@
 \alias{read_tnt_allocation_chin}
 \title{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}}
 \usage{
-read_tnt_allocation_chin(xlsxFile)
+read_tnt_allocation_chin(file)
 }
 \arguments{
-\item{xlsxFile}{Character vector. Filename (including path) for chinook TAMM}
+\item{file}{Character vector. Filename (including path) for chinook TAMM}
 }
 \value{
 dataframe with the treaty and nontreaty mortalities at each stock.

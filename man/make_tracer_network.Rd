@@ -25,7 +25,7 @@ Render the dependency network created in \code{trace_formula()}; optionally save
 \examples{
 \dontrun{
 trace_network = trace_formula(path = "NOF material/NOF 2024/NOF 2/Chin1624.xlsx",
-cell.start = "SPSmrkd!AS20")
+cell_start = "SPSmrkd!AS20")
 make_tracer_network(trace_network)
 }
 }

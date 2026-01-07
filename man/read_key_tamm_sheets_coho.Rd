@@ -4,10 +4,10 @@
 \alias{read_key_tamm_sheets_coho}
 \title{Read Chinook TAMM files to extract the key sheets}
 \usage{
-read_key_tamm_sheets_coho(xlsxFile)
+read_key_tamm_sheets_coho(file)
 }
 \arguments{
-\item{xlsxFile}{#Tamm file name}
+\item{file}{#Tamm file name}
 }
 \value{
 List of dataframes: \verb{$two}, \verb{$tami}, and \verb{$wacoast}
