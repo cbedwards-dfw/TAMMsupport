@@ -32,12 +32,12 @@ Imports:
     stringr,
     tibble,
     tidyr,
-      tidyxl,
+    tidyxl,
     utils,
     visNetwork,
     xldiff (>= 0.1.0)
 Remotes: 
-  cbedwards-dfw/xldiff
+  cbedwards-dfw/xldiff,
   FRAMverse/framrosetta
 Depends: 
     R (>= 2.10)
