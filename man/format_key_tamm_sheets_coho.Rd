@@ -6,7 +6,7 @@
 \usage{
 format_key_tamm_sheets_coho(
   dat,
-  percent.digits = 2,
+  percent_digits = 2,
   numeric.digits = 1,
   numeric.digits.small = 4
 )
@@ -14,7 +14,7 @@ format_key_tamm_sheets_coho(
 \arguments{
 \item{dat}{list of dataframes corresponding to the overview, limiting stock, and inputs tabs. Must be named \verb{$overview}, \verb{$limiting}, and \verb{$input}}
 
-\item{percent.digits}{Optional, number of decimal places to round percentages to before comparison. Defaults to 1.}
+\item{percent_digits}{Optional, number of decimal places to round percentages to before comparison. Defaults to 1.}
 
 \item{numeric.digits}{Optional, number of decimal places to round non-percentage numerics to before comparison. Applied to numbers that are expected to have natural units of whole numbers (e.g. numbers of fish). Defaults to 1.}
 

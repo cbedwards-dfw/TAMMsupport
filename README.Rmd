@@ -84,18 +84,18 @@ tamm_diff(filename.1 = "FRAM/Chin1124.xlsx",
 setwd(cur.wd)
 ```
 
-By default, `tamm_diff()` rounds percents and numbers of fish to the nearest 0.1 (1 decimal place) before comparing, and rounds numbers that are expected to be longer decimanls (e.g. rates, proportions) to the nearest 0.0001 (4 decimal places). In some cases, we may want to solely focus on larger changes (e.g. changes in whole fish). The optional arguments `percent.digits`, `numeric.digits` and `numeric.digits.small` control the decimal place rounding for percents, numbers of fish, and numbers that are expected to be rates or proportions, respectively. To highlight only larger changes, we might use
+By default, `tamm_diff()` rounds percents and numbers of fish to the nearest 0.1 (1 decimal place) before comparing, and rounds numbers that are expected to be longer decimanls (e.g. rates, proportions) to the nearest 0.0001 (4 decimal places). In some cases, we may want to solely focus on larger changes (e.g. changes in whole fish). The optional arguments `percent_digits`, `numeric.digits` and `numeric.digits.small` control the decimal place rounding for percents, numbers of fish, and numbers that are expected to be rates or proportions, respectively. To highlight only larger changes, we might use
 
 ```r
 tamm_diff(filename.1 = "FRAM/Chin1124.xlsx",
           filename.2 = "NOF 2/Chin2524.xlsx",
           results.name = "comparison of Chin 1124 vs 2524.xlsx",
-          percent.digits = 1, numeric.digits = 0, numeric.digits.small = 3
+          percent_digits = 1, numeric.digits = 0, numeric.digits.small = 3
 )
 
 ```
 
-Note that since we typically manage ER to the nearest 0.1%, it is unlikely that a percent.digits value of 0 would be useful.
+Note that since we typically manage ER to the nearest 0.1%, it is unlikely that a percent_digits value of 0 would be useful.
 
 Currently `tamm_diff()` only works well when comparing Chinook TAMM files. Comparison of Coho TAMM files is in development -- the comparison itself works, but the output file does not replicate the formatting of the Coho TAMM, which makes reading the file unpleasant.
 

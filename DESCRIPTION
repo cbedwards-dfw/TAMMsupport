@@ -21,6 +21,7 @@ Imports:
     glue,
     janitor,
     kableExtra,
+    lifecycle,
     openxlsx,
     openxlsx2,
     purrr,
@@ -31,7 +32,7 @@ Imports:
     stringr,
     tibble,
     tidyr,
-    tidyxl,
+      tidyxl,
     utils,
     visNetwork,
     xldiff (>= 0.1.0)

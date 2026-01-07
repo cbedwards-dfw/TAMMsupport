@@ -1,5 +1,12 @@
 # TAMMsupport 1.0.0
 
+## major changes
+- removed data objects from TAMMsupport, as they are duplicates of those in framrosetta. Added dependency on framrosetta instead.
+
+## minor changes
+
+- `compare_chinook_inputs()` returns a table instead of a tibble
+
 # TAMMsupport 0.2.0
 
 - added read_jdf() to read the important info in the `JDF` sheet, reformat into something useable in R

@@ -4,14 +4,14 @@
 \alias{chunk_formater_percenter}
 \title{Format chunks of dataframe to present as \%s, round digits}
 \usage{
-chunk_formater_percenter(df, block.ranges, percent.digits = 1)
+chunk_formater_percenter(df, block_ranges, percent_digits = 1)
 }
 \arguments{
 \item{df}{dataframe of sheet to apply formatting to.}
 
-\item{block.ranges}{vector of characters specifying blocks of cells (in excel nomenclature) to format as \%s}
+\item{block_ranges}{vector of characters specifying blocks of cells (in excel nomenclature) to format as \%s}
 
-\item{percent.digits}{Decimal place to round to in percent}
+\item{percent_digits}{Decimal place to round to in percent}
 }
 \value{
 Formatted version of \code{df}

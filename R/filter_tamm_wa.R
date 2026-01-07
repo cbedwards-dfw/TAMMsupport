@@ -6,7 +6,6 @@
 #'
 #' a `fishery_id` column name.
 #' @param .data Dataframe generated within this package
-#' @export
 #' @examples
 #' \dontrun{
 #' fram_dataframe |> filter_wa()
