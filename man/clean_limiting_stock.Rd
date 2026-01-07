@@ -4,10 +4,10 @@
 \alias{clean_limiting_stock}
 \title{Generates clean read of TAMM limiting stock sheet}
 \usage{
-clean_limiting_stock(filename)
+clean_limiting_stock(file)
 }
 \arguments{
-\item{filename}{Name (and path) for TAMM files}
+\item{file}{Name (and path) for TAMM files}
 }
 \value{
 dataframe
