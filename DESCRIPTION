@@ -37,7 +37,10 @@ Imports:
     xldiff (>= 0.1.0)
 Remotes: 
   cbedwards-dfw/xldiff
+  cbedwards-dfw/excelsior
 Depends: 
     R (>= 2.10)
 LazyData: true
 URL: https://framverse.r-universe.dev/TAMMsupport, https://github.com/cbedwards-dfw/TAMMsupport, https://cbedwards-dfw.github.io/TAMMsupport/
+Suggests: 
+    excelsior
