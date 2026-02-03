@@ -60,7 +60,7 @@ format_overview <- function(dat_overview) {
 #' @return html table
 #' @export
 #'
-kable_overview <- function(dat_overview, ind_ident, col_bold) {
+kable_overview <- function(dat_overview, ind_indent, col_bold) {
   kableExtra::kbl(dat_overview,
     format = "html",
     table.attr = "style='width:90%;'",
@@ -68,7 +68,7 @@ kable_overview <- function(dat_overview, ind_ident, col_bold) {
     col.names = c("Stock", "Abund. Tier", "ER Ceiling", "ER Type", "Escape.", "Total ER", "SUS ER", "PT-SUS ER")
   ) |>
     kableExtra::kable_styling("striped", full_width = F, html_font = "Cambria", font_size = 9) |>
-    kableExtra::add_indent(ind_ident, level_of_indent = 1) |> # this line needs to be before any extra_css
+    kableExtra::ind_indent(ind_indent, level_of_indent = 1) |> # this line needs to be before any extra_css
     kableExtra::row_spec(1, extra_css = "border-top: 2px solid;") |>
     kableExtra::column_spec(2:4, width = ".9cm") |>
     kableExtra::column_spec(6, bold = col_bold == "total_er") |>
