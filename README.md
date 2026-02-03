@@ -4,6 +4,10 @@
 # TAMMsupport
 
 <!-- badges: start -->
+
+[![R-CMD-check](https://github.com/cbedwards-dfw/TAMMsupport/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/cbedwards-dfw/TAMMsupport/actions/workflows/R-CMD-check.yaml)
+[![Codecov test
+coverage](https://codecov.io/gh/cbedwards-dfw/TAMMsupport/graph/badge.svg)](https://app.codecov.io/gh/cbedwards-dfw/TAMMsupport)
 <!-- badges: end -->
 
 The goal of `{TAMMsupport}` is to provide R-based tools for working with
@@ -12,6 +16,33 @@ and interpreting Terminal Area Management Module files
 
 `{TAMMsupport}` is part of the [“framverse” R universe of
 packages](https://framverse.r-universe.dev/packages).
+
+## Installation
+
+You can install the compiled version of `{TAMMsupport}` through the
+R-universe package repository:
+
+``` r
+install.packages(c("TAMMsupport", "xldiff"), repos = "https://framverse.r-universe.dev")
+```
+
+If you have RTools installed, you can also install the the package from
+the github repository with
+
+``` r
+pak::pkg_install("cbedwards-dfw/TAMMsupport")
+
+## OR
+
+devtools::install_github("cbedwards-dfw/TAMMsupport")    
+```
+
+To install the development version, which may include new features that
+have been added but not thoroughly tested:
+
+``` r
+pak::pkg_install("cbedwards-dfw/TAMMsupport@dev")
+```
 
 ## Cheatsheet
 
@@ -36,35 +67,6 @@ I want to…
 - Trace the network of cells used by a formula in a TAMM or other excel
   file? Use `trace_formula()` to generate a dependency network, and
   `make_tracer_network()` to visualize it.
-
-## Installation
-
-You can install the compiled version of `{TAMMsupport}` through the
-R-universe package repository:
-
-``` r
-install.packages(c("TAMMsupport", "xldiff"), repos = "https://framverse.r-universe.dev")
-```
-
-If you have RTools installed, you can also install the development
-version of TAMMsupport with `{devtools}` like so:
-
-``` r
-devtools::install_github("cbedwards-dfw/TAMMsupport")    
-```
-
-or with `{pak}` like so:
-
-``` r
-pak::pkg_install("cbedwards-dfw/TAMMsupport")
-```
-
-With `TAMMsupport` installed, we can use functions from it by including
-the library in our script, like so:
-
-``` r
-library(TAMMsupport)
-```
 
 ## `tamm_diff()`
 
