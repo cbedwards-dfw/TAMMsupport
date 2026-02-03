@@ -9,6 +9,34 @@ Area Management Module files
 the [“framverse” R universe of
 packages](https://framverse.r-universe.dev/packages).
 
+## Installation
+
+You can install the compiled version of
+[TAMMsupport](https://framverse.r-universe.dev/TAMMsupport) through the
+R-universe package repository:
+
+``` r
+install.packages(c("TAMMsupport", "xldiff"), repos = "https://framverse.r-universe.dev")
+```
+
+If you have RTools installed, you can also install the the package from
+the github repository with
+
+``` r
+pak::pkg_install("cbedwards-dfw/TAMMsupport")
+
+## OR
+
+devtools::install_github("cbedwards-dfw/TAMMsupport")    
+```
+
+To install the development version, which may include new features that
+have been added but not thoroughly tested:
+
+``` r
+pak::pkg_install("cbedwards-dfw/TAMMsupport@dev")
+```
+
 ## Cheatsheet
 
 I want to…
@@ -46,37 +74,6 @@ I want to…
   to generate a dependency network, and
   [`make_tracer_network()`](https://cbedwards-dfw.github.io/TAMMsupport/reference/make_tracer_network.md)
   to visualize it.
-
-## Installation
-
-You can install the compiled version of
-[TAMMsupport](https://framverse.r-universe.dev/TAMMsupport) through the
-R-universe package repository:
-
-``` r
-install.packages(c("TAMMsupport", "xldiff"), repos = "https://framverse.r-universe.dev")
-```
-
-If you have RTools installed, you can also install the development
-version of TAMMsupport with [devtools](https://devtools.r-lib.org/) like
-so:
-
-``` r
-devtools::install_github("cbedwards-dfw/TAMMsupport")    
-```
-
-or with [pak](https://pak.r-lib.org/) like so:
-
-``` r
-pak::pkg_install("cbedwards-dfw/TAMMsupport")
-```
-
-With `TAMMsupport` installed, we can use functions from it by including
-the library in our script, like so:
-
-``` r
-library(TAMMsupport)
-```
 
 ## `tamm_diff()`
 
