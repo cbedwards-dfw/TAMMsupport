@@ -38,7 +38,7 @@ devtools::install_github("cbedwards-dfw/TAMMsupport")
 ```
 
 To install the development version, which may include new features that
-have been added but not thoroughly tested:
+have been added but may not be as thoroughly tested:
 
 ``` r
 pak::pkg_install("cbedwards-dfw/TAMMsupport@dev")
