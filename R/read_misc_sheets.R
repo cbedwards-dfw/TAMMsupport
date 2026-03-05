@@ -571,6 +571,95 @@ read_jdf <- function(tamm_filepath, stock_cleanup = TRUE) {
   return(list(aeq = aeq, er = NULL))
 }
 
+#' Read in AEQ and ER information from the JDF Unmarked sheet
+#'
+#' @param tamm_filepath TAMM filepath
+#' @param stock_cleanup Clean up stock name capitalization? Logical, defaults to TRUE.
+#'
+#' @return List, with $aeq containing the combined AEQ information that is spread across multiple chunks in the TAMM sheet. List also contains $er = NULL, to provide parallel outputs to `read_2a_sheets`, which *does* have a non-null $er item in the output list.
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' library(here)
+#' filepath <- here("tamms/Chin2025.xlsx")
+#' jdf <- read_jdf_unmarked(filepath)
+#' }
+read_jdf_unmarked <- function(tamm_filepath, stock_cleanup = TRUE) {
+  # joint chunk-reader and sheet reader, since one and the same, plus can't use
+  # process_*()
+  sheet_name <- "JDFUnmrkd"
+  data <- readxl::read_excel(tamm_filepath,
+                             sheet = sheet_name,
+                             range = "O8:T49",
+                             col_names = TRUE,
+                             .name_repair = "unique_quiet"
+  )
+
+  names(data)[1] <- "fishery"
+  names(data)[2] <- "fishery_assignment"
+
+  data <- data |>
+    dplyr::filter(.data$fishery != "-" | is.na(.data$fishery)) |>
+    dplyr::filter(.data$fishery != "=" | is.na(.data$fishery))
+
+
+  for (i in 2:nrow(data)) {
+    if (is.na(data$fishery[i]) & (!is.na(data$fishery_assignment[i]))) {
+      data$fishery[i] <- data$fishery[i - 1]
+    }
+  }
+  ## tired. Want to cut out rows that are all NAs. Base R solution
+  inds.allna <- which(apply(data, 1, function(x) {
+    all(is.na(x))
+  }))
+  data <- data[-inds.allna, ]
+  data <- data |>
+    # deal with inconsistent "NA" designation in sheet
+    dplyr::mutate(dplyr::across(
+      -tidyr::any_of(c("fishery", "fishery_assignment")),
+      ~ dplyr::if_else(.x %in% c("na", "NA", "Na"),
+                       NA,
+                       .x
+      )
+    ))
+  ## want non-elementwise approach, so looping
+  ## for any columns but the first two, if we safely can, convert to numeric
+  cols_numeric <- setdiff(colnames(data), c("fishery", "fishery_assignment"))
+  for (cur_col in cols_numeric) {
+    data[[cur_col]] <- as_numeric_safe(data[[cur_col]])
+  }
+
+  # grab the "SUS Ocean Only ER and PS Pertimina Net" section at the bottom
+  data_er <- NULL
+
+  data$sheet <- sheet_name
+  data$table <- "16E"
+
+  aeq <- data |>
+    tidyr::pivot_longer(
+      cols = -tidyr::any_of(c("fishery", "fishery_assignment", "sheet", "table")),
+      names_to = "stock"
+    ) |>
+    janitor::clean_names()
+
+  aeq$fishery <- gsub("Freshwater Sport: \1", "Freshwater Sport:", aeq$fishery, fixed = TRUE)
+  aeq$fishery <- gsub("Freshwater Sport: \\1", "Freshwater Sport:", aeq$fishery, fixed = TRUE)
+
+  aeq <- aeq |>
+    dplyr::mutate(
+      fishery_joint_label = dplyr::if_else(is.na(.data$fishery_assignment),
+                                           .data$fishery,
+                                           glue::glue("{.data$fishery} {.data$fishery_assignment}")
+      ),
+      .before = .data$fishery
+    )
+
+  return(list(aeq = aeq, er = NULL))
+}
+
+
+
 #' Read and combine all 2a sheets from a TAMM file
 #'
 #' Gathers and cleans the AEQ and ER information for tamm sheets `2aCmrkd`,
